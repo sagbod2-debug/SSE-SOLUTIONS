@@ -1,42 +1,126 @@
 ---
+import { Picture as AstroPicture } from 'astro:assets';
+import placeholders from '../data/image-placeholders.json';
+
+import img01 from '../assets/images/01-hero-architecture.webp';
+import img02 from '../assets/images/02-accueil-cc-care.webp';
+import img03 from '../assets/images/03-accueil-cc-consulting.webp';
+import img04 from '../assets/images/04-accueil-cc-events.webp';
+import img05 from '../assets/images/05-accueil-programme.webp';
+import img06 from '../assets/images/06-cc-care-hero.webp';
+import img07 from '../assets/images/07-cc-care-missions.webp';
+import img08 from '../assets/images/08-autonomie-hero.webp';
+import img09 from '../assets/images/09-autonomie-parcours.webp';
+import img10 from '../assets/images/10-cc-consulting-hero.webp';
+import img11 from '../assets/images/11-cc-consulting-services.webp';
+import img12 from '../assets/images/12-cc-events-hero.webp';
+import img13 from '../assets/images/13-cc-events-services.webp';
+
+const imageMap: Record<string, ImageMetadata> = {
+  '01-hero-architecture': img01,
+  '02-accueil-cc-care': img02,
+  '03-accueil-cc-consulting': img03,
+  '04-accueil-cc-events': img04,
+  '05-accueil-programme': img05,
+  '06-cc-care-hero': img06,
+  '07-cc-care-missions': img07,
+  '08-autonomie-hero': img08,
+  '09-autonomie-parcours': img09,
+  '10-cc-consulting-hero': img10,
+  '11-cc-consulting-services': img11,
+  '12-cc-events-hero': img12,
+  '13-cc-events-services': img13,
+};
+
 interface Props {
   slug: string;
   alt: string;
-  width?: number;
-  height?: number;
+  sizes?: string;
   loading?: 'lazy' | 'eager';
   fetchpriority?: 'high' | 'low' | 'auto';
   class?: string;
   imgClass?: string;
   parallax?: boolean;
+  transitionName?: string;
 }
 
 const {
   slug,
   alt,
-  width = 2400,
-  height = 1500,
+  sizes = '(max-width: 768px) 100vw, (max-width: 1320px) 48vw, 640px',
   loading = 'lazy',
   fetchpriority = 'auto',
   class: className = '',
   imgClass = '',
   parallax = true,
+  transitionName,
 } = Astro.props;
+
+const asset = imageMap[slug] || img01;
+const ph = (placeholders as Record<string, { dominantColor: string; blurDataUrl: string }>)[
+  slug
+] || {
+  dominantColor: '#1A1E21',
+  blurDataUrl: '',
+};
 ---
 
-<picture class={className}>
-  <source srcset={`/images/${slug}.avif`} type="image/avif" />
-  <source srcset={`/images/${slug}.webp`} type="image/webp" />
-  <img
-    src={`/images/${slug}.webp`}
+<div
+  class:list={['picture-placeholder', className]}
+  style={`--ph-color: ${ph.dominantColor}; --ph-blur: url('${ph.blurDataUrl}');`}
+  transition:name={transitionName}
+>
+  <AstroPicture
+    src={asset}
     alt={alt}
-    width={width}
-    height={height}
+    formats={['avif', 'webp']}
+    widths={[480, 768, 1200, 1600, 2400]}
+    sizes={sizes}
     loading={loading}
     decoding={loading === 'eager' ? 'sync' : 'async'}
     fetchpriority={fetchpriority}
-    class={imgClass}
+    class:list={['picture-sharp-img', imgClass, { 'is-eager': loading === 'eager' }]}
     data-parallax-img={parallax ? 'true' : undefined}
+    onload="this.classList.add('is-loaded')"
   />
-</picture>
+</div>
 
+<style>
+  .picture-placeholder {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 16 / 10;
+    background-color: var(--ph-color, var(--surface));
+    background-image: var(--ph-blur);
+    background-size: cover;
+    background-position: center;
+    overflow: hidden;
+  }
+
+  .picture-placeholder :global(picture) {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .picture-placeholder :global(img.picture-sharp-img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 400ms var(--ease-out), transform 700ms var(--ease-out);
+  }
+
+  .picture-placeholder :global(img.picture-sharp-img.is-eager),
+  .picture-placeholder :global(img.picture-sharp-img.is-loaded) {
+    opacity: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .picture-placeholder :global(img.picture-sharp-img) {
+      opacity: 1 !important;
+      transition: none !important;
+    }
+  }
+</style>
