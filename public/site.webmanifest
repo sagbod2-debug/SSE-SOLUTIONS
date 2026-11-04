@@ -1,0 +1,26 @@
+{
+  "name": "SSE Solutions — Social, Security and Events",
+  "short_name": "SSE Solutions",
+  "description": "Accompagner les personnes (CC Care), protéger les lieux (CC Consulting), réussir les moments qui comptent (CC Events).",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#111416",
+  "theme_color": "#111416",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
