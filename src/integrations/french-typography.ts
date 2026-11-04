@@ -39,7 +39,7 @@ export function applyFrenchTypographyToTextNode(text: string): string {
  */
 export function transformHtmlTextNodes(html: string): string {
   const tokenRegex =
-    /(<!--[\s\S]*?-->|<!DOCTYPE[^>]*>|<script\b[^>]*>[\s\S]*?<\/script>|<style\b[^>]*>[\s\S]*?<\/style>|<code\b[^>]*>[\s\S]*?<\/code>|<pre\b[^>]*>[\s\S]*?<\/pre>|<kbd\b[^>]*>[\s\S]*?<\/kbd>|<samp\b[^>]*>[\s\S]*?<\/samp>|<title\b[^>]*>[\s\S]*?<\/title>|<\/?[a-zA-Z][^>]*>)/gi;
+    /(<!--[\s\S]*?-->|<!DOCTYPE[^>]*>|<script\b[^>]*>[\s\S]*?<\/script>|<style\b[^>]*>[\s\S]*?<\/style>|<code\b[^>]*>[\s\S]*?<\/code>|<pre\b[^>]*>[\s\S]*?<\/pre>|<kbd\b[^>]*>[\s\S]*?<\/kbd>|<samp\b[^>]*>[\s\S]*?<\/samp>|<\/?[a-zA-Z][^>]*>)/gi;
 
   const parts = html.split(tokenRegex);
 

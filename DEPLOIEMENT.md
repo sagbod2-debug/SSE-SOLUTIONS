@@ -22,8 +22,8 @@ Ce document décrit, dans l'ordre exact, les étapes à suivre pour basculer le 
 2. Ajoutez **`ssesolutions.fr`**.
 3. Lorsque Vercel vous propose d'ajouter **`www.ssesolutions.fr`** et de le rediriger vers `ssesolutions.fr`, acceptez (notre fichier `vercel.json` inclut également la redirection permanente `308` de `www.ssesolutions.fr` vers `https://ssesolutions.fr`).
 4. Notez les valeurs DNS affichées par Vercel à l'écran :
-   - Pour `@` (`ssesolutions.fr`) : enregistrement **`A`** vers **`76.76.21.21`** (ou l'adresse IP exacte indiquée par votre tableau de bord Vercel).
-   - Pour `www` (`www.ssesolutions.fr`) : enregistrement **`CNAME`** vers **`cname.vercel-dns.com.`** (ou la cible CNAME dédiée indiquée par Vercel).
+   - Pour `@` (`ssesolutions.fr`) : enregistrement **`A`** vers **la valeur exacte affichée par Vercel dans Settings → Domains**.
+   - Pour `www` (`www.ssesolutions.fr`) : enregistrement **`CNAME`** vers **la cible CNAME exacte affichée par Vercel dans Settings → Domains**.
 
 ---
 
@@ -32,7 +32,7 @@ Ce document décrit, dans l'ordre exact, les étapes à suivre pour basculer le 
 Dans **Ionos** → **Domaines & SSL** → **`ssesolutions.fr`** → **DNS** :
 
 1. **Enregistrement `A` sur `@` (racine du domaine)** :
-   - Si un enregistrement `A` existe déjà pour `@` (par exemple un parking Ionos), **modifiez-le** pour pointer vers **`76.76.21.21`** (valeur fournie par Vercel).
+   - Si un enregistrement `A` existe déjà pour `@` (par exemple un parking Ionos), **modifiez-le** pour pointer vers **la valeur exacte affichée par Vercel dans Settings → Domains**.
    - Si un enregistrement **`AAAA`** (IPv6) pointe vers le parking Ionos sur `@`, **supprimez uniquement cet enregistrement `AAAA` sur `@`** (sinon les visiteurs en IPv6 tomberont encore sur la page par défaut d'Ionos).
 2. **Enregistrement `CNAME` sur `www`** :
    - Créez ou modifiez l'enregistrement pour l'hôte **`www`** en type **`CNAME`** pointant vers **`cname.vercel-dns.com.`** (valeur fournie par Vercel).
