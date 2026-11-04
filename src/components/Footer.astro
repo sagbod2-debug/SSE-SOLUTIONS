@@ -1,0 +1,147 @@
+---
+---
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-top grid-12">
+      <div class="footer-brand">
+        <p class="footer-title">SSE Solutions — Social, Security and Events</p>
+        <p class="footer-subtitle">
+          Une entreprise, trois activités : CC Care, CC Consulting, CC Events.
+        </p>
+      </div>
+
+      <div class="footer-col">
+        <p class="footer-heading">Activités</p>
+        <ul class="footer-links">
+          <li><a href="/cc-care">CC Care</a></li>
+          <li><a href="/cc-consulting">CC Consulting</a></li>
+          <li><a href="/cc-events">CC Events</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <p class="footer-heading">Programme</p>
+        <ul class="footer-links">
+          <li><a href="/cc-care/autonomie-inclusion">Autonomie &amp; Inclusion</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <p class="footer-heading">Contact</p>
+        <ul class="footer-links">
+          <li><a href="mailto:cccare@ssesolutions.fr">cccare@ssesolutions.fr</a></li>
+          <li><a href="mailto:ccconsulting@ssesolutions.fr">ccconsulting@ssesolutions.fr</a></li>
+          <li><a href="/contact">Formulaire de contact</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <p class="footer-heading">Légal</p>
+        <ul class="footer-links">
+          <li><a href="/mentions-legales">Mentions légales</a></li>
+          <li><a href="/confidentialite">Confidentialité</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p class="footer-copy">© 2026 SSE Solutions · Boussy-Saint-Antoine, Essonne</p>
+      <!-- [À COMPLÉTER] Liens réseaux sociaux (LinkedIn) : ne rien afficher tant qu'ils n'existent pas. -->
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background-color: var(--bg-primary);
+    border-top: 1px solid var(--border-steel);
+    padding-top: var(--space-64);
+    padding-bottom: var(--space-40);
+    color: var(--text-secondary);
+  }
+
+  .footer-top {
+    row-gap: var(--space-40);
+    padding-bottom: var(--space-64);
+    border-bottom: 1px solid var(--border-steel);
+  }
+
+  .footer-brand {
+    grid-column: 1 / -1;
+  }
+
+  @media (min-width: 1024px) {
+    .footer-brand {
+      grid-column: 1 / 5;
+      padding-right: var(--space-24);
+    }
+  }
+
+  .footer-title {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    color: var(--text-primary);
+    margin-bottom: var(--space-16);
+  }
+
+  .footer-subtitle {
+    font-size: 0.9375rem;
+    color: var(--text-secondary);
+    max-width: 36ch;
+  }
+
+  .footer-col {
+    grid-column: span 6;
+  }
+
+  @media (min-width: 640px) {
+    .footer-col {
+      grid-column: span 3;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .footer-col {
+      grid-column: span 2;
+    }
+  }
+
+  .footer-heading {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--text-primary);
+    margin-bottom: var(--space-16);
+  }
+
+  .footer-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+  }
+
+  .footer-links a {
+    font-size: 0.9375rem;
+    color: var(--text-secondary);
+    transition: color 0.2s ease;
+    word-break: break-word;
+  }
+
+  .footer-links a:hover,
+  .footer-links a:focus-visible {
+    color: var(--accent-gold);
+  }
+
+  .footer-bottom {
+    padding-top: var(--space-24);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-16);
+    font-size: 0.875rem;
+  }
+</style>
+

@@ -1,0 +1,536 @@
+@import './fonts.css';
+
+:root {
+  /* Palette principale — Maison mère SSE Solutions */
+  --bg-primary: #111416;
+  --bg-secondary: #1A1E21;
+  --border-steel: #2C3237;
+  --text-primary: #EDEEEF;
+  --text-secondary: #A3AAB1;
+  --accent-gold: #C9A24B;
+  --accent-gold-hover: #E0BE6A;
+
+  /* Accents par activité */
+  --cc-care-blue: #1F4E86;
+  --cc-care-blue-light: #4A80C4;
+  --cc-care-green: #5E9B3A;
+  --cc-care-green-light: #78B852;
+
+  --cc-consulting-navy: #13233F;
+  --cc-consulting-accent: #C9A24B;
+
+  --cc-events-black: #0B0B0B;
+  --cc-events-gold: #D4A62A;
+
+  /* Sections claires (CC Care & Autonomie & Inclusion) */
+  --light-bg: #F3F5F4;
+  --light-bg-secondary: #E7ECEA;
+  --light-text: #14202B;
+  --light-text-secondary: #3B4A58;
+  --light-border: #C5CECB;
+
+  /* Couleur d'accent courante (modulée par page) */
+  --page-accent: var(--accent-gold);
+  --page-accent-secondary: var(--border-steel);
+
+  /* Typographies */
+  --font-display: 'Marcellus', Georgia, 'Times New Roman', serif;
+  --font-sans: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+  /* Échelle d'espacement stricte : 8 / 16 / 24 / 40 / 64 / 104 / 168 px */
+  --space-8: 0.5rem;
+  --space-16: 1rem;
+  --space-24: 1.5rem;
+  --space-40: 2.5rem;
+  --space-64: 4rem;
+  --space-104: 6.5rem;
+  --space-168: 10.5rem;
+
+  /* Grille */
+  --container-max: 1320px;
+  --grid-gutter: 1.5rem; /* 24px */
+  --page-margin: 1.25rem; /* 20px mobile */
+  --radius-sharp: 2px;
+
+  /* Transitions */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (min-width: 768px) {
+  :root {
+    --page-margin: 2.5rem; /* 40px tablet/desktop */
+  }
+}
+
+/* Thèmes par activité */
+[data-theme="cc-care"] {
+  --page-accent: var(--cc-care-green);
+  --page-accent-secondary: var(--cc-care-blue);
+}
+
+[data-theme="cc-consulting"] {
+  --page-accent: var(--accent-gold);
+  --page-accent-secondary: var(--cc-consulting-navy);
+}
+
+[data-theme="cc-events"] {
+  --bg-primary: #0B0B0B;
+  --bg-secondary: #121315;
+  --page-accent: var(--cc-events-gold);
+  --accent-gold: var(--cc-events-gold);
+}
+
+/* Reset & Base */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 100%;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  scroll-padding-top: 5.5rem;
+}
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: clamp(1.0625rem, 1rem + 0.2vw, 1.125rem); /* 17px -> 18px */
+  font-weight: 400;
+  line-height: 1.6;
+  overflow-x: hidden;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+}
+
+img,
+picture,
+svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+/* Focus clavier très visible (Accessibilité AA non négociable) */
+:focus-visible {
+  outline: 2px solid var(--accent-gold) !important;
+  outline-offset: 4px !important;
+}
+
+.section-light :focus-visible {
+  outline: 2px solid var(--cc-care-blue) !important;
+  outline-offset: 4px !important;
+}
+
+/* Lien d'évitement "Aller au contenu" */
+.skip-link {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 9999;
+  background-color: var(--accent-gold);
+  color: #111416;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 0.9375rem;
+  padding: 0.75rem 1.25rem;
+  border-radius: var(--radius-sharp);
+  transform: translateY(-200%);
+  transition: transform 0.2s ease;
+}
+
+.skip-link:focus,
+.skip-link:focus-visible {
+  transform: translateY(0);
+  outline: 2px solid #EDEEEF !important;
+}
+
+/* Conteneur & Grille 12 colonnes */
+.container {
+  width: 100%;
+  max-width: calc(var(--container-max) + var(--page-margin) * 2);
+  margin-inline: auto;
+  padding-inline: var(--page-margin);
+}
+
+.grid-12 {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: var(--grid-gutter);
+}
+
+/* Sections & Rythme vertical */
+.section {
+  padding-block: var(--space-64);
+  border-bottom: 1px solid var(--border-steel);
+  position: relative;
+}
+
+@media (min-width: 1024px) {
+  .section {
+    padding-block: var(--space-104);
+  }
+  .section--spacious {
+    padding-block: var(--space-168);
+  }
+}
+
+.section--secondary {
+  background-color: var(--bg-secondary);
+}
+
+.section--consulting-tint {
+  background: linear-gradient(180deg, rgba(19, 35, 63, 0.38) 0%, var(--bg-primary) 100%);
+}
+
+/* Sections claires pour CC Care & Autonomie */
+.section-light {
+  background-color: var(--light-bg);
+  color: var(--light-text);
+  border-bottom: 1px solid var(--light-border);
+}
+
+.section-light--alt {
+  background-color: var(--light-bg-secondary);
+  color: var(--light-text);
+  border-bottom: 1px solid var(--light-border);
+}
+
+/* Typographie & Hiérarchie */
+h1,
+h2,
+h3,
+.display-title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  line-height: 1.0;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+  text-wrap: balance;
+}
+
+.section-light h1,
+.section-light h2,
+.section-light h3,
+.section-light .display-title {
+  color: var(--light-text);
+}
+
+.hero-title {
+  font-size: clamp(2.65rem, 6.2vw, 7.25rem);
+  line-height: 0.98;
+  letter-spacing: -0.015em;
+}
+
+.hero-title--medium {
+  font-size: clamp(2.4rem, 5.2vw, 5.5rem);
+  line-height: 1.02;
+}
+
+.section-title {
+  font-size: clamp(2rem, 4vw, 4rem);
+  line-height: 1.04;
+  letter-spacing: -0.01em;
+}
+
+.card-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.375rem, 2vw, 1.875rem);
+  line-height: 1.15;
+}
+
+.prose-measure {
+  max-width: 65ch;
+  color: var(--text-secondary);
+}
+
+.section-light .prose-measure {
+  color: var(--light-text-secondary);
+}
+
+/* Sur-titres & Numérotation tabulaire */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 0.75rem; /* 12px */
+  line-height: 1.4;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--text-secondary);
+  margin-bottom: var(--space-24);
+}
+
+@media (min-width: 768px) {
+  .eyebrow {
+    font-size: 0.8125rem; /* 13px */
+  }
+}
+
+.eyebrow::before {
+  content: '';
+  display: inline-block;
+  width: 1.5rem;
+  height: 1px;
+  background-color: var(--page-accent);
+}
+
+.section-light .eyebrow {
+  color: var(--cc-care-blue);
+}
+
+.section-light .eyebrow::before {
+  background-color: var(--cc-care-green);
+}
+
+.num-index {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 0.8125rem;
+  letter-spacing: 0.18em;
+  font-variant-numeric: tabular-nums;
+  color: var(--accent-gold);
+}
+
+.section-light .num-index {
+  color: var(--cc-care-blue);
+}
+
+/* Point final signature (or discret ou couleur courante) */
+.dot-gold {
+  color: var(--accent-gold);
+}
+
+/* Boutons : Principal plein or + Secondaire à soulignement or qui se trace de gauche à droite */
+.btn-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-24);
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  background-color: var(--accent-gold);
+  color: #111416;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 0.9375rem;
+  letter-spacing: 0.04em;
+  padding: 1rem 1.75rem;
+  border-radius: var(--radius-sharp);
+  border: 1px solid var(--accent-gold);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+  min-height: 3rem;
+}
+
+.btn-primary::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #111416;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.35s var(--ease-out-expo);
+}
+
+.btn-primary:hover {
+  background-color: var(--accent-gold-hover);
+  border-color: var(--accent-gold-hover);
+}
+
+.btn-primary:hover::after {
+  transform: scaleX(1);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 0.9375rem;
+  letter-spacing: 0.03em;
+  padding: 0.75rem 0.25rem;
+  position: relative;
+  cursor: pointer;
+  min-height: 2.75rem;
+}
+
+.section-light .btn-secondary {
+  color: var(--light-text);
+}
+
+.btn-secondary::before {
+  content: '';
+  position: absolute;
+  bottom: 0.35rem;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background-color: var(--border-steel);
+}
+
+.section-light .btn-secondary::before {
+  background-color: var(--light-border);
+}
+
+.btn-secondary::after {
+  content: '';
+  position: absolute;
+  bottom: 0.35rem;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background-color: var(--accent-gold);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.38s var(--ease-out-expo);
+}
+
+.section-light .btn-secondary::after {
+  background-color: var(--cc-care-blue);
+}
+
+.btn-secondary:hover::after,
+.btn-secondary:focus-visible::after {
+  transform: scaleX(1);
+}
+
+/* Panneau clair architectural pour présenter les logos officiels (sur fond #F3F5F4) */
+.logo-panel {
+  background-color: #F3F5F4;
+  border: 1px solid var(--border-steel);
+  border-radius: var(--radius-sharp);
+  padding: var(--space-24);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-panel img {
+  max-height: 7.5rem;
+  width: auto;
+  object-fit: contain;
+}
+
+/* Cadres photos et parallaxe */
+.media-frame {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-steel);
+  border-radius: var(--radius-sharp);
+}
+
+.section-light .media-frame {
+  border-color: var(--light-border);
+}
+
+.media-frame picture,
+.media-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  will-change: transform;
+}
+
+/* Masques d'animation de lignes */
+.reveal-mask {
+  overflow: hidden;
+  display: block;
+  padding-bottom: 0.08em;
+}
+
+.reveal-line {
+  display: block;
+  will-change: transform, opacity;
+}
+
+/* Voile de transition entre pages (0.3s) */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.3s;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Respect absolu de prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.2s !important;
+    scroll-behavior: auto !important;
+  }
+
+  .reveal-line,
+  [data-reveal],
+  [data-parallax] {
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}
+

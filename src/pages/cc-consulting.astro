@@ -1,0 +1,326 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Picture from '../components/Picture.astro';
+
+// [À COMPLÉTER] Logo CC Consulting (encore absent du dossier assets/logos/)
+// [À VÉRIFIER] Numéro de déclaration d'activité avant toute évolution terminologique sur le point 06 (Sensibilisation des équipes)
+---
+
+<BaseLayout
+  title="CC Consulting · Sécurité — SSE Solutions"
+  description="CC Consulting accompagne les établissements recevant du public, en priorité les établissements de soins, dans leur mise en conformité incendie et la préparation de leurs commissions de sécurité."
+  theme="cc-consulting"
+>
+  <!-- HERO -->
+  <section class="section hero-consulting section--consulting-tint">
+    <div class="container grid-12 hero-consulting-grid">
+      <div class="hero-consulting-content">
+        <p class="eyebrow" data-hero-fade>CC CONSULTING · SÉCURITÉ</p>
+        <h1 class="hero-title hero-title--medium">
+          <span class="reveal-mask">
+            <span class="reveal-line" data-hero-line>Conformer.</span>
+          </span>
+          <span class="reveal-mask">
+            <span class="reveal-line" data-hero-line>Préparer.</span>
+          </span>
+          <span class="reveal-mask">
+            <span class="reveal-line" data-hero-line>Sécuriser.</span>
+          </span>
+        </h1>
+        <p class="prose-measure hero-consulting-lead" data-hero-fade>
+          CC Consulting accompagne les établissements recevant du public, en priorité les établissements de soins, dans leur mise en conformité incendie et la préparation de leurs commissions de sécurité.
+        </p>
+
+        <div class="btn-group hero-consulting-actions" data-hero-fade>
+          <a href="/contact?sujet=cc-consulting" class="btn-primary">Nous écrire</a>
+        </div>
+      </div>
+
+      <div class="hero-consulting-media" data-hero-fade>
+        <div class="media-frame hero-consulting-frame">
+          <Picture
+            slug="10-cc-consulting-hero"
+            alt="Façade géométrique en verre et acier d’un bâtiment contemporain photographié au crépuscule"
+            loading="eager"
+            fetchpriority="high"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION SERVICES (NUMÉROTÉS 01 -> 06) -->
+  <section class="section section--spacious">
+    <div class="container">
+      <div class="grid-12 services-intro">
+        <div class="services-intro-left">
+          <p class="eyebrow" data-reveal>NOS SERVICES</p>
+          <h2 class="section-title" data-reveal-title>
+            <span class="reveal-mask">
+              <span class="reveal-line">De l'audit à la commission.</span>
+            </span>
+          </h2>
+        </div>
+        <div class="services-intro-right" data-reveal>
+          <div class="media-frame services-photo">
+            <Picture
+              slug="11-cc-consulting-services"
+              alt="Plans d’architecture et documents techniques posés sur une table de travail pour un audit de conformité"
+            />
+          </div>
+        </div>
+      </div>
+
+      <ol class="consulting-services-grid grid-12">
+        <li class="consulting-card" data-reveal>
+          <span class="num-index">01</span>
+          <h3 class="card-title">Audit de conformité.</h3>
+          <p>
+            Un état des lieux précis de votre établissement face à la réglementation incendie.
+          </p>
+        </li>
+        <li class="consulting-card" data-reveal>
+          <span class="num-index">02</span>
+          <h3 class="card-title">Mise en conformité.</h3>
+          <p>
+            Un plan d'actions clair et l'accompagnement jusqu'à la levée des observations.
+          </p>
+        </li>
+        <li class="consulting-card" data-reveal>
+          <span class="num-index">03</span>
+          <h3 class="card-title">Commissions de sécurité.</h3>
+          <p>
+            La préparation des registres, des documents et des visites.
+          </p>
+        </li>
+        <li class="consulting-card" data-reveal>
+          <span class="num-index">04</span>
+          <h3 class="card-title">Suivi des prestataires.</h3>
+          <p>
+            Le suivi des vérifications, des contrats et des rapports de vos prestataires.
+          </p>
+        </li>
+        <li class="consulting-card" data-reveal>
+          <span class="num-index">05</span>
+          <h3 class="card-title">Assistance sécurité.</h3>
+          <p>
+            Un appui à la gestion de la sécurité de votre bâtiment au quotidien.
+          </p>
+        </li>
+        <li class="consulting-card" data-reveal>
+          <span class="num-index">06</span>
+          <h3 class="card-title">Sensibilisation des équipes.</h3>
+          <p>
+            Des sessions pour que vos équipes connaissent les bons réflexes.
+          </p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- SECTION POUR QUI -->
+  <section class="section section--secondary section--spacious">
+    <div class="container">
+      <p class="eyebrow" data-reveal>POUR QUI</p>
+      <ul class="consulting-audiences grid-12" data-reveal>
+        <li class="consulting-audience-card">
+          <span class="num-index">01</span>
+          <span class="consulting-audience-title">Établissements de soins (type U)</span>
+        </li>
+        <li class="consulting-audience-card">
+          <span class="num-index">02</span>
+          <span class="consulting-audience-title">Autres établissements recevant du public</span>
+        </li>
+        <li class="consulting-audience-card">
+          <span class="num-index">03</span>
+          <span class="consulting-audience-title">Entreprises</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="section section--spacious">
+    <div class="container grid-12">
+      <div class="consulting-contact-box">
+        <h2 class="section-title" data-reveal-title>
+          <span class="reveal-mask">
+            <span class="reveal-line">Une commission de sécurité approche ?</span>
+          </span>
+        </h2>
+        <div class="consulting-contact-actions" data-reveal>
+          <a href="mailto:ccconsulting@ssesolutions.fr" class="consulting-email">
+            ccconsulting@ssesolutions.fr
+          </a>
+          <a href="/contact?sujet=cc-consulting" class="btn-primary">Nous écrire</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero-consulting {
+    padding-top: 8.5rem;
+    padding-bottom: var(--space-64);
+    border-top: 3px solid var(--cc-consulting-navy);
+  }
+
+  .hero-consulting-grid {
+    align-items: center;
+    row-gap: var(--space-40);
+  }
+
+  .hero-consulting-content {
+    grid-column: 1 / -1;
+  }
+
+  .hero-consulting-media {
+    grid-column: 1 / -1;
+  }
+
+  @media (min-width: 960px) {
+    .hero-consulting-content {
+      grid-column: 1 / 8;
+    }
+    .hero-consulting-media {
+      grid-column: 8 / 13;
+    }
+  }
+
+  .hero-consulting-lead {
+    margin-top: var(--space-40);
+    font-size: clamp(1.125rem, 1.3vw, 1.3rem);
+    color: var(--text-primary);
+  }
+
+  .hero-consulting-actions {
+    margin-top: var(--space-40);
+  }
+
+  .hero-consulting-frame {
+    aspect-ratio: 4 / 3;
+    border-color: var(--cc-consulting-navy);
+  }
+
+  .services-intro {
+    align-items: end;
+    row-gap: var(--space-40);
+    margin-bottom: var(--space-64);
+  }
+
+  .services-intro-left {
+    grid-column: 1 / -1;
+  }
+
+  .services-intro-right {
+    grid-column: 1 / -1;
+  }
+
+  @media (min-width: 960px) {
+    .services-intro-left {
+      grid-column: 1 / 7;
+    }
+    .services-intro-right {
+      grid-column: 8 / 13;
+    }
+  }
+
+  .services-photo {
+    aspect-ratio: 16 / 10;
+  }
+
+  .consulting-services-grid {
+    row-gap: var(--space-24);
+  }
+
+  .consulting-card {
+    grid-column: 1 / -1;
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-steel);
+    border-top: 2px solid var(--cc-consulting-navy);
+    border-radius: var(--radius-sharp);
+    padding: var(--space-40);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+    transition: border-color 0.25s ease;
+  }
+
+  .consulting-card:hover {
+    border-top-color: var(--accent-gold);
+  }
+
+  @media (min-width: 640px) {
+    .consulting-card {
+      grid-column: span 6;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .consulting-card {
+      grid-column: span 4;
+    }
+  }
+
+  .consulting-card p {
+    color: var(--text-secondary);
+  }
+
+  .consulting-audiences {
+    margin-top: var(--space-40);
+    row-gap: var(--space-24);
+  }
+
+  .consulting-audience-card {
+    grid-column: 1 / -1;
+    border: 1px solid var(--border-steel);
+    border-left: 3px solid var(--accent-gold);
+    background-color: var(--bg-primary);
+    padding: var(--space-40);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+  }
+
+  @media (min-width: 768px) {
+    .consulting-audience-card {
+      grid-column: span 4;
+    }
+  }
+
+  .consulting-audience-title {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    color: var(--text-primary);
+  }
+
+  .consulting-contact-box {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-40);
+  }
+
+  .consulting-contact-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-40);
+  }
+
+  .consulting-email {
+    font-family: var(--font-display);
+    font-size: clamp(1.35rem, 2.5vw, 2rem);
+    color: var(--accent-gold);
+    border-bottom: 1px solid var(--border-steel);
+    padding-bottom: 0.25rem;
+    transition: border-color 0.2s ease, color 0.2s ease;
+  }
+
+  .consulting-email:hover {
+    border-color: var(--accent-gold);
+    color: var(--accent-gold-hover);
+  }
+</style>
+

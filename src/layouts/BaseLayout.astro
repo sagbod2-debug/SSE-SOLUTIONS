@@ -1,0 +1,82 @@
+---
+import { ClientRouter } from 'astro:transitions';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+  theme?: 'default' | 'cc-care' | 'cc-consulting' | 'cc-events';
+  canonicalPath?: string;
+}
+
+const {
+  title,
+  description,
+  theme = 'default',
+  canonicalPath = Astro.url.pathname,
+} = Astro.props;
+
+const canonicalUrl = new URL(canonicalPath, Astro.site || 'https://ssesolutions.fr').toString();
+---
+
+<!doctype html>
+<html lang="fr" data-theme={theme === 'default' ? undefined : theme}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+
+    <!-- Préchargement des polices auto-hébergées (RGPD : zéro appel externe) -->
+    <link
+      rel="preload"
+      href="/fonts/marcellus-400-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/hanken-grotesk-400-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/hanken-grotesk-600-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+
+    <!-- Open Graph sobre -->
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="fr_FR" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta name="theme-color" content="#111416" />
+
+    <!-- View Transitions d'Astro (fondu rapide 0.3s avec voile graphite) -->
+    <ClientRouter />
+  </head>
+  <body>
+    <!-- Premier élément obligatoire : lien d'évitement clavier -->
+    <a href="#main-content" class="skip-link">Aller au contenu</a>
+
+    <Header />
+
+    <main id="main-content" tabindex="-1" transition:animate="fade">
+      <slot />
+    </main>
+
+    <Footer />
+
+    <script src="../scripts/site.ts"></script>
+  </body>
+</html>
+

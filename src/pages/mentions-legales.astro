@@ -1,0 +1,165 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import credits from '../data/credits.json';
+
+// [À COMPLÉTER] Téléphone de contact SSE Solutions (masqué tant qu'il n'est pas complété)
+// [À VÉRIFIER sur netlify.com : adresse postale actuelle de Netlify]
+// [À COMPLÉTER au fur et à mesure, voir 03_IMAGES.md : crédits photos définitifs après validation par Jean-David]
+---
+
+<BaseLayout
+  title="Mentions légales — SSE Solutions"
+  description="Mentions légales du site SSE Solutions (CC Care, CC Consulting, CC Events)."
+>
+  <section class="section legal-section">
+    <div class="container grid-12">
+      <div class="legal-content">
+        <p class="eyebrow">INFORMATIONS LÉGALES</p>
+        <h1 class="section-title">Mentions légales.</h1>
+
+        <div class="legal-blocks">
+          <article class="legal-block">
+            <h2 class="card-title">Éditeur</h2>
+            <p class="prose-measure">
+              SSE Solutions, entreprise individuelle de Carine Chali — 13 rue Marcel Pagnol, 91800 Boussy-Saint-Antoine — SIRET 999 125 131 00014 — TVA non applicable, article 293 B du CGI.
+            </p>
+          </article>
+
+          <article class="legal-block">
+            <h2 class="card-title">Contact</h2>
+            <p class="prose-measure">
+              <a href="mailto:cccare@ssesolutions.fr" class="legal-link">cccare@ssesolutions.fr</a>
+            </p>
+            <!-- [À COMPLÉTER] Téléphone : masqué tant qu'il n'est pas complété -->
+          </article>
+
+          <article class="legal-block">
+            <h2 class="card-title">Directrice de la publication</h2>
+            <p class="prose-measure">Carine Chali.</p>
+          </article>
+
+          <article class="legal-block">
+            <h2 class="card-title">Hébergeur</h2>
+            <!-- [À VÉRIFIER sur netlify.com : adresse postale actuelle de Netlify] -->
+            <p class="prose-measure">
+              Netlify, Inc. — 512 2nd Street, Suite 200, San Francisco, CA 94107, États-Unis (netlify.com).
+            </p>
+          </article>
+
+          <article class="legal-block">
+            <h2 class="card-title">Propriété intellectuelle</h2>
+            <p class="prose-measure">
+              Textes, logos et visuels propres à SSE Solutions ; crédits photos listés en bas de page.
+            </p>
+          </article>
+
+          <article class="legal-block">
+            <h2 class="card-title">Crédits photographiques</h2>
+            <!-- [À COMPLÉTER au fur et à mesure, voir 03_IMAGES.md] -->
+            <ul class="credits-list">
+              {
+                credits.map((item) => (
+                  <li class="credit-item">
+                    <span class="num-index">{String(item.id).padStart(2, '0')}</span>
+                    <span class="credit-section">{item.section}</span>
+                    <span class="credit-author">
+                      Photographie par{' '}
+                      <a
+                        href={item.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="legal-link"
+                      >
+                        {item.photographer} ({item.source})
+                      </a>
+                    </span>
+                  </li>
+                ))
+              }
+            </ul>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .legal-section {
+    padding-top: 8.5rem;
+    padding-bottom: var(--space-104);
+  }
+
+  .legal-content {
+    grid-column: 1 / -1;
+  }
+
+  @media (min-width: 960px) {
+    .legal-content {
+      grid-column: 1 / 10;
+    }
+  }
+
+  .legal-blocks {
+    margin-top: var(--space-64);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-40);
+  }
+
+  .legal-block {
+    padding-top: var(--space-24);
+    border-top: 1px solid var(--border-steel);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+  }
+
+  .legal-link {
+    color: var(--accent-gold);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .legal-link:hover {
+    color: var(--accent-gold-hover);
+  }
+
+  .credits-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-top: var(--space-8);
+  }
+
+  .credit-item {
+    display: grid;
+    grid-template-columns: 2.5rem 1fr;
+    gap: 0.5rem 1rem;
+    padding-block: 0.75rem;
+    border-bottom: 1px solid var(--border-steel);
+    font-size: 0.9375rem;
+  }
+
+  @media (min-width: 768px) {
+    .credit-item {
+      grid-template-columns: 2.5rem 1fr 1fr;
+    }
+  }
+
+  .credit-section {
+    color: var(--text-primary);
+  }
+
+  .credit-author {
+    color: var(--text-secondary);
+    grid-column: 2 / -1;
+  }
+
+  @media (min-width: 768px) {
+    .credit-author {
+      grid-column: auto;
+    }
+  }
+</style>
+

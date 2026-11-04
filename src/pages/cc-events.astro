@@ -1,0 +1,289 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Picture from '../components/Picture.astro';
+
+// [À COMPLÉTER] E-mail CC Events (suggestion : créer une redirection gratuite ccevents@ssesolutions.fr chez Ionos)
+---
+
+<BaseLayout
+  title="CC Events · Événementiel — SSE Solutions"
+  description="CC Events organise de grands événements et coordonne les équipes événementielles, de la préparation au dernier invité parti."
+  theme="cc-events"
+>
+  <!-- HERO PLEIN ÉCRAN -->
+  <section class="hero-events">
+    <div class="hero-events-bg" aria-hidden="true">
+      <Picture
+        slug="12-cc-events-hero"
+        alt="Grande salle de réception habillée de lumières chaudes et dorées avant l’accueil des invités"
+        loading="eager"
+        fetchpriority="high"
+        parallax={false}
+      />
+      <div class="hero-events-scrim"></div>
+    </div>
+
+    <div class="container grid-12 hero-events-inner">
+      <div class="hero-events-content">
+        <p class="eyebrow" data-hero-fade>CC EVENTS · ÉVÉNEMENTIEL</p>
+        <h1 class="hero-title">
+          <span class="reveal-mask">
+            <span class="reveal-line" data-hero-line>Imaginer.</span>
+          </span>
+          <span class="reveal-mask">
+            <span class="reveal-line" data-hero-line>Coordonner.</span>
+          </span>
+          <span class="reveal-mask">
+            <span class="reveal-line" data-hero-line>Réussir.</span>
+          </span>
+        </h1>
+        <p class="prose-measure hero-events-lead" data-hero-fade>
+          CC Events organise de grands événements et coordonne les équipes événementielles, de la préparation au dernier invité parti.
+        </p>
+
+        <div class="btn-group hero-events-actions" data-hero-fade>
+          <a href="/contact?sujet=cc-events" class="btn-primary">Nous écrire</a>
+        </div>
+      </div>
+
+      <div class="hero-events-logo" data-hero-fade>
+        <div class="logo-panel logo-panel--events">
+          <img
+            src="/logos/logo_CC_Events.png"
+            alt="Logo officiel CC Events"
+            width="320"
+            height="219"
+            loading="eager"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION SERVICES -->
+  <section class="section section--spacious">
+    <div class="container">
+      <div class="events-services-list">
+        <article class="events-service-row" data-reveal>
+          <span class="num-index">01</span>
+          <h2 class="card-title">Organisation d'événements.</h2>
+          <p class="prose-measure">
+            Conception, planning, prestataires et logistique de vos grands événements.
+          </p>
+        </article>
+
+        <article class="events-service-row" data-reveal>
+          <span class="num-index">02</span>
+          <h2 class="card-title">Gestion des équipes.</h2>
+          <p class="prose-measure">
+            Recrutement, briefing et encadrement des équipes sur le terrain.
+          </p>
+        </article>
+
+        <article class="events-service-row" data-reveal>
+          <span class="num-index">03</span>
+          <h2 class="card-title">Coordination le jour J.</h2>
+          <p class="prose-measure">
+            Un pilotage en temps réel pour que tout se déroule comme prévu.
+          </p>
+        </article>
+      </div>
+
+      <div class="events-wide-showcase" data-reveal>
+        <div class="media-frame events-wide-frame">
+          <Picture
+            slug="13-cc-events-services"
+            alt="Régie technique et préparation en coulisses d’un événement avec éclairages de scène en arrière-plan"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION POUR QUI -->
+  <section class="section section--secondary section--spacious">
+    <div class="container">
+      <p class="eyebrow" data-reveal>POUR QUI</p>
+      <ul class="events-audiences grid-12" data-reveal>
+        <li class="events-audience-item">
+          <span class="num-index">01</span>
+          <span class="events-audience-name">Entreprises</span>
+        </li>
+        <li class="events-audience-item">
+          <span class="num-index">02</span>
+          <span class="events-audience-name">Institutions</span>
+        </li>
+        <li class="events-audience-item">
+          <span class="num-index">03</span>
+          <span class="events-audience-name">Associations</span>
+        </li>
+        <li class="events-audience-item">
+          <span class="num-index">04</span>
+          <span class="events-audience-name">Organisateurs</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="section section--spacious">
+    <div class="container grid-12">
+      <div class="events-contact-box">
+        <h2 class="section-title" data-reveal-title>
+          <span class="reveal-mask">
+            <span class="reveal-line">Un événement en préparation ?</span>
+          </span>
+        </h2>
+        <!-- [À COMPLÉTER] E-mail CC Events (suggestion : créer une redirection gratuite ccevents@ssesolutions.fr chez Ionos). En attendant, seulement le bouton « Nous écrire » -->
+        <div class="btn-group" data-reveal>
+          <a href="/contact?sujet=cc-events" class="btn-primary">Nous écrire</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero-events {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-end;
+    padding-top: 8.5rem;
+    padding-bottom: var(--space-64);
+    border-bottom: 1px solid var(--border-steel);
+    overflow: hidden;
+  }
+
+  .hero-events-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .hero-events-bg :global(picture),
+  .hero-events-bg :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.42;
+  }
+
+  .hero-events-scrim {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      rgba(11, 11, 11, 0.55) 0%,
+      rgba(11, 11, 11, 0.78) 55%,
+      #0b0b0b 100%
+    );
+  }
+
+  .hero-events-inner {
+    position: relative;
+    z-index: 1;
+    align-items: end;
+    row-gap: var(--space-40);
+  }
+
+  .hero-events-content {
+    grid-column: 1 / -1;
+  }
+
+  .hero-events-logo {
+    grid-column: 1 / -1;
+  }
+
+  @media (min-width: 960px) {
+    .hero-events-content {
+      grid-column: 1 / 9;
+    }
+    .hero-events-logo {
+      grid-column: 9 / 13;
+      justify-self: end;
+    }
+  }
+
+  .hero-events-lead {
+    margin-top: var(--space-40);
+    font-size: clamp(1.125rem, 1.35vw, 1.35rem);
+    color: var(--text-primary);
+  }
+
+  .hero-events-actions {
+    margin-top: var(--space-40);
+  }
+
+  .logo-panel--events {
+    border-color: var(--cc-events-gold);
+  }
+
+  .events-services-list {
+    border-top: 1px solid var(--border-steel);
+    margin-bottom: var(--space-64);
+  }
+
+  .events-service-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-16);
+    padding-block: var(--space-40);
+    border-bottom: 1px solid var(--border-steel);
+    align-items: baseline;
+  }
+
+  @media (min-width: 768px) {
+    .events-service-row {
+      grid-template-columns: 1fr 4fr 7fr;
+      gap: var(--space-24);
+    }
+  }
+
+  .events-wide-frame {
+    aspect-ratio: 21 / 9;
+    border-color: var(--cc-events-gold);
+  }
+
+  .events-audiences {
+    margin-top: var(--space-40);
+    row-gap: var(--space-24);
+  }
+
+  .events-audience-item {
+    grid-column: 1 / -1;
+    border: 1px solid var(--border-steel);
+    border-top: 2px solid var(--cc-events-gold);
+    background-color: var(--bg-primary);
+    padding: var(--space-40);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+  }
+
+  @media (min-width: 640px) {
+    .events-audience-item {
+      grid-column: span 6;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .events-audience-item {
+      grid-column: span 3;
+    }
+  }
+
+  .events-audience-name {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    color: var(--text-primary);
+  }
+
+  .events-contact-box {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-40);
+  }
+</style>
+

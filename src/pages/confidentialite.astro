@@ -1,0 +1,115 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Confidentialité — SSE Solutions"
+  description="Politique de confidentialité et protection des données personnelles de SSE Solutions."
+>
+  <section class="section legal-section">
+    <div class="container grid-12">
+      <div class="legal-content">
+        <p class="eyebrow">DONNÉES PERSONNELLES</p>
+        <h1 class="section-title">Confidentialité.</h1>
+
+        <div class="legal-blocks">
+          <article class="legal-block">
+            <h2 class="card-title">Données collectées</h2>
+            <p class="prose-measure">
+              Celles du formulaire de contact (nom, structure, e-mail, téléphone, message).
+            </p>
+          </article>
+
+          <article class="legal-block">
+            <h2 class="card-title">Finalité et base légale</h2>
+            <p class="prose-measure">
+              Finalité : répondre à votre demande. Base légale : votre consentement.
+            </p>
+          </article>
+
+          <article class="legal-block">
+            <h2 class="card-title">Durée de conservation</h2>
+            <p class="prose-measure">3 ans après le dernier échange.</p>
+          </article>
+
+          <article class="legal-block">
+            <h2 class="card-title">Destinataires</h2>
+            <p class="prose-measure">
+              SSE Solutions uniquement ; hébergement des formulaires par Netlify.
+            </p>
+          </article>
+
+          <article class="legal-block">
+            <h2 class="card-title">Vos droits</h2>
+            <p class="prose-measure">
+              Accès, rectification, effacement, opposition, en écrivant à{' '}
+              <a href="mailto:cccare@ssesolutions.fr" class="legal-link">
+                cccare@ssesolutions.fr
+              </a>{' '}
+              ; réclamation possible auprès de la CNIL (
+              <a
+                href="https://www.cnil.fr"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="legal-link"
+              >
+                cnil.fr
+              </a>
+              ).
+            </p>
+          </article>
+
+          <article class="legal-block">
+            <h2 class="card-title">Cookies et traceurs</h2>
+            <p class="prose-measure">
+              Pas de cookie publicitaire. Si une mesure d'audience est ajoutée plus tard, utiliser un outil sans cookie.
+            </p>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .legal-section {
+    padding-top: 8.5rem;
+    padding-bottom: var(--space-104);
+  }
+
+  .legal-content {
+    grid-column: 1 / -1;
+  }
+
+  @media (min-width: 960px) {
+    .legal-content {
+      grid-column: 1 / 10;
+    }
+  }
+
+  .legal-blocks {
+    margin-top: var(--space-64);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-40);
+  }
+
+  .legal-block {
+    padding-top: var(--space-24);
+    border-top: 1px solid var(--border-steel);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+  }
+
+  .legal-link {
+    color: var(--accent-gold);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .legal-link:hover {
+    color: var(--accent-gold-hover);
+  }
+</style>
+

@@ -1,0 +1,487 @@
+---
+const currentPath = Astro.url.pathname;
+const isActive = (path: string) =>
+  currentPath === path || (path !== '/' && currentPath.startsWith(path));
+const isActivityActive =
+  currentPath === '/cc-care' ||
+  currentPath === '/cc-care/' ||
+  currentPath.startsWith('/cc-consulting') ||
+  currentPath.startsWith('/cc-events');
+---
+
+<header class="site-header" id="site-header">
+  <div class="container header-inner">
+    <!-- Mot-symbole typographique SSE Solutions en Marcellus (cf. 01_BRIEF_DESIGN.md) -->
+    <!-- [À COMPLÉTER] Obtenir les logos en PNG transparent ou en SVG -->
+    <a href="/" class="brand-wordmark" aria-label="SSE Solutions — Accueil">
+      <span class="brand-sse">SSE</span>
+      <span class="brand-sep" aria-hidden="true"></span>
+      <span class="brand-solutions">Solutions</span>
+    </a>
+
+    <!-- Navigation ordinateur -->
+    <nav class="desktop-nav" aria-label="Navigation principale">
+      <ul class="nav-list">
+        <li class="nav-item nav-dropdown" data-dropdown>
+          <button
+            type="button"
+            class:list={['nav-link', 'dropdown-toggle', { 'is-active': isActivityActive }]}
+            aria-expanded="false"
+            aria-haspopup="true"
+            aria-controls="activities-menu"
+            id="activities-menu-btn"
+          >
+            <span>Activités</span>
+            <svg
+              class="chevron-icon"
+              width="12"
+              height="12"
+              viewBox="0 0 12 12"
+              fill="none"
+              aria-hidden="true"
+            >
+              <path
+                d="M2.5 4.5L6 8L9.5 4.5"
+                stroke="currentColor"
+                stroke-width="1.4"
+                stroke-linecap="square"
+              />
+            </svg>
+          </button>
+          <ul
+            class="dropdown-menu"
+            id="activities-menu"
+            aria-labelledby="activities-menu-btn"
+          >
+            <li>
+              <a
+                href="/cc-care"
+                class:list={['dropdown-link', { 'is-current': currentPath === '/cc-care' || currentPath === '/cc-care/' }]}
+              >
+                <span class="dropdown-num">01</span>
+                <span class="dropdown-text">
+                  <strong>CC Care</strong>
+                  <small>Social</small>
+                </span>
+              </a>
+            </li>
+            <li>
+              <a
+                href="/cc-consulting"
+                class:list={['dropdown-link', { 'is-current': isActive('/cc-consulting') }]}
+              >
+                <span class="dropdown-num">02</span>
+                <span class="dropdown-text">
+                  <strong>CC Consulting</strong>
+                  <small>Sécurité</small>
+                </span>
+              </a>
+            </li>
+            <li>
+              <a
+                href="/cc-events"
+                class:list={['dropdown-link', { 'is-current': isActive('/cc-events') }]}
+              >
+                <span class="dropdown-num">03</span>
+                <span class="dropdown-text">
+                  <strong>CC Events</strong>
+                  <small>Événementiel</small>
+                </span>
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a
+            href="/cc-care/autonomie-inclusion"
+            class:list={['nav-link', { 'is-active': isActive('/cc-care/autonomie-inclusion') }]}
+            aria-current={isActive('/cc-care/autonomie-inclusion') ? 'page' : undefined}
+          >
+            Autonomie &amp; Inclusion
+          </a>
+        </li>
+        <li class="nav-item">
+          <a
+            href="/contact"
+            class:list={['nav-link', { 'is-active': isActive('/contact') }]}
+            aria-current={isActive('/contact') ? 'page' : undefined}
+          >
+            Contact
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="header-actions">
+      <a href="/contact" class="btn-primary header-cta">Nous écrire</a>
+
+      <button
+        type="button"
+        class="mobile-menu-toggle"
+        id="mobile-menu-toggle"
+        aria-expanded="false"
+        aria-controls="mobile-fullscreen-menu"
+        aria-label="Ouvrir le menu de navigation"
+      >
+        <span class="burger-line"></span>
+        <span class="burger-line"></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Menu mobile plein écran avec liens en très grand (Marcellus) -->
+  <div
+    class="mobile-menu"
+    id="mobile-fullscreen-menu"
+    aria-hidden="true"
+    inert
+  >
+    <div class="container mobile-menu-inner">
+      <nav aria-label="Navigation mobile plein écran">
+        <p class="eyebrow">NAVIGATION</p>
+        <ul class="mobile-nav-list">
+          <li>
+            <a href="/" class="mobile-nav-link">
+              <span class="num-index">00</span>
+              <span>Accueil.</span>
+            </a>
+          </li>
+          <li>
+            <a href="/cc-care" class="mobile-nav-link">
+              <span class="num-index">01</span>
+              <span>CC Care.</span>
+            </a>
+          </li>
+          <li>
+            <a href="/cc-consulting" class="mobile-nav-link">
+              <span class="num-index">02</span>
+              <span>CC Consulting.</span>
+            </a>
+          </li>
+          <li>
+            <a href="/cc-events" class="mobile-nav-link">
+              <span class="num-index">03</span>
+              <span>CC Events.</span>
+            </a>
+          </li>
+          <li>
+            <a href="/cc-care/autonomie-inclusion" class="mobile-nav-link">
+              <span class="num-index">04</span>
+              <span>Autonomie &amp; Inclusion.</span>
+            </a>
+          </li>
+          <li>
+            <a href="/contact" class="mobile-nav-link">
+              <span class="num-index">05</span>
+              <span>Contact.</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <div class="mobile-menu-footer">
+        <a href="/contact" class="btn-primary">Nous écrire</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background-color: rgba(17, 20, 22, 0.25);
+    border-bottom: 1px solid transparent;
+    transition: background-color 0.3s ease, border-color 0.3s ease, backdrop-filter 0.3s ease;
+  }
+
+  .site-header.is-scrolled,
+  .site-header.menu-open {
+    background-color: rgba(17, 20, 22, 0.96);
+    border-bottom-color: var(--border-steel);
+    backdrop-filter: blur(10px);
+  }
+
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 5rem;
+    gap: var(--space-24);
+  }
+
+  .brand-wordmark {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-primary);
+    z-index: 102;
+    padding-block: 0.5rem;
+  }
+
+  .brand-sse {
+    font-size: 1.25rem;
+    color: var(--text-primary);
+  }
+
+  .brand-sep {
+    width: 1px;
+    height: 1rem;
+    background-color: var(--accent-gold);
+  }
+
+  .brand-solutions {
+    font-size: 0.9375rem;
+    letter-spacing: 0.22em;
+    color: var(--text-secondary);
+  }
+
+  .desktop-nav {
+    display: none;
+  }
+
+  @media (min-width: 960px) {
+    .desktop-nav {
+      display: block;
+    }
+  }
+
+  .nav-list {
+    display: flex;
+    align-items: center;
+    gap: var(--space-40);
+  }
+
+  .nav-item {
+    position: relative;
+  }
+
+  .nav-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    padding: 0.5rem 0;
+    cursor: pointer;
+    position: relative;
+    transition: color 0.2s ease;
+  }
+
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0.15rem;
+    width: 100%;
+    height: 1px;
+    background-color: var(--accent-gold);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s var(--ease-out-expo);
+  }
+
+  .nav-link:hover,
+  .nav-link.is-active,
+  .nav-link[aria-expanded="true"] {
+    color: var(--text-primary);
+  }
+
+  .nav-link:hover::after,
+  .nav-link.is-active::after {
+    transform: scaleX(1);
+  }
+
+  .chevron-icon {
+    transition: transform 0.25s ease;
+  }
+
+  .dropdown-toggle[aria-expanded="true"] .chevron-icon {
+    transform: rotate(180deg);
+  }
+
+  .dropdown-menu {
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    left: -1rem;
+    min-width: 16rem;
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-steel);
+    border-radius: var(--radius-sharp);
+    padding: 0.5rem;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(6px);
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+  }
+
+  .nav-dropdown.is-open .dropdown-menu,
+  .nav-dropdown:hover .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  .dropdown-link {
+    display: flex;
+    align-items: baseline;
+    gap: 0.875rem;
+    padding: 0.75rem 0.875rem;
+    border-radius: var(--radius-sharp);
+    border-left: 2px solid transparent;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+  }
+
+  .dropdown-link:hover,
+  .dropdown-link:focus-visible,
+  .dropdown-link.is-current {
+    background-color: var(--bg-primary);
+    border-left-color: var(--accent-gold);
+  }
+
+  .dropdown-num {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    font-variant-numeric: tabular-nums;
+    color: var(--accent-gold);
+  }
+
+  .dropdown-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+  }
+
+  .dropdown-text strong {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 1.0625rem;
+    color: var(--text-primary);
+  }
+
+  .dropdown-text small {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--text-secondary);
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-16);
+    z-index: 102;
+  }
+
+  .header-cta {
+    display: none;
+    padding: 0.65rem 1.25rem;
+    min-height: 2.5rem;
+    font-size: 0.875rem;
+  }
+
+  @media (min-width: 960px) {
+    .header-cta {
+      display: inline-flex;
+    }
+  }
+
+  .mobile-menu-toggle {
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 0.4rem;
+    width: 2.75rem;
+    height: 2.75rem;
+    background: transparent;
+    border: 1px solid var(--border-steel);
+    border-radius: var(--radius-sharp);
+    cursor: pointer;
+  }
+
+  @media (min-width: 960px) {
+    .mobile-menu-toggle {
+      display: none;
+    }
+  }
+
+  .burger-line {
+    width: 1.25rem;
+    height: 1.5px;
+    background-color: var(--text-primary);
+    transition: transform 0.25s ease;
+  }
+
+  .site-header.menu-open .burger-line:first-child {
+    transform: translateY(3.75px) rotate(45deg);
+  }
+
+  .site-header.menu-open .burger-line:last-child {
+    transform: translateY(-3.75px) rotate(-45deg);
+  }
+
+  /* Menu mobile plein écran */
+  .mobile-menu {
+    position: fixed;
+    inset: 0;
+    background-color: var(--bg-primary);
+    z-index: 101;
+    padding-top: 6.5rem;
+    padding-bottom: var(--space-40);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.25s ease, visibility 0.25s ease;
+    overflow-y: auto;
+  }
+
+  .site-header.menu-open .mobile-menu {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .mobile-menu-inner {
+    min-height: calc(100vh - 9rem);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: var(--space-40);
+  }
+
+  .mobile-nav-list {
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid var(--border-steel);
+  }
+
+  .mobile-nav-link {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-16);
+    padding-block: var(--space-16);
+    border-bottom: 1px solid var(--border-steel);
+    font-family: var(--font-display);
+    font-size: clamp(1.85rem, 6vw, 2.75rem);
+    line-height: 1.1;
+    color: var(--text-primary);
+    transition: color 0.2s ease, padding-left 0.2s ease;
+  }
+
+  .mobile-nav-link:hover,
+  .mobile-nav-link:focus-visible {
+    color: var(--accent-gold);
+    padding-left: 0.5rem;
+  }
+</style>
+

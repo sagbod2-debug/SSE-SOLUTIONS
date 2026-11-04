@@ -1,0 +1,42 @@
+---
+interface Props {
+  slug: string;
+  alt: string;
+  width?: number;
+  height?: number;
+  loading?: 'lazy' | 'eager';
+  fetchpriority?: 'high' | 'low' | 'auto';
+  class?: string;
+  imgClass?: string;
+  parallax?: boolean;
+}
+
+const {
+  slug,
+  alt,
+  width = 2400,
+  height = 1500,
+  loading = 'lazy',
+  fetchpriority = 'auto',
+  class: className = '',
+  imgClass = '',
+  parallax = true,
+} = Astro.props;
+---
+
+<picture class={className}>
+  <source srcset={`/images/${slug}.avif`} type="image/avif" />
+  <source srcset={`/images/${slug}.webp`} type="image/webp" />
+  <img
+    src={`/images/${slug}.webp`}
+    alt={alt}
+    width={width}
+    height={height}
+    loading={loading}
+    decoding={loading === 'eager' ? 'sync' : 'async'}
+    fetchpriority={fetchpriority}
+    class={imgClass}
+    data-parallax-img={parallax ? 'true' : undefined}
+  />
+</picture>
+

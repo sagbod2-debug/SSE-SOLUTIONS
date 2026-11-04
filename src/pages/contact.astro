@@ -1,0 +1,567 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const subjects = [
+  { key: 'cc-care', label: 'CC Care' },
+  { key: 'autonomie', label: 'Autonomie & Inclusion' },
+  { key: 'cc-consulting', label: 'CC Consulting' },
+  { key: 'cc-events', label: 'CC Events' },
+  { key: 'autre', label: 'Autre' },
+];
+---
+
+<BaseLayout
+  title="Contact — SSE Solutions"
+  description="Dites-nous en quelques lignes ce dont vous avez besoin. Nous vous répondons sous 48 heures ouvrées."
+>
+  <section class="section contact-section">
+    <div class="container grid-12 contact-grid">
+      <div class="contact-main">
+        <p class="eyebrow" data-hero-fade>CONTACT</p>
+        <h1 class="hero-title hero-title--medium">
+          <span class="reveal-mask">
+            <span class="reveal-line" data-hero-line>Parlons de votre projet.</span>
+          </span>
+        </h1>
+
+        <form
+          method="POST"
+          action="/api/contact"
+          class="contact-form"
+          id="contact-form"
+          novalidate
+        >
+          <input type="hidden" name="sujet" id="sujet-hidden-input" value="CC Care" />
+
+          <p class="honeypot-field" aria-hidden="true">
+            <label for="bot-field-input">
+              Ne pas remplir ce champ si vous êtes humain :
+              <input id="bot-field-input" name="bot-field" tabindex="-1" autocomplete="off" />
+            </label>
+          </p>
+
+          <fieldset class="subject-fieldset">
+            <legend class="field-label">Votre sujet</legend>
+            <div class="subject-pills" role="radiogroup" aria-label="Votre sujet">
+              {
+                subjects.map((item, idx) => (
+                  <button
+                    type="button"
+                    role="radio"
+                    aria-checked={idx === 0 ? 'true' : 'false'}
+                    class:list={['subject-pill', 'glass', { 'is-selected': idx === 0 }]}
+                    data-subject-key={item.key}
+                    data-subject-label={item.label}
+                  >
+                    {item.label}
+                  </button>
+                ))
+              }
+            </div>
+          </fieldset>
+
+          <div class="form-row-2">
+            <div class="form-field">
+              <label for="nom" class="field-label">
+                Nom et prénom <span class="req-star" aria-hidden="true">*</span>
+              </label>
+              <input
+                type="text"
+                id="nom"
+                name="nom"
+                required
+                minlength="2"
+                autocomplete="name"
+                class="field-input"
+              />
+            </div>
+
+            <div class="form-field">
+              <label for="structure" class="field-label">Structure ou entreprise</label>
+              <input
+                type="text"
+                id="structure"
+                name="structure"
+                autocomplete="organization"
+                class="field-input"
+              />
+            </div>
+          </div>
+
+          <div class="form-row-2">
+            <div class="form-field">
+              <label for="email" class="field-label">
+                E-mail <span class="req-star" aria-hidden="true">*</span>
+              </label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                required
+                autocomplete="email"
+                class="field-input"
+              />
+            </div>
+
+            <div class="form-field">
+              <label for="telephone" class="field-label">Téléphone</label>
+              <input
+                type="tel"
+                id="telephone"
+                name="telephone"
+                autocomplete="tel"
+                class="field-input"
+              />
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label for="message" class="field-label">
+              Votre message <span class="req-star" aria-hidden="true">*</span>
+            </label>
+            <textarea
+              id="message"
+              name="message"
+              rows="5"
+              required
+              minlength="10"
+              maxlength="5000"
+              class="field-textarea"
+            ></textarea>
+          </div>
+
+          <div class="form-consent">
+            <input
+              type="checkbox"
+              id="consentement"
+              name="consentement"
+              required
+              class="consent-checkbox"
+            />
+            <label for="consentement" class="consent-label">
+              J'accepte que SSE Solutions utilise ces informations pour me répondre. * (
+              <a href="/confidentialite" class="consent-link">Politique de confidentialité</a>)
+            </label>
+          </div>
+
+          <div
+            class="form-error-message"
+            id="form-error-message"
+            role="alert"
+            aria-live="assertive"
+            hidden
+          >
+            <p id="form-error-text"></p>
+            <p class="form-error-fallback">
+              Solution de secours : écrivez-nous directement à{' '}
+              <a href="mailto:cccare@ssesolutions.fr" id="form-error-email" class="consent-link">
+                cccare@ssesolutions.fr
+              </a>
+              .
+            </p>
+          </div>
+
+          <div
+            class="form-success-message"
+            id="form-success-message"
+            role="status"
+            aria-live="polite"
+            hidden
+          >
+            <p class="success-title" id="form-success-text">
+              Merci. Votre message est bien arrivé. Nous vous répondons sous 48 heures ouvrées.
+            </p>
+          </div>
+
+          <div class="form-submit-row">
+            <button type="submit" class="btn-primary" id="contact-submit-btn" data-magnetic>
+              <span id="contact-submit-label">Envoyer</span>
+              <span class="btn-arrow" aria-hidden="true">→</span>
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <aside class="contact-sidebar" aria-label="Coordonnées directes">
+        <div class="sidebar-card glass">
+          <p class="eyebrow">COORDONNÉES DIRECTES</p>
+
+          <div class="sidebar-block">
+            <h2 class="sidebar-heading">CC Care</h2>
+            <a href="mailto:cccare@ssesolutions.fr" class="sidebar-email">
+              cccare@<wbr />ssesolutions.fr
+            </a>
+          </div>
+
+          <div class="sidebar-block">
+            <h2 class="sidebar-heading">CC Consulting</h2>
+            <a href="mailto:ccconsulting@ssesolutions.fr" class="sidebar-email">
+              ccconsulting@<wbr />ssesolutions.fr
+            </a>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  function initContactPage() {
+    const pills = document.querySelectorAll<HTMLButtonElement>('.subject-pill[data-subject-key]');
+    const hiddenInput = document.getElementById('sujet-hidden-input') as HTMLInputElement | null;
+    const form = document.getElementById('contact-form') as HTMLFormElement | null;
+    const submitBtn = document.getElementById('contact-submit-btn') as HTMLButtonElement | null;
+    const submitLabel = document.getElementById('contact-submit-label');
+    const successBox = document.getElementById('form-success-message') as HTMLElement | null;
+    const successText = document.getElementById('form-success-text');
+    const errorBox = document.getElementById('form-error-message') as HTMLElement | null;
+    const errorText = document.getElementById('form-error-text');
+    const errorEmail = document.getElementById('form-error-email') as HTMLAnchorElement | null;
+
+    if (!pills.length || !hiddenInput || !form) return;
+
+    const getFallbackEmail = (sujetLabel: string) =>
+      sujetLabel.toLowerCase().includes('consulting')
+        ? 'ccconsulting@ssesolutions.fr'
+        : 'cccare@ssesolutions.fr';
+
+    const selectSubject = (targetBtn: HTMLButtonElement) => {
+      pills.forEach((btn) => {
+        const selected = btn === targetBtn;
+        btn.classList.toggle('is-selected', selected);
+        btn.setAttribute('aria-checked', selected ? 'true' : 'false');
+      });
+      const label = targetBtn.getAttribute('data-subject-label') || 'CC Care';
+      hiddenInput.value = label;
+      if (errorEmail) {
+        const fb = getFallbackEmail(label);
+        errorEmail.href = `mailto:${fb}`;
+        errorEmail.textContent = fb;
+      }
+    };
+
+    const params = new URLSearchParams(window.location.search);
+    const sujetParam = params.get('sujet');
+    if (sujetParam) {
+      const matched = Array.from(pills).find(
+        (btn) => btn.getAttribute('data-subject-key') === sujetParam.toLowerCase()
+      );
+      if (matched) selectSubject(matched);
+    }
+
+    pills.forEach((btn, index) => {
+      btn.addEventListener('click', () => selectSubject(btn));
+      btn.addEventListener('keydown', (e: KeyboardEvent) => {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+          e.preventDefault();
+          const next = pills[(index + 1) % pills.length];
+          selectSubject(next);
+          next.focus();
+        } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+          e.preventDefault();
+          const prev = pills[(index - 1 + pills.length) % pills.length];
+          selectSubject(prev);
+          prev.focus();
+        }
+      });
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!submitBtn || !submitLabel || !successBox || !errorBox || !errorText) return;
+
+      errorBox.hidden = true;
+      successBox.hidden = true;
+
+      const formData = new FormData(form);
+      const nom = String(formData.get('nom') || '').trim();
+      const email = String(formData.get('email') || '').trim();
+      const message = String(formData.get('message') || '').trim();
+      const consentement = formData.get('consentement');
+      const sujet = String(formData.get('sujet') || 'CC Care');
+      const fallback = getFallbackEmail(sujet);
+
+      if (errorEmail) {
+        errorEmail.href = `mailto:${fallback}`;
+        errorEmail.textContent = fallback;
+      }
+
+      if (!nom || nom.length < 2) {
+        errorText.textContent = 'Veuillez indiquer votre nom et prénom.';
+        errorBox.hidden = false;
+        return;
+      }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
+        errorText.textContent = 'Veuillez saisir une adresse e-mail valide.';
+        errorBox.hidden = false;
+        return;
+      }
+      if (message.length < 10 || message.length > 5000) {
+        errorText.textContent = 'Votre message doit contenir entre 10 et 5 000 caractères.';
+        errorBox.hidden = false;
+        return;
+      }
+      if (!consentement) {
+        errorText.textContent =
+          'Veuillez accepter que SSE Solutions utilise ces informations pour vous répondre.';
+        errorBox.hidden = false;
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitLabel.textContent = 'Envoi…';
+
+      try {
+        const res = await fetch('/api/contact', {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+          },
+          body: formData,
+        });
+        const result = await res.json();
+
+        if (res.ok && result.ok) {
+          if (successText && result.message) {
+            successText.textContent = result.message;
+          }
+          successBox.hidden = false;
+          form.reset();
+        } else {
+          errorText.textContent =
+            result.message || "Une erreur est survenue lors de l'envoi du message.";
+          if (result.fallbackEmail && errorEmail) {
+            errorEmail.href = `mailto:${result.fallbackEmail}`;
+            errorEmail.textContent = result.fallbackEmail;
+          }
+          errorBox.hidden = false;
+        }
+      } catch {
+        errorText.textContent =
+          "Impossible de joindre le serveur d'envoi. Vos informations saisies sont conservées ci-dessus.";
+        errorBox.hidden = false;
+      } finally {
+        submitBtn.disabled = false;
+        submitLabel.textContent = 'Envoyer';
+      }
+    });
+  }
+
+  document.addEventListener('astro:page-load', initContactPage);
+</script>
+
+<style>
+  .contact-section {
+    padding-top: 8.5rem;
+    padding-bottom: var(--space-104);
+  }
+
+  .contact-grid {
+    align-items: start;
+    row-gap: var(--space-64);
+  }
+
+  .contact-main {
+    grid-column: 1 / -1;
+  }
+
+  .contact-sidebar {
+    grid-column: 1 / -1;
+  }
+
+  @media (min-width: 960px) {
+    .contact-main {
+      grid-column: 1 / 8;
+    }
+    .contact-sidebar {
+      grid-column: 9 / 13;
+    }
+  }
+
+  .honeypot-field {
+    position: absolute;
+    left: -9999px;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .contact-form {
+    margin-top: var(--space-40);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-24);
+  }
+
+  .subject-fieldset {
+    border: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .field-label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--text-muted);
+    margin-bottom: 0.75rem;
+  }
+
+  .req-star {
+    color: var(--accent);
+  }
+
+  .subject-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.625rem;
+  }
+
+  .subject-pill {
+    color: var(--text);
+    border-radius: var(--radius-sharp);
+    padding: 0.65rem 1.15rem;
+    font-size: var(--fs-small);
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.25s var(--ease-out), border-color 0.25s var(--ease-out),
+      color 0.25s var(--ease-out);
+    min-height: 2.75rem;
+  }
+
+  .subject-pill:hover {
+    border-color: var(--accent);
+  }
+
+  .subject-pill.is-selected {
+    background: var(--accent-fill);
+    color: var(--accent-fill-text);
+    border-color: var(--accent-fill);
+    font-weight: 600;
+  }
+
+  .form-row-2 {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-24);
+  }
+
+  @media (min-width: 640px) {
+    .form-row-2 {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .field-input,
+  .field-textarea {
+    width: 100%;
+    background-color: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sharp);
+    color: var(--text);
+    padding: 0.875rem 1rem;
+    font-size: 1rem;
+    transition: border-color 0.25s var(--ease-out);
+  }
+
+  .field-input:focus,
+  .field-textarea:focus {
+    border-color: var(--accent);
+  }
+
+  .form-consent {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding-top: var(--space-8);
+  }
+
+  .consent-checkbox {
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-top: 0.2rem;
+    accent-color: var(--accent);
+    flex-shrink: 0;
+    cursor: pointer;
+  }
+
+  .consent-label {
+    font-size: var(--fs-small);
+    color: var(--text-muted);
+    cursor: pointer;
+  }
+
+  .consent-link {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .form-submit-row {
+    padding-top: var(--space-8);
+  }
+
+  .form-error-message {
+    padding: var(--space-24);
+    background-color: var(--surface);
+    border: 1px solid var(--accent);
+    border-left-width: 3px;
+    border-radius: var(--radius-sharp);
+    color: var(--text);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+  }
+
+  .form-error-fallback {
+    font-size: var(--fs-small);
+    color: var(--text-muted);
+  }
+
+  .form-success-message {
+    padding: var(--space-24);
+    background-color: var(--surface);
+    border: 1px solid var(--accent);
+    border-left-width: 3px;
+    border-radius: var(--radius-sharp);
+  }
+
+  .success-title {
+    font-family: var(--font-display);
+    font-size: var(--fs-h3);
+    color: var(--text);
+  }
+
+  .sidebar-card {
+    border-radius: var(--radius-sharp);
+    padding: var(--space-40);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-24);
+  }
+
+  .sidebar-block {
+    padding-top: var(--space-16);
+    border-top: 1px solid var(--line);
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .sidebar-heading {
+    font-family: var(--font-display);
+    font-size: var(--fs-h3);
+    color: var(--text);
+  }
+
+  .sidebar-email {
+    color: var(--accent);
+    font-size: 1rem;
+    overflow-wrap: normal;
+  }
+
+  .sidebar-email:hover {
+    text-decoration: underline;
+  }
+</style>

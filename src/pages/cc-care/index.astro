@@ -1,0 +1,378 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Picture from '../../components/Picture.astro';
+---
+
+<BaseLayout
+  title="CC Care · Social — SSE Solutions"
+  description="CC Care mène des missions d'accompagnement social, conduites par une assistante sociale, dans les établissements de santé, les structures sociales et les entreprises."
+  theme="cc-care"
+>
+  <!-- HERO (Fond sombre avec panneau clair pour le logo CC Care) -->
+  <section class="section hero-activity">
+    <div class="container grid-12 hero-activity-grid">
+      <div class="hero-activity-content">
+        <p class="eyebrow" data-hero-fade>CC CARE · SOCIAL</p>
+        <h1 class="hero-title hero-title--medium">
+          <span class="reveal-mask">
+            <span class="reveal-line" data-hero-line>Accompagner.</span>
+          </span>
+          <span class="reveal-mask">
+            <span class="reveal-line" data-hero-line>Simplifier.</span>
+          </span>
+          <span class="reveal-mask">
+            <span class="reveal-line" data-hero-line>Rendre autonome.</span>
+          </span>
+        </h1>
+        <p class="prose-measure hero-activity-lead" data-hero-fade>
+          CC Care mène des missions d'accompagnement social, conduites par une assistante sociale, dans les établissements de santé, les structures sociales et les entreprises.
+        </p>
+
+        <div class="btn-group hero-activity-actions" data-hero-fade>
+          <a href="/contact?sujet=cc-care" class="btn-primary">Nous écrire</a>
+          <a href="/cc-care/autonomie-inclusion" class="btn-secondary">
+            Le programme Autonomie &amp; Inclusion
+          </a>
+        </div>
+      </div>
+
+      <div class="hero-activity-aside" data-hero-fade>
+        <div class="logo-panel logo-panel--care">
+          <img
+            src="/logos/logo_CC_Care.png"
+            alt="Logo officiel CC Care"
+            width="280"
+            height="270"
+            loading="eager"
+          />
+        </div>
+        <div class="media-frame hero-activity-photo">
+          <Picture
+            slug="06-cc-care-hero"
+            alt="Entretien d’accompagnement en face à face autour d’une table claire, mains et dossiers posés avec sobriété"
+            loading="eager"
+            fetchpriority="high"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION MISSIONS (Section claire #F3F5F4 / #14202B pour le confort de lecture) -->
+  <section class="section section-light section--spacious">
+    <div class="container">
+      <div class="grid-12 missions-intro">
+        <div class="missions-intro-left">
+          <p class="eyebrow" data-reveal>NOS MISSIONS</p>
+          <h2 class="section-title" data-reveal-title>
+            <span class="reveal-mask">
+              <span class="reveal-line">Tout ce qui touche au social.</span>
+            </span>
+          </h2>
+          <p class="prose-measure missions-lead" data-reveal>
+            Nous intervenons là où une situation sociale freine un parcours de soin, un retour à domicile ou une vie professionnelle.
+          </p>
+        </div>
+        <div class="missions-intro-right" data-reveal>
+          <div class="media-frame missions-photo">
+            <Picture
+              slug="07-cc-care-missions"
+              alt="Main prenant des notes au stylo sur un carnet à côté d’un dossier administratif ouvert"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- [À VALIDER par CC Care : liste des missions ci-dessous] -->
+      <ol class="missions-grid grid-12">
+        <li class="mission-card" data-reveal>
+          <span class="num-index">01</span>
+          <h3 class="card-title">Accès aux droits et démarches.</h3>
+          <p>
+            Accompagner les personnes dans leurs démarches administratives et l'ouverture de leurs droits.
+          </p>
+        </li>
+        <li class="mission-card" data-reveal>
+          <span class="num-index">02</span>
+          <h3 class="card-title">Parcours de soin.</h3>
+          <p>
+            Préparer avec les équipes soignantes les sorties d'hospitalisation et les relais à domicile.
+          </p>
+        </li>
+        <li class="mission-card" data-reveal>
+          <span class="num-index">03</span>
+          <h3 class="card-title">Orientation.</h3>
+          <p>
+            Mettre les personnes en lien avec les bons services et les bons partenaires.
+          </p>
+        </li>
+        <li class="mission-card" data-reveal>
+          <span class="num-index">04</span>
+          <h3 class="card-title">Appui aux équipes.</h3>
+          <p>
+            Apporter un regard social aux équipes des établissements et des entreprises.
+          </p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- SECTION POUR QUI (Section sombre) -->
+  <section class="section section--spacious">
+    <div class="container">
+      <p class="eyebrow" data-reveal>POUR QUI</p>
+      <h2 class="section-title" data-reveal-title>
+        <span class="reveal-mask">
+          <span class="reveal-line">Nos interlocuteurs.</span>
+        </span>
+      </h2>
+
+      <ul class="audiences-grid grid-12" data-reveal>
+        <li class="audience-item">
+          <span class="num-index">01</span>
+          <span class="audience-label">Hôpitaux et cliniques</span>
+        </li>
+        <li class="audience-item">
+          <span class="num-index">02</span>
+          <span class="audience-label">Établissements médico-sociaux</span>
+        </li>
+        <li class="audience-item">
+          <span class="num-index">03</span>
+          <span class="audience-label">Structures sociales</span>
+        </li>
+        <li class="audience-item">
+          <span class="num-index">04</span>
+          <span class="audience-label">Entreprises</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- SECTION PROGRAMME (Section claire #F3F5F4 / #14202B) -->
+  <section class="section section-light section--spacious">
+    <div class="container grid-12">
+      <div class="care-programme-box">
+        <p class="eyebrow" data-reveal>PROGRAMME EN LIGNE</p>
+        <h2 class="section-title" data-reveal-title>
+          <span class="reveal-mask">
+            <span class="reveal-line">Autonomie &amp; Inclusion.</span>
+          </span>
+        </h2>
+        <p class="prose-measure care-programme-text" data-reveal>
+          Notre programme en ligne de 35 modules pour l'autonomie au quotidien, en FALC et en français courant. Nous cherchons des structures partenaires pour le tester gratuitement début 2027.
+        </p>
+        <div class="btn-group" data-reveal>
+          <a href="/cc-care/autonomie-inclusion" class="btn-primary">Découvrir le programme</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="section section--secondary section--spacious">
+    <div class="container grid-12">
+      <div class="activity-contact-box">
+        <h2 class="section-title" data-reveal-title>
+          <span class="reveal-mask">
+            <span class="reveal-line">Une situation à accompagner ?</span>
+          </span>
+        </h2>
+        <div class="activity-contact-actions" data-reveal>
+          <a href="mailto:cccare@ssesolutions.fr" class="contact-email-link">
+            cccare@ssesolutions.fr
+          </a>
+          <a href="/contact?sujet=cc-care" class="btn-primary">Nous écrire</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero-activity {
+    padding-top: 8.5rem;
+    padding-bottom: var(--space-64);
+    border-top: 3px solid var(--cc-care-blue);
+  }
+
+  .hero-activity-grid {
+    align-items: start;
+    row-gap: var(--space-40);
+  }
+
+  .hero-activity-content {
+    grid-column: 1 / -1;
+  }
+
+  .hero-activity-aside {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-24);
+  }
+
+  @media (min-width: 960px) {
+    .hero-activity-content {
+      grid-column: 1 / 8;
+    }
+    .hero-activity-aside {
+      grid-column: 8 / 13;
+    }
+  }
+
+  .hero-activity-lead {
+    margin-top: var(--space-40);
+    font-size: clamp(1.125rem, 1.3vw, 1.3rem);
+    color: var(--text-primary);
+  }
+
+  .hero-activity-actions {
+    margin-top: var(--space-40);
+  }
+
+  .logo-panel--care {
+    align-self: flex-start;
+    border-color: var(--cc-care-blue);
+  }
+
+  .hero-activity-photo {
+    aspect-ratio: 16 / 10;
+  }
+
+  .missions-intro {
+    align-items: center;
+    row-gap: var(--space-40);
+    margin-bottom: var(--space-64);
+  }
+
+  .missions-intro-left {
+    grid-column: 1 / -1;
+  }
+
+  .missions-intro-right {
+    grid-column: 1 / -1;
+  }
+
+  @media (min-width: 960px) {
+    .missions-intro-left {
+      grid-column: 1 / 7;
+    }
+    .missions-intro-right {
+      grid-column: 8 / 13;
+    }
+  }
+
+  .missions-lead {
+    margin-top: var(--space-24);
+    font-size: 1.125rem;
+  }
+
+  .missions-photo {
+    aspect-ratio: 16 / 10;
+  }
+
+  .missions-grid {
+    row-gap: var(--space-24);
+  }
+
+  .mission-card {
+    grid-column: 1 / -1;
+    background-color: #FFFFFF;
+    border: 1px solid var(--light-border);
+    border-top: 3px solid var(--cc-care-blue);
+    border-radius: var(--radius-sharp);
+    padding: var(--space-40);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+  }
+
+  @media (min-width: 768px) {
+    .mission-card {
+      grid-column: span 6;
+    }
+  }
+
+  .mission-card p {
+    color: var(--light-text-secondary);
+  }
+
+  .audiences-grid {
+    margin-top: var(--space-64);
+    row-gap: var(--space-24);
+  }
+
+  .audience-item {
+    grid-column: 1 / -1;
+    border: 1px solid var(--border-steel);
+    border-left: 3px solid var(--cc-care-green);
+    background-color: var(--bg-secondary);
+    padding: var(--space-24) var(--space-40);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+  }
+
+  @media (min-width: 640px) {
+    .audience-item {
+      grid-column: span 6;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .audience-item {
+      grid-column: span 3;
+    }
+  }
+
+  .audience-label {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    color: var(--text-primary);
+  }
+
+  .care-programme-box {
+    grid-column: 1 / -1;
+  }
+
+  @media (min-width: 960px) {
+    .care-programme-box {
+      grid-column: 1 / 9;
+    }
+  }
+
+  .care-programme-text {
+    margin-top: var(--space-24);
+    margin-bottom: var(--space-40);
+    font-size: 1.125rem;
+  }
+
+  .activity-contact-box {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-40);
+  }
+
+  .activity-contact-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-40);
+  }
+
+  .contact-email-link {
+    font-family: var(--font-display);
+    font-size: clamp(1.35rem, 2.5vw, 2rem);
+    color: var(--accent-gold);
+    border-bottom: 1px solid var(--border-steel);
+    padding-bottom: 0.25rem;
+    transition: border-color 0.2s ease, color 0.2s ease;
+  }
+
+  .contact-email-link:hover {
+    border-color: var(--accent-gold);
+    color: var(--accent-gold-hover);
+  }
+</style>
+

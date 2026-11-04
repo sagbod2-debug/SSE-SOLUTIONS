@@ -1,0 +1,677 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Picture from '../../components/Picture.astro';
+
+const modules35 = [
+  { num: 1, title: 'Santé, hygiène et bien-être', cat: 'sante' },
+  { num: 2, title: 'Vie sociale et citoyenneté', cat: 'citoyennete' },
+  { num: 3, title: 'Autonomie et vie quotidienne', cat: 'quotidien' },
+  { num: 4, title: 'Culture, loisirs et créativité', cat: 'culture' },
+  { num: 5, title: 'Ateliers sociolinguistiques (ASL)', cat: 'competences' },
+  { num: 6, title: 'Parentalité et vie familiale', cat: 'quotidien' },
+  { num: 7, title: 'Gestion sociale, familiale et administrative', cat: 'quotidien' },
+  { num: 8, title: 'Sécurité et prévention', cat: 'prevention' },
+  { num: 9, title: 'Sorties pédagogiques et culturelles', cat: 'culture' },
+  { num: 10, title: 'Cuisine du monde et interculturalité', cat: 'culture' },
+  { num: 11, title: 'Remédiation et stimulation cognitive', cat: 'competences' },
+  { num: 12, title: 'Autonomie numérique', cat: 'quotidien' },
+  { num: 13, title: 'Insertion socioprofessionnelle', cat: 'competences' },
+  { num: 14, title: 'Santé mentale et bien-être psychologique', cat: 'sante' },
+  { num: 15, title: 'Communication verbale et non verbale', cat: 'citoyennete' },
+  { num: 16, title: 'Écogestes et développement durable', cat: 'citoyennete' },
+  { num: 17, title: 'Grands moments historiques', cat: 'culture' },
+  { num: 18, title: 'Événements calendaires et prévention', cat: 'culture' },
+  { num: 19, title: 'Mobilité, code de la route et accès au permis', cat: 'quotidien' },
+  { num: 20, title: 'Prévention des écrans et réseaux sociaux', cat: 'prevention' },
+  { num: 21, title: 'Mathématiques et raisonnement logique du quotidien', cat: 'competences' },
+  { num: 22, title: 'Gestion des conflits et médiation', cat: 'citoyennete' },
+  { num: 23, title: 'Droits, devoirs et citoyenneté', cat: 'citoyennete' },
+  { num: 24, title: 'Relaxation et sophrologie', cat: 'sante' },
+  { num: 25, title: 'Éducation morale et civique', cat: 'citoyennete' },
+  { num: 26, title: 'Sensibilisation aux premiers secours', cat: 'prevention' },
+  { num: 27, title: 'Prévention incendie et évacuation', cat: 'prevention' },
+  { num: 28, title: 'Gestes et postures au travail', cat: 'prevention' },
+  { num: 29, title: 'Prévention des accidents domestiques', cat: 'prevention' },
+  { num: 30, title: 'Prévention des risques climatiques', cat: 'prevention' },
+  { num: 31, title: 'Prévention des chutes et mobilité', cat: 'prevention' },
+  { num: 32, title: 'Sécurité alimentaire et prévention des intoxications', cat: 'sante' },
+  { num: 33, title: "Prévention des violences et demande d'aide", cat: 'prevention' },
+  { num: 34, title: 'Santé sexuelle et consentement', cat: 'sante' },
+  { num: 35, title: 'Logement et autonomie résidentielle', cat: 'quotidien' },
+];
+
+const seanceSteps = [
+  'Découverte',
+  'Exemple guidé',
+  'Exercice',
+  'Correction expliquée',
+  'Nouvel essai',
+  'Validation',
+];
+---
+
+<BaseLayout
+  title="Autonomie & Inclusion · CC Care — SSE Solutions"
+  description="Un programme en ligne de 35 modules et 244 ateliers en FALC et en français courant pour aider les adultes accompagnés par les structures sociales à gagner en autonomie."
+  theme="cc-care"
+>
+  <!-- 1. HERO -->
+  <section class="section hero-autonomie">
+    <div class="container grid-12 hero-autonomie-grid">
+      <div class="hero-autonomie-content">
+        <p class="eyebrow" data-hero-fade>CC CARE · PROGRAMME EN LIGNE</p>
+        <h1 class="hero-title hero-title--medium">
+          <span class="reveal-mask">
+            <span class="reveal-line" data-hero-line>Autonomie &amp; Inclusion.</span>
+          </span>
+        </h1>
+        <p class="prose-measure hero-autonomie-lead" data-hero-fade>
+          Un programme en ligne pour aider les adultes accompagnés par votre structure à gagner en autonomie dans la vie de tous les jours : démarches, santé, logement, numérique, budget, parentalité, mobilité.
+        </p>
+
+        <div class="hero-cta-block" data-hero-fade>
+          <a href="/contact?sujet=autonomie" class="btn-primary">Devenir structure partenaire</a>
+          <p class="hero-subnote">Test gratuit en avant-première, début 2027.</p>
+        </div>
+      </div>
+
+      <div class="hero-autonomie-media" data-hero-fade>
+        <div class="media-frame hero-autonomie-frame">
+          <Picture
+            slug="08-autonomie-hero"
+            alt="Personne tenant une tablette numérique chez elle à la lumière du jour, geste calme et assuré"
+            loading="eager"
+            fetchpriority="high"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. SECTION DEUX VERSIONS (Section claire #F3F5F4 / #14202B) -->
+  <section class="section section-light section--spacious">
+    <div class="container">
+      <h2 class="section-title" data-reveal-title>
+        <span class="reveal-mask">
+          <span class="reveal-line">Deux façons de lire. Le même contenu.</span>
+        </span>
+      </h2>
+
+      <div class="grid-12 versions-grid">
+        <article class="version-card version-card--falc" data-reveal>
+          <span class="num-index">01</span>
+          <h3 class="card-title">FALC</h3>
+          <p>
+            Facile à lire et à comprendre. Des phrases courtes, des mots simples, une idée à la fois.
+          </p>
+        </article>
+
+        <article class="version-card version-card--courant" data-reveal>
+          <span class="num-index">02</span>
+          <h3 class="card-title">Français courant</h3>
+          <p>
+            Pour les personnes à l'aise avec l'écrit, qui veulent aller plus loin.
+          </p>
+        </article>
+      </div>
+
+      <p class="versions-note" data-reveal>
+        Chaque personne choisit sa version. Les objectifs restent les mêmes, et restent pensés pour des adultes.
+      </p>
+    </div>
+  </section>
+
+  <!-- 3. SECTION CHIFFRES -->
+  <section class="section section--secondary">
+    <div class="container">
+      <dl class="autonomie-stats grid-12" data-reveal>
+        <div class="autonomie-stat-card">
+          <dt class="autonomie-stat-label">modules</dt>
+          <dd class="autonomie-stat-num">35</dd>
+        </div>
+        <div class="autonomie-stat-card">
+          <dt class="autonomie-stat-label">ateliers</dt>
+          <dd class="autonomie-stat-num">244</dd>
+        </div>
+        <div class="autonomie-stat-card">
+          <dt class="autonomie-stat-label">fiches (chaque atelier en 2 versions)</dt>
+          <dd class="autonomie-stat-num">488</dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- 4. SECTION PARCOURS (4 ÉTAPES — Section claire) -->
+  <section class="section section-light section--spacious">
+    <div class="container">
+      <div class="grid-12 parcours-layout">
+        <div class="parcours-left">
+          <h2 class="section-title" data-reveal-title>
+            <span class="reveal-mask">
+              <span class="reveal-line">Un parcours en quatre étapes.</span>
+            </span>
+          </h2>
+          <div class="media-frame parcours-photo" data-reveal>
+            <Picture
+              slug="09-autonomie-parcours"
+              alt="Main tenant un trousseau de clés devant la porte d’un logement lumineux, symbole d’autonomie au quotidien"
+            />
+          </div>
+        </div>
+
+        <ol class="parcours-steps">
+          <li class="parcours-step" data-reveal>
+            <span class="num-index">01</span>
+            <div>
+              <h3 class="card-title">Découvrir.</h3>
+              <p>Les consignes, le vocabulaire, une première réussite.</p>
+            </div>
+          </li>
+          <li class="parcours-step" data-reveal>
+            <span class="num-index">02</span>
+            <div>
+              <h3 class="card-title">S'entraîner.</h3>
+              <p>Répéter, voir des démonstrations, faire des exercices corrigés.</p>
+            </div>
+          </li>
+          <li class="parcours-step" data-reveal>
+            <span class="num-index">03</span>
+            <div>
+              <h3 class="card-title">Appliquer.</h3>
+              <p>Des situations de la vie réelle et des prises de décision.</p>
+            </div>
+          </li>
+          <li class="parcours-step" data-reveal>
+            <span class="num-index">04</span>
+            <div>
+              <h3 class="card-title">Devenir autonome.</h3>
+              <p>Agir seul, prévenir les risques, faire le bilan.</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. SECTION UNE SÉANCE (Section sombre) -->
+  <section class="section section--spacious">
+    <div class="container">
+      <h2 class="section-title" data-reveal-title>
+        <span class="reveal-mask">
+          <span class="reveal-line">Comment se passe une séance.</span>
+        </span>
+      </h2>
+
+      <ol class="seance-flow" aria-label="Déroulement d'une séance en 6 temps" data-reveal>
+        {
+          seanceSteps.map((step, idx) => (
+            <li class="seance-node">
+              <span class="num-index">{String(idx + 1).padStart(2, '0')}</span>
+              <span class="seance-node-name">{step}</span>
+              {idx < seanceSteps.length - 1 && (
+                <span class="seance-arrow" aria-hidden="true">
+                  →
+                </span>
+              )}
+            </li>
+          ))
+        }
+      </ol>
+
+      <p class="prose-measure seance-text" data-reveal>
+        En cas de difficulté, la personne reçoit un rappel et un nouvel exemple, puis elle réessaie. Votre équipe suit la progression de chacun.
+      </p>
+    </div>
+  </section>
+
+  <!-- 6. SECTION LES 35 MODULES (Section claire, grille compacte filtrable par thème) -->
+  <section class="section section-light section--spacious" id="modules-35">
+    <div class="container">
+      <div class="modules-header">
+        <div>
+          <p class="eyebrow" data-reveal>35 MODULES THÉMATIQUES</p>
+          <h2 class="section-title" data-reveal-title>
+            <span class="reveal-mask">
+              <span class="reveal-line">Les 35 modules.</span>
+            </span>
+          </h2>
+        </div>
+
+        <!-- Filtres accessibles par thème -->
+        <div
+          class="modules-filters"
+          role="group"
+          aria-label="Filtrer les 35 modules par thème"
+          data-reveal
+        >
+          <button type="button" class="filter-chip is-active" data-filter="all" aria-pressed="true">
+            Tous (35)
+          </button>
+          <button type="button" class="filter-chip" data-filter="quotidien" aria-pressed="false">
+            Vie quotidienne
+          </button>
+          <button type="button" class="filter-chip" data-filter="sante" aria-pressed="false">
+            Santé &amp; bien-être
+          </button>
+          <button type="button" class="filter-chip" data-filter="citoyennete" aria-pressed="false">
+            Citoyenneté
+          </button>
+          <button type="button" class="filter-chip" data-filter="prevention" aria-pressed="false">
+            Sécurité &amp; prévention
+          </button>
+          <button type="button" class="filter-chip" data-filter="competences" aria-pressed="false">
+            Apprentissages
+          </button>
+          <button type="button" class="filter-chip" data-filter="culture" aria-pressed="false">
+            Culture &amp; loisirs
+          </button>
+        </div>
+      </div>
+
+      <p class="sr-only" id="modules-live-status" aria-live="polite">35 modules affichés</p>
+
+      <ol class="modules-grid" id="modules-grid">
+        {
+          modules35.map((m) => (
+            <li class="module-item" data-module-cat={m.cat}>
+              <span class="module-num">{String(m.num).padStart(2, '0')}</span>
+              <span class="module-title">{m.title}</span>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <!-- 7. SECTION PARTENAIRES -->
+  <section class="section section--secondary section--spacious">
+    <div class="container grid-12">
+      <div class="partenaires-box">
+        <h2 class="section-title" data-reveal-title>
+          <span class="reveal-mask">
+            <span class="reveal-line">Testez-le avec nous.</span>
+          </span>
+        </h2>
+        <p class="prose-measure partenaires-text" data-reveal>
+          Nous cherchons quelques structures de l'Essonne pour tester le programme gratuitement en avant-première, début 2027, avec un petit groupe de personnes accompagnées, et l'ajuster à leurs besoins. CCAS, centres sociaux, CHRS, missions locales, ESAT, associations : parlons-en.
+        </p>
+        <div class="btn-group" data-reveal>
+          <a href="/contact?sujet=autonomie" class="btn-primary">Devenir structure partenaire</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  function initModulesFilter() {
+    const filterBtns = document.querySelectorAll<HTMLButtonElement>('.filter-chip[data-filter]');
+    const moduleItems = document.querySelectorAll<HTMLElement>('.module-item[data-module-cat]');
+    const liveStatus = document.getElementById('modules-live-status');
+
+    if (!filterBtns.length || !moduleItems.length) return;
+
+    filterBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const filter = btn.getAttribute('data-filter') || 'all';
+        filterBtns.forEach((b) => {
+          const active = b === btn;
+          b.classList.toggle('is-active', active);
+          b.setAttribute('aria-pressed', active ? 'true' : 'false');
+        });
+
+        let visibleCount = 0;
+        moduleItems.forEach((item) => {
+          const cat = item.getAttribute('data-module-cat');
+          const match = filter === 'all' || cat === filter;
+          item.hidden = !match;
+          if (match) visibleCount++;
+        });
+
+        if (liveStatus) {
+          liveStatus.textContent = `${visibleCount} modules affichés`;
+        }
+      });
+    });
+  }
+
+  document.addEventListener('astro:page-load', initModulesFilter);
+</script>
+
+<style>
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .hero-autonomie {
+    padding-top: 8.5rem;
+    padding-bottom: var(--space-64);
+    border-top: 3px solid var(--cc-care-green);
+  }
+
+  .hero-autonomie-grid {
+    align-items: center;
+    row-gap: var(--space-40);
+  }
+
+  .hero-autonomie-content {
+    grid-column: 1 / -1;
+  }
+
+  .hero-autonomie-media {
+    grid-column: 1 / -1;
+  }
+
+  @media (min-width: 960px) {
+    .hero-autonomie-content {
+      grid-column: 1 / 8;
+    }
+    .hero-autonomie-media {
+      grid-column: 8 / 13;
+    }
+  }
+
+  .hero-autonomie-lead {
+    margin-top: var(--space-40);
+    font-size: clamp(1.125rem, 1.3vw, 1.3rem);
+    color: var(--text-primary);
+  }
+
+  .hero-cta-block {
+    margin-top: var(--space-40);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-16);
+  }
+
+  .hero-subnote {
+    font-size: 0.9375rem;
+    color: var(--text-secondary);
+    letter-spacing: 0.02em;
+  }
+
+  .hero-autonomie-frame {
+    aspect-ratio: 4 / 3;
+  }
+
+  /* 2. DEUX VERSIONS */
+  .versions-grid {
+    margin-top: var(--space-64);
+    row-gap: var(--space-24);
+  }
+
+  .version-card {
+    grid-column: 1 / -1;
+    background-color: #FFFFFF;
+    border: 1px solid var(--light-border);
+    border-radius: var(--radius-sharp);
+    padding: var(--space-40);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+  }
+
+  @media (min-width: 768px) {
+    .version-card {
+      grid-column: span 6;
+    }
+  }
+
+  .version-card--falc {
+    border-top: 4px solid var(--cc-care-green);
+  }
+
+  .version-card--courant {
+    border-top: 4px solid var(--cc-care-blue);
+  }
+
+  .version-card p {
+    color: var(--light-text-secondary);
+    font-size: 1.0625rem;
+  }
+
+  .versions-note {
+    margin-top: var(--space-40);
+    font-size: 1.125rem;
+    font-weight: 500;
+    color: var(--light-text);
+    padding-left: var(--space-24);
+    border-left: 3px solid var(--cc-care-blue);
+  }
+
+  /* 3. CHIFFRES */
+  .autonomie-stats {
+    row-gap: var(--space-24);
+  }
+
+  .autonomie-stat-card {
+    grid-column: 1 / -1;
+    border: 1px solid var(--border-steel);
+    background-color: var(--bg-primary);
+    padding: var(--space-40);
+    display: flex;
+    flex-direction: column-reverse;
+    gap: var(--space-8);
+  }
+
+  @media (min-width: 768px) {
+    .autonomie-stat-card {
+      grid-column: span 4;
+    }
+  }
+
+  .autonomie-stat-num {
+    font-family: var(--font-display);
+    font-size: clamp(2.75rem, 4.5vw, 4.25rem);
+    line-height: 1;
+    color: var(--accent-gold);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .autonomie-stat-label {
+    font-size: 0.9375rem;
+    color: var(--text-secondary);
+  }
+
+  /* 4. PARCOURS EN 4 ÉTAPES */
+  .parcours-layout {
+    align-items: start;
+    row-gap: var(--space-40);
+  }
+
+  .parcours-left {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-40);
+  }
+
+  .parcours-steps {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  @media (min-width: 960px) {
+    .parcours-left {
+      grid-column: 1 / 6;
+    }
+    .parcours-steps {
+      grid-column: 7 / 13;
+    }
+  }
+
+  .parcours-photo {
+    aspect-ratio: 16 / 10;
+  }
+
+  .parcours-step {
+    display: grid;
+    grid-template-columns: 3rem 1fr;
+    gap: var(--space-16);
+    padding-block: var(--space-24);
+    border-bottom: 1px solid var(--light-border);
+    align-items: baseline;
+  }
+
+  .parcours-step:first-child {
+    border-top: 1px solid var(--light-border);
+  }
+
+  .parcours-step h3 {
+    margin-bottom: var(--space-8);
+  }
+
+  .parcours-step p {
+    color: var(--light-text-secondary);
+  }
+
+  /* 5. UNE SÉANCE */
+  .seance-flow {
+    margin-top: var(--space-64);
+    margin-bottom: var(--space-40);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-16);
+    padding: var(--space-40);
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-steel);
+  }
+
+  .seance-node {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .seance-node-name {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    color: var(--text-primary);
+  }
+
+  .seance-arrow {
+    color: var(--accent-gold);
+    margin-inline: 0.5rem;
+    font-size: 1.25rem;
+  }
+
+  .seance-text {
+    font-size: 1.125rem;
+    color: var(--text-primary);
+  }
+
+  /* 6. LES 35 MODULES */
+  .modules-header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-24);
+    margin-bottom: var(--space-40);
+  }
+
+  .modules-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .filter-chip {
+    background-color: #FFFFFF;
+    color: var(--light-text);
+    border: 1px solid var(--light-border);
+    border-radius: var(--radius-sharp);
+    padding: 0.55rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+    min-height: 2.5rem;
+  }
+
+  .filter-chip:hover {
+    border-color: var(--cc-care-blue);
+  }
+
+  .filter-chip.is-active {
+    background-color: var(--cc-care-blue);
+    color: #FFFFFF;
+    border-color: var(--cc-care-blue);
+  }
+
+  .modules-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  @media (min-width: 640px) {
+    .modules-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .modules-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .module-item {
+    display: flex;
+    align-items: baseline;
+    gap: 0.875rem;
+    background-color: #FFFFFF;
+    border: 1px solid var(--light-border);
+    border-radius: var(--radius-sharp);
+    padding: 1rem 1.25rem;
+  }
+
+  .module-item[hidden] {
+    display: none !important;
+  }
+
+  .module-num {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    font-variant-numeric: tabular-nums;
+    color: var(--cc-care-blue);
+    flex-shrink: 0;
+  }
+
+  .module-title {
+    font-weight: 500;
+    color: var(--light-text);
+    line-height: 1.4;
+  }
+
+  /* 7. PARTENAIRES */
+  .partenaires-box {
+    grid-column: 1 / -1;
+  }
+
+  @media (min-width: 960px) {
+    .partenaires-box {
+      grid-column: 1 / 9;
+    }
+  }
+
+  .partenaires-text {
+    margin-top: var(--space-24);
+    margin-bottom: var(--space-40);
+    font-size: 1.125rem;
+    color: var(--text-primary);
+  }
+</style>
+

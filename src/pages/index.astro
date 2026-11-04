@@ -1,0 +1,935 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Picture from '../components/Picture.astro';
+
+const marqueeText =
+  "Accompagnement social · Sécurité incendie · Établissements recevant du public · Événementiel · Autonomie au quotidien · Commissions de sécurité · Coordination d'équipes · ";
+---
+
+<BaseLayout
+  title="SSE Solutions — Social. Sécurité. Événements."
+  description="Trois activités, une même exigence : accompagner les personnes (CC Care), protéger les lieux (CC Consulting), réussir les moments qui comptent (CC Events)."
+>
+  <!-- 1. HERO -->
+  <section class="hero-home">
+    <div class="hero-bg-media" aria-hidden="true">
+      <Picture
+        slug="01-hero-architecture"
+        alt="Architecture minimaliste en béton brut éclairée par une lumière rasante, créant des lignes géométriques sobres"
+        loading="eager"
+        fetchpriority="high"
+        parallax={false}
+      />
+      <div class="hero-bg-overlay"></div>
+    </div>
+
+    <div class="container hero-home-inner">
+      <div class="hero-content">
+        <p class="eyebrow" data-hero-fade>SSE SOLUTIONS · ESSONNE</p>
+
+        <h1 class="hero-title">
+          <span class="reveal-mask">
+            <span class="reveal-line" data-hero-line>Social<span class="dot-gold">.</span></span>
+          </span>
+          <span class="reveal-mask">
+            <span class="reveal-line" data-hero-line>Sécurité<span class="dot-gold">.</span></span>
+          </span>
+          <span class="reveal-mask">
+            <span class="reveal-line" data-hero-line>Événements<span class="dot-gold">.</span></span>
+          </span>
+        </h1>
+
+        <p class="hero-lead prose-measure" data-hero-fade>
+          Trois activités, une même exigence : accompagner les personnes, protéger les lieux, réussir les moments qui comptent.
+        </p>
+
+        <div class="btn-group hero-actions" data-hero-fade>
+          <a href="#activites" class="btn-primary">Découvrir nos activités</a>
+          <a href="/contact" class="btn-secondary">Nous écrire</a>
+        </div>
+      </div>
+
+      <div class="hero-scroll-indicator" data-hero-fade>
+        <a href="#activites" class="scroll-indicator-link">
+          <span class="scroll-line" aria-hidden="true"></span>
+          <span>Défiler</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. BANDEAU DÉFILANT -->
+  <section class="marquee-band" aria-label="Métiers de SSE Solutions">
+    <div class="marquee-track">
+      <span class="marquee-item">{marqueeText}</span>
+      <span class="marquee-item" aria-hidden="true">{marqueeText}</span>
+      <span class="marquee-item" aria-hidden="true">{marqueeText}</span>
+    </div>
+  </section>
+
+  <!-- 3. SECTION ACTIVITÉS -->
+  <section class="section section--spacious" id="activites">
+    <div class="container">
+      <div class="section-header">
+        <p class="eyebrow" data-reveal>NOS ACTIVITÉS</p>
+        <h2 class="section-title" data-reveal-title>
+          <span class="reveal-mask">
+            <span class="reveal-line">Une entreprise. Trois métiers.</span>
+          </span>
+        </h2>
+      </div>
+
+      <div class="activities-wrapper" data-activities-interactive>
+        <!-- Aperçu flottant au survol sur ordinateur -->
+        <div class="activities-floating-preview" id="activities-floating-preview" aria-hidden="true">
+          <div class="preview-slide is-active" data-preview-slide="01">
+            <Picture
+              slug="02-accueil-cc-care"
+              alt="Deux personnes assises autour d’une table examinant ensemble des documents administratifs dans un cadre calme"
+              parallax={false}
+            />
+          </div>
+          <div class="preview-slide" data-preview-slide="02">
+            <Picture
+              slug="03-accueil-cc-consulting"
+              alt="Couloir épuré et dégagé d’un établissement contemporain aux lignes sobres et éclairage maîtrisé"
+              parallax={false}
+            />
+          </div>
+          <div class="preview-slide" data-preview-slide="03">
+            <Picture
+              slug="04-accueil-cc-events"
+              alt="Grande salle de réception et scène éclairée lors d’un événement professionnel, public vu de dos"
+              parallax={false}
+            />
+          </div>
+        </div>
+
+        <ul class="activities-list">
+          <!-- 01 CC Care -->
+          <li class="activity-row activity-row--care" data-activity-row="01" data-reveal>
+            <div class="activity-mobile-photo media-frame">
+              <Picture
+                slug="02-accueil-cc-care"
+                alt="Deux personnes assises autour d’une table examinant ensemble des documents administratifs dans un cadre calme"
+                parallax={false}
+              />
+            </div>
+            <a href="/cc-care" class="activity-link">
+              <div class="activity-meta">
+                <span class="num-index">01</span>
+                <span class="activity-badge">Social</span>
+              </div>
+              <div class="activity-main">
+                <h3 class="activity-name">CC Care</h3>
+                <p class="activity-desc">
+                  Accompagnement social en établissement de santé, en structure sociale et en entreprise.
+                </p>
+              </div>
+              <span class="activity-arrow" aria-hidden="true">→</span>
+            </a>
+          </li>
+
+          <!-- 02 CC Consulting -->
+          <li class="activity-row activity-row--consulting" data-activity-row="02" data-reveal>
+            <div class="activity-mobile-photo media-frame">
+              <Picture
+                slug="03-accueil-cc-consulting"
+                alt="Couloir épuré et dégagé d’un établissement contemporain aux lignes sobres et éclairage maîtrisé"
+                parallax={false}
+              />
+            </div>
+            <a href="/cc-consulting" class="activity-link">
+              <div class="activity-meta">
+                <span class="num-index">02</span>
+                <span class="activity-badge">Sécurité</span>
+              </div>
+              <div class="activity-main">
+                <h3 class="activity-name">CC Consulting</h3>
+                <p class="activity-desc">
+                  Mise en conformité incendie des établissements recevant du public et préparation aux commissions de sécurité.
+                </p>
+              </div>
+              <span class="activity-arrow" aria-hidden="true">→</span>
+            </a>
+          </li>
+
+          <!-- 03 CC Events -->
+          <li class="activity-row activity-row--events" data-activity-row="03" data-reveal>
+            <div class="activity-mobile-photo media-frame">
+              <Picture
+                slug="04-accueil-cc-events"
+                alt="Grande salle de réception et scène éclairée lors d’un événement professionnel, public vu de dos"
+                parallax={false}
+              />
+            </div>
+            <a href="/cc-events" class="activity-link">
+              <div class="activity-meta">
+                <span class="num-index">03</span>
+                <span class="activity-badge">Événementiel</span>
+              </div>
+              <div class="activity-main">
+                <h3 class="activity-name">CC Events</h3>
+                <p class="activity-desc">
+                  Organisation de grands événements et coordination des équipes sur le terrain.
+                </p>
+              </div>
+              <span class="activity-arrow" aria-hidden="true">→</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. SECTION À PROPOS -->
+  <section class="section section--secondary section--spacious">
+    <div class="container grid-12 about-grid">
+      <div class="about-left">
+        <p class="eyebrow" data-reveal>QUI SOMMES-NOUS</p>
+        <h2 class="section-title" data-reveal-title>
+          <span class="reveal-mask">
+            <span class="reveal-line">Trois lettres.</span>
+          </span>
+          <span class="reveal-mask">
+            <span class="reveal-line">Une seule maison.</span>
+          </span>
+        </h2>
+      </div>
+
+      <div class="about-right" data-reveal>
+        <p class="about-text prose-measure">
+          SSE Solutions porte les initiales de ses trois métiers : Social, Security and Events. Chaque activité a son équipe, son savoir-faire et sa marque. Toutes partagent la même façon de travailler : comprendre avant d'agir, écrire clairement, suivre jusqu'au bout.
+        </p>
+
+        <div class="about-logo-box">
+          <div class="logo-panel">
+            <img
+              src="/logos/logo_SSE_Solutions.png"
+              alt="Logo officiel SSE Solutions — Social, Security and Events"
+              width="440"
+              height="305"
+              loading="lazy"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. SECTION PROGRAMME (MISE EN AVANT) -->
+  <section class="section section--spacious programme-highlight">
+    <div class="container">
+      <div class="grid-12 programme-grid">
+        <div class="programme-content">
+          <p class="eyebrow eyebrow--care" data-reveal>NOUVEAU · CC CARE</p>
+          <h2 class="section-title" data-reveal-title>
+            <span class="reveal-mask">
+              <span class="reveal-line">Autonomie &amp; Inclusion.</span>
+            </span>
+          </h2>
+          <p class="prose-measure programme-desc" data-reveal>
+            Un programme en ligne pour aider les adultes accompagnés par les structures sociales à gagner en autonomie au quotidien. Chaque atelier existe en français courant et en FALC, Facile à lire et à comprendre.
+          </p>
+
+          <dl class="stats-grid" data-reveal>
+            <div class="stat-item">
+              <dt class="stat-label">modules thématiques</dt>
+              <dd class="stat-value">35</dd>
+            </div>
+            <div class="stat-item">
+              <dt class="stat-label">ateliers</dt>
+              <dd class="stat-value">244</dd>
+            </div>
+            <div class="stat-item">
+              <dt class="stat-label">versions de chaque atelier : FALC et français courant</dt>
+              <dd class="stat-value">2</dd>
+            </div>
+          </dl>
+
+          <div class="btn-group" data-reveal>
+            <a href="/cc-care/autonomie-inclusion" class="btn-primary">Découvrir le programme</a>
+          </div>
+        </div>
+
+        <div class="programme-media" data-reveal>
+          <div class="media-frame programme-frame">
+            <Picture
+              slug="05-accueil-programme"
+              alt="Personne adulte utilisant un ordinateur portable sur une table en bois baignée de lumière naturelle"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. SECTION MÉTHODE (ÉPINGLÉE, 4 ÉTAPES) -->
+  <section class="section section--secondary method-section" data-method-pin id="methode">
+    <div class="container grid-12 method-grid">
+      <div class="method-header">
+        <p class="eyebrow" data-reveal>NOTRE MÉTHODE</p>
+        <h2 class="section-title" data-reveal-title>
+          <span class="reveal-mask">
+            <span class="reveal-line">Comprendre</span>
+          </span>
+          <span class="reveal-mask">
+            <span class="reveal-line">avant d'agir.</span>
+          </span>
+        </h2>
+      </div>
+
+      <div class="method-timeline">
+        <div class="method-rail" aria-hidden="true">
+          <div class="method-rail-progress" data-method-progress></div>
+        </div>
+
+        <ol class="method-steps">
+          <li class="method-step is-active">
+            <span class="num-index">01</span>
+            <div class="method-step-body">
+              <h3 class="card-title">Écouter.</h3>
+              <p class="prose-measure">
+                Nous partons de votre situation, de vos contraintes et de vos échéances.
+              </p>
+            </div>
+          </li>
+          <li class="method-step">
+            <span class="num-index">02</span>
+            <div class="method-step-body">
+              <h3 class="card-title">Diagnostiquer.</h3>
+              <p class="prose-measure">
+                Nous faisons un état des lieux précis et écrit, sans jargon.
+              </p>
+            </div>
+          </li>
+          <li class="method-step">
+            <span class="num-index">03</span>
+            <div class="method-step-body">
+              <h3 class="card-title">Agir.</h3>
+              <p class="prose-measure">
+                Nous menons les actions avec vous et coordonnons les bons interlocuteurs.
+              </p>
+            </div>
+          </li>
+          <li class="method-step">
+            <span class="num-index">04</span>
+            <div class="method-step-body">
+              <h3 class="card-title">Suivre.</h3>
+              <p class="prose-measure">
+                Nous restons présents jusqu'au résultat, et au-delà si besoin.
+              </p>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. SECTION ENGAGEMENTS (4 POINTS NUMÉROTÉS) -->
+  <section class="section section--spacious">
+    <div class="container">
+      <div class="section-header">
+        <p class="eyebrow" data-reveal>NOS ENGAGEMENTS</p>
+        <h2 class="section-title" data-reveal-title>
+          <span class="reveal-mask">
+            <span class="reveal-line">Ce que vous pouvez attendre de nous.</span>
+          </span>
+        </h2>
+      </div>
+
+      <ol class="commitments-grid grid-12">
+        <li class="commitment-card" data-reveal>
+          <span class="num-index">01</span>
+          <h3 class="card-title">Un interlocuteur.</h3>
+          <p>Une personne qui connaît votre dossier, du premier échange au dernier.</p>
+        </li>
+        <li class="commitment-card" data-reveal>
+          <span class="num-index">02</span>
+          <h3 class="card-title">Des écrits clairs.</h3>
+          <p>Des comptes rendus courts, datés et compréhensibles par tous.</p>
+        </li>
+        <li class="commitment-card" data-reveal>
+          <span class="num-index">03</span>
+          <h3 class="card-title">Le terrain.</h3>
+          <p>Des solutions pensées pour votre établissement, pas pour un modèle type.</p>
+        </li>
+        <li class="commitment-card" data-reveal>
+          <span class="num-index">04</span>
+          <h3 class="card-title">La discrétion.</h3>
+          <p>Les situations sociales et les informations de sécurité restent confidentielles.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- 8. SECTION CONTACT (FIN DE PAGE) -->
+  <section class="section section--secondary section--spacious cta-final">
+    <div class="container grid-12">
+      <div class="cta-final-inner">
+        <h2 class="section-title" data-reveal-title>
+          <span class="reveal-mask">
+            <span class="reveal-line">Parlons de votre projet.</span>
+          </span>
+        </h2>
+        <p class="prose-measure cta-final-text" data-reveal>
+          Dites-nous en quelques lignes ce dont vous avez besoin. Nous vous répondons sous 48 heures ouvrées.
+        </p>
+        <div class="btn-group" data-reveal>
+          <a href="/contact" class="btn-primary">Nous écrire</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* 1. HERO */
+  .hero-home {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-end;
+    padding-top: 7.5rem;
+    padding-bottom: var(--space-40);
+    border-bottom: 1px solid var(--border-steel);
+    overflow: hidden;
+  }
+
+  .hero-bg-media {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .hero-bg-media :global(picture),
+  .hero-bg-media :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.22;
+    filter: grayscale(35%) contrast(1.05);
+  }
+
+  .hero-bg-overlay {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 75% 25%, rgba(17, 20, 22, 0.35) 0%, rgba(17, 20, 22, 0.92) 70%),
+      linear-gradient(180deg, rgba(17, 20, 22, 0.65) 0%, #111416 100%);
+  }
+
+  .hero-home-inner {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: var(--space-64);
+    width: 100%;
+  }
+
+  .hero-content {
+    max-width: 64rem;
+  }
+
+  .hero-lead {
+    margin-top: var(--space-40);
+    font-size: clamp(1.125rem, 1.35vw, 1.375rem);
+    color: var(--text-primary);
+  }
+
+  .hero-actions {
+    margin-top: var(--space-40);
+  }
+
+  .hero-scroll-indicator {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: var(--space-24);
+    border-top: 1px solid rgba(44, 50, 55, 0.65);
+  }
+
+  .scroll-indicator-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--text-secondary);
+    transition: color 0.2s ease;
+  }
+
+  .scroll-indicator-link:hover {
+    color: var(--accent-gold);
+  }
+
+  .scroll-line {
+    width: 2rem;
+    height: 1px;
+    background-color: var(--accent-gold);
+  }
+
+  /* 2. BANDEAU DÉFILANT */
+  .marquee-band {
+    background-color: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-steel);
+    padding-block: 1.125rem;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .marquee-track {
+    display: inline-flex;
+    animation: marquee-scroll 38s linear infinite;
+  }
+
+  .marquee-band:hover .marquee-track,
+  .marquee-band:focus-within .marquee-track {
+    animation-play-state: paused;
+  }
+
+  .marquee-item {
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--text-secondary);
+    padding-right: 0.5rem;
+  }
+
+  @keyframes marquee-scroll {
+    0% {
+      transform: translate3d(0, 0, 0);
+    }
+    100% {
+      transform: translate3d(-33.3333%, 0, 0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .marquee-band {
+      white-space: normal;
+    }
+    .marquee-track {
+      animation: none !important;
+      display: block;
+      padding-inline: var(--page-margin);
+    }
+    .marquee-item[aria-hidden="true"] {
+      display: none;
+    }
+  }
+
+  /* 3. SECTION ACTIVITÉS */
+  .section-header {
+    margin-bottom: var(--space-64);
+  }
+
+  .activities-wrapper {
+    position: relative;
+  }
+
+  .activities-floating-preview {
+    display: none;
+  }
+
+  @media (hover: hover) and (min-width: 960px) {
+    .activities-floating-preview {
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 22rem;
+      height: 14rem;
+      pointer-events: none;
+      z-index: 10;
+      opacity: 0;
+      transform: scale(0.94);
+      transition: opacity 0.3s ease;
+      border: 1px solid var(--accent-gold);
+      border-radius: var(--radius-sharp);
+      overflow: hidden;
+      background-color: var(--bg-secondary);
+    }
+
+    .activities-floating-preview.is-visible {
+      opacity: 1;
+    }
+
+    .preview-slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .preview-slide.is-active {
+      opacity: 1;
+    }
+
+    .preview-slide :global(picture),
+    .preview-slide :global(img) {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  .activities-list {
+    border-top: 1px solid var(--border-steel);
+  }
+
+  .activity-row {
+    border-bottom: 1px solid var(--border-steel);
+    position: relative;
+    transition: background-color 0.25s ease;
+  }
+
+  /* Couleurs d'accent par activité sur sa ligne à l'accueil */
+  .activity-row--care {
+    --row-accent: var(--cc-care-green);
+    --row-sub: var(--cc-care-blue);
+  }
+
+  .activity-row--consulting {
+    --row-accent: var(--accent-gold);
+    --row-sub: var(--cc-consulting-navy);
+  }
+
+  .activity-row--events {
+    --row-accent: var(--cc-events-gold);
+    --row-sub: var(--cc-events-black);
+  }
+
+  .activity-row::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background-color: var(--row-accent);
+    transform: scaleY(0);
+    transform-origin: bottom;
+    transition: transform 0.3s var(--ease-out-expo);
+  }
+
+  .activity-row:hover::before,
+  .activity-row:focus-within::before {
+    transform: scaleY(1);
+  }
+
+  .activity-mobile-photo {
+    margin-top: var(--space-24);
+    aspect-ratio: 16 / 10;
+  }
+
+  @media (min-width: 960px) {
+    .activity-mobile-photo {
+      display: none;
+    }
+  }
+
+  .activity-link {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-16);
+    padding-block: var(--space-40);
+    align-items: baseline;
+    position: relative;
+    z-index: 2;
+  }
+
+  @media (min-width: 960px) {
+    .activity-link {
+      grid-template-columns: 2fr 9fr 1fr;
+      gap: var(--space-24);
+      padding-block: var(--space-40);
+      padding-inline: var(--space-24);
+    }
+  }
+
+  .activity-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+  }
+
+  .activity-badge {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--text-secondary);
+    padding: 0.2rem 0.6rem;
+    border: 1px solid var(--border-steel);
+    border-radius: var(--radius-sharp);
+  }
+
+  .activity-row:hover .activity-badge {
+    border-color: var(--row-accent);
+    color: var(--text-primary);
+  }
+
+  .activity-main {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-16);
+    align-items: baseline;
+  }
+
+  @media (min-width: 768px) {
+    .activity-main {
+      grid-template-columns: 4fr 8fr;
+      gap: var(--space-24);
+    }
+  }
+
+  .activity-name {
+    font-family: var(--font-display);
+    font-size: clamp(1.75rem, 3vw, 2.75rem);
+    color: var(--text-primary);
+    transition: color 0.2s ease;
+  }
+
+  .activity-row:hover .activity-name {
+    color: var(--row-accent);
+  }
+
+  .activity-desc {
+    color: var(--text-secondary);
+    max-width: 54ch;
+  }
+
+  .activity-arrow {
+    font-size: 1.5rem;
+    color: var(--text-secondary);
+    justify-self: end;
+    transition: transform 0.25s ease, color 0.25s ease;
+  }
+
+  .activity-row:hover .activity-arrow {
+    transform: translateX(6px);
+    color: var(--row-accent);
+  }
+
+  /* 4. SECTION À PROPOS */
+  .about-grid {
+    align-items: start;
+    row-gap: var(--space-40);
+  }
+
+  .about-left {
+    grid-column: 1 / -1;
+  }
+
+  .about-right {
+    grid-column: 1 / -1;
+  }
+
+  @media (min-width: 960px) {
+    .about-left {
+      grid-column: 1 / 6;
+    }
+    .about-right {
+      grid-column: 6 / 13;
+    }
+  }
+
+  .about-text {
+    font-size: clamp(1.125rem, 1.3vw, 1.25rem);
+    color: var(--text-primary);
+    margin-bottom: var(--space-40);
+  }
+
+  /* 5. SECTION PROGRAMME */
+  .eyebrow--care::before {
+    background-color: var(--cc-care-green);
+  }
+
+  .programme-grid {
+    align-items: center;
+    row-gap: var(--space-40);
+  }
+
+  .programme-content {
+    grid-column: 1 / -1;
+  }
+
+  .programme-media {
+    grid-column: 1 / -1;
+  }
+
+  @media (min-width: 960px) {
+    .programme-content {
+      grid-column: 1 / 7;
+    }
+    .programme-media {
+      grid-column: 8 / 13;
+    }
+  }
+
+  .programme-desc {
+    margin-top: var(--space-24);
+    margin-bottom: var(--space-40);
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-24);
+    padding-block: var(--space-24);
+    margin-bottom: var(--space-40);
+    border-top: 1px solid var(--border-steel);
+    border-bottom: 1px solid var(--border-steel);
+  }
+
+  @media (min-width: 640px) {
+    .stats-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .stat-item {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 0.35rem;
+  }
+
+  .stat-value {
+    font-family: var(--font-display);
+    font-size: clamp(2.25rem, 3.5vw, 3.25rem);
+    line-height: 1;
+    color: var(--accent-gold);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .stat-label {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    line-height: 1.4;
+  }
+
+  .programme-frame {
+    aspect-ratio: 4 / 3;
+  }
+
+  /* 6. SECTION MÉTHODE (ÉPINGLÉE) */
+  .method-grid {
+    align-items: start;
+    row-gap: var(--space-40);
+  }
+
+  .method-header {
+    grid-column: 1 / -1;
+  }
+
+  .method-timeline {
+    grid-column: 1 / -1;
+    position: relative;
+    padding-left: var(--space-24);
+  }
+
+  @media (min-width: 960px) {
+    .method-header {
+      grid-column: 1 / 6;
+    }
+    .method-timeline {
+      grid-column: 6 / 13;
+      padding-left: var(--space-40);
+    }
+  }
+
+  .method-rail {
+    position: absolute;
+    left: 0;
+    top: 0.5rem;
+    bottom: 0.5rem;
+    width: 1px;
+    background-color: var(--border-steel);
+  }
+
+  .method-rail-progress {
+    width: 2px;
+    height: 100%;
+    background-color: var(--accent-gold);
+    transform: scaleY(0.25);
+    transform-origin: top;
+  }
+
+  .method-steps {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-40);
+  }
+
+  .method-step {
+    display: grid;
+    grid-template-columns: 3rem 1fr;
+    gap: var(--space-16);
+    align-items: baseline;
+    opacity: 0.38;
+    transition: opacity 0.35s ease;
+  }
+
+  .method-step.is-active {
+    opacity: 1;
+  }
+
+  .method-step-body h3 {
+    margin-bottom: var(--space-8);
+  }
+
+  /* 7. SECTION ENGAGEMENTS */
+  .commitments-grid {
+    row-gap: var(--space-24);
+  }
+
+  .commitment-card {
+    grid-column: 1 / -1;
+    border: 1px solid var(--border-steel);
+    border-radius: var(--radius-sharp);
+    padding: var(--space-40);
+    background-color: var(--bg-secondary);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+  }
+
+  @media (min-width: 640px) {
+    .commitment-card {
+      grid-column: span 6;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .commitment-card {
+      grid-column: span 3;
+    }
+  }
+
+  .commitment-card p {
+    color: var(--text-secondary);
+    font-size: 0.98rem;
+  }
+
+  /* 8. CONTACT FIN DE PAGE */
+  .cta-final-inner {
+    grid-column: 1 / -1;
+  }
+
+  @media (min-width: 960px) {
+    .cta-final-inner {
+      grid-column: 1 / 9;
+    }
+  }
+
+  .cta-final-text {
+    margin-top: var(--space-24);
+    margin-bottom: var(--space-40);
+  }
+</style>
+
