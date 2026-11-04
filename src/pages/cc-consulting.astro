@@ -1,18 +1,49 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Picture from '../components/Picture.astro';
+import { SHOW_CONSULTING_FAQ, CONSULTING_FAQ_ITEMS } from '../config/flags';
+
+const checklistItems = [
+  'le registre de sécurité, à jour',
+  'les rapports des vérifications périodiques de vos installations',
+  'les contrats et attestations de maintenance de vos prestataires',
+  'la preuve que les observations des rapports ont été levées',
+  'les suites données aux prescriptions du dernier procès-verbal',
+  "la trace des exercices d'évacuation et de l'information de votre personnel",
+];
+
+const activeFaqItems = CONSULTING_FAQ_ITEMS.filter((item) => item.answer.trim().length > 0);
+const faqJsonLd =
+  SHOW_CONSULTING_FAQ && activeFaqItems.length > 0
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: activeFaqItems.map((item) => ({
+          '@type': 'Question',
+          name: item.question,
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: item.answer,
+          },
+        })),
+      }
+    : undefined;
 ---
 
 <BaseLayout
   title="CC Consulting · Sécurité — SSE Solutions"
-  description="CC Consulting accompagne les établissements recevant du public, en priorité les établissements de soins, dans leur mise en conformité incendie et la préparation de leurs commissions de sécurité."
+  description="CC Consulting accompagne les ERP, en priorité les établissements de soins, de l'audit de conformité incendie jusqu'à la levée des observations."
   theme="cc-consulting"
+  jsonLd={faqJsonLd}
 >
   <section class="section hero-consulting">
     <div class="container grid-12 hero-consulting-grid">
       <div class="hero-consulting-content">
         <p class="eyebrow" data-hero-fade>CC CONSULTING · SÉCURITÉ</p>
-        <h1 class="hero-title">
+        <h1 class="hero-title" data-hero-fade>
+          Préparez votre commission de sécurité sans mauvaise surprise.
+        </h1>
+        <p class="hero-verbs" aria-label="Conformer. Préparer. Sécuriser.">
           <span class="reveal-mask">
             <span class="reveal-line" data-hero-line>Conformer.</span>
           </span>
@@ -22,14 +53,14 @@ import Picture from '../components/Picture.astro';
           <span class="reveal-mask">
             <span class="reveal-line" data-hero-line>Sécuriser.</span>
           </span>
-        </h1>
+        </p>
         <p class="prose-measure hero-consulting-lead" data-hero-fade>
-          CC Consulting accompagne les établissements recevant du public, en priorité les établissements de soins, dans leur mise en conformité incendie et la préparation de leurs commissions de sécurité.
+          CC Consulting accompagne les établissements recevant du public, en priorité les établissements de soins, de l'audit de conformité incendie jusqu'à la levée des observations.
         </p>
 
         <div class="btn-group hero-consulting-actions" data-hero-fade>
           <a href="/contact?sujet=cc-consulting" class="btn-primary" data-magnetic data-glow>
-            <span>Nous écrire</span>
+            <span>Faire le point sur mon établissement</span>
             <span class="btn-arrow" aria-hidden="true">→</span>
           </a>
         </div>
@@ -119,6 +150,72 @@ import Picture from '../components/Picture.astro';
     </div>
   </section>
 
+  <section class="section section--secondary section--spacious commission-checklist-section">
+    <div class="container grid-12">
+      <div class="checklist-header">
+        <p class="eyebrow" data-reveal>POINTS DE CONTRÔLE</p>
+        <h2 class="section-title" data-reveal-title>
+          <span class="reveal-mask">
+            <span class="reveal-line">Ce que la commission regarde en premier</span>
+          </span>
+        </h2>
+      </div>
+
+      <div class="checklist-content">
+        <ul class="commission-checklist" data-checklist-animated role="list">
+          {checklistItems.map((line) => (
+            <li
+              class="checklist-item glass is-checked"
+              data-checklist-item
+              data-glow
+              aria-checked="true"
+            >
+              <span class="checklist-box" aria-hidden="true">
+                <svg
+                  class="checklist-icon"
+                  data-check-icon
+                  viewBox="0 0 20 20"
+                  width="16"
+                  height="16"
+                  fill="none"
+                >
+                  <path
+                    d="M4.5 10.5L8.2 14.2L15.5 6.5"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </span>
+              <span class="checklist-label">{line}</span>
+            </li>
+          ))}
+        </ul>
+
+        <p class="checklist-conclusion prose-measure" data-reveal>
+          Nous vous aidons à tout remettre en ordre, prestataire par prestataire.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--spacious healthcare-safety-section">
+    <div class="container grid-12">
+      <div class="healthcare-safety-box glass" data-glow data-reveal>
+        <p class="eyebrow">TYPE U · HÔPITAUX ET CLINIQUES</p>
+        <h2 class="section-title" data-reveal-title>
+          <span class="reveal-mask">
+            <span class="reveal-line">Établissements de soins : une sécurité à part</span>
+          </span>
+        </h2>
+        <p class="healthcare-safety-text prose-measure">
+          Dans un hôpital, on n'évacue pas tout le monde dehors. La sécurité incendie repose d'abord sur le transfert horizontal : déplacer les patients vers une zone protégée du même étage. Cela suppose des portes et des compartiments qui jouent leur rôle, un désenfumage et une détection qui fonctionnent, et un personnel qui connaît les gestes, de jour comme de nuit.
+        </p>
+      </div>
+    </div>
+  </section>
+
   <section class="section section--secondary section--spacious">
     <div class="container">
       <p class="eyebrow" data-reveal>POUR QUI</p>
@@ -139,6 +236,28 @@ import Picture from '../components/Picture.astro';
     </div>
   </section>
 
+  {SHOW_CONSULTING_FAQ && (
+    <section class="section section--spacious faq-section">
+      <div class="container">
+        <p class="eyebrow" data-reveal>QUESTIONS FRÉQUENTES</p>
+        <h2 class="section-title" data-reveal-title>
+          <span class="reveal-mask">
+            <span class="reveal-line">Vos questions sur la commission de sécurité.</span>
+          </span>
+        </h2>
+
+        <dl class="faq-list">
+          {CONSULTING_FAQ_ITEMS.map((item) => (
+            <div class="faq-item glass" data-glow data-reveal>
+              <dt class="faq-question">{item.question}</dt>
+              {item.answer && <dd class="faq-answer prose-measure">{item.answer}</dd>}
+            </div>
+          ))}
+        </dl>
+      </div>
+    </section>
+  )}
+
   <section class="section section--spacious">
     <div class="container grid-12">
       <div class="consulting-contact-box">
@@ -152,7 +271,7 @@ import Picture from '../components/Picture.astro';
             ccconsulting@<wbr />ssesolutions.fr
           </a>
           <a href="/contact?sujet=cc-consulting" class="btn-primary" data-magnetic data-glow>
-            <span>Nous écrire</span>
+            <span>Faire le point sur mon établissement</span>
             <span class="btn-arrow" aria-hidden="true">→</span>
           </a>
         </div>
@@ -190,10 +309,134 @@ import Picture from '../components/Picture.astro';
     }
   }
 
+  .hero-title {
+    font-size: clamp(2.1rem, 1.35rem + 3vw, 3.6rem);
+    max-width: 24ch;
+  }
+
+  .hero-verbs {
+    margin-top: var(--space-24);
+    font-family: var(--font-display);
+    font-size: clamp(1.35rem, 1rem + 1.5vw, 2.15rem);
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    color: var(--activity-tint);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45em;
+  }
+
   .hero-consulting-lead {
-    margin-top: var(--space-40);
+    margin-top: var(--space-24);
     font-size: clamp(1.125rem, 1.3vw, 1.3rem);
     color: var(--text);
+  }
+
+  .checklist-header {
+    grid-column: 1 / -1;
+    margin-bottom: var(--space-24);
+  }
+
+  .checklist-content {
+    grid-column: 1 / -1;
+  }
+
+  @media (min-width: 960px) {
+    .checklist-header {
+      grid-column: 1 / 5;
+      margin-bottom: 0;
+    }
+    .checklist-content {
+      grid-column: 5 / 13;
+    }
+  }
+
+  .commission-checklist {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+  }
+
+  .checklist-item {
+    --pointer-glow: color-mix(in srgb, var(--tint-consulting) 16%, transparent);
+    display: flex;
+    align-items: center;
+    gap: var(--space-16);
+    padding: var(--space-24);
+    border-radius: var(--radius-sharp);
+    border-left: 2px solid var(--activity-tint);
+  }
+
+  .checklist-box {
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: var(--radius-sharp);
+    border: 1px solid var(--activity-tint);
+    background-color: color-mix(in srgb, var(--activity-tint) 14%, transparent);
+    color: var(--activity-tint);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .checklist-label {
+    font-size: var(--fs-body);
+    color: var(--text);
+  }
+
+  .checklist-conclusion {
+    margin-top: var(--space-40);
+    font-family: var(--font-display);
+    font-size: var(--fs-h3);
+    color: var(--text);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .checklist-icon {
+      opacity: 1 !important;
+      transform: scale(1) !important;
+    }
+  }
+
+  .healthcare-safety-box {
+    --pointer-glow: color-mix(in srgb, var(--tint-consulting) 16%, transparent);
+    grid-column: 1 / -1;
+    padding: var(--space-64) var(--space-40);
+    border-top: 2px solid var(--activity-tint);
+    border-radius: var(--radius-sharp);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-24);
+  }
+
+  .healthcare-safety-text {
+    font-size: clamp(1.0625rem, 1.25vw, 1.25rem);
+    color: var(--text);
+  }
+
+  .faq-list {
+    margin-top: var(--space-64);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-24);
+  }
+
+  .faq-item {
+    padding: var(--space-40);
+    border-radius: var(--radius-sharp);
+    border-left: 2px solid var(--activity-tint);
+  }
+
+  .faq-question {
+    font-family: var(--font-display);
+    font-size: var(--fs-h3);
+    color: var(--text);
+  }
+
+  .faq-answer {
+    margin-top: var(--space-16);
+    color: var(--text-muted);
   }
 
   .hero-consulting-actions {
