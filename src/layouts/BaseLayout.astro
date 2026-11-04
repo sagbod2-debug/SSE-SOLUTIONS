@@ -104,9 +104,9 @@ const ogImageUrl = ogImage || `${siteOrigin}/og/${slugForOg}.png`;
         }
         function resolveTheme(pref) {
           if (pref === 'light' || pref === 'dark') return pref;
-          return window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches
-            ? 'light'
-            : 'dark';
+          return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+            ? 'dark'
+            : 'light';
         }
         function applyTheme(doc, pref) {
           var resolved = resolveTheme(pref);
@@ -115,7 +115,7 @@ const ogImageUrl = ogImage || `${siteOrigin}/og/${slugForOg}.png`;
           root.setAttribute('data-theme-pref', pref);
           var meta = doc.getElementById('meta-theme-color');
           if (meta) {
-            meta.setAttribute('content', resolved === 'light' ? '#F6F4EF' : '#111416');
+            meta.setAttribute('content', resolved === 'light' ? '#FFFFFF' : '#0A0B0F');
           }
         }
         applyTheme(document, getPref());
@@ -129,7 +129,7 @@ const ogImageUrl = ogImage || `${siteOrigin}/og/${slugForOg}.png`;
         });
         if (window.matchMedia) {
           window
-            .matchMedia('(prefers-color-scheme: light)')
+            .matchMedia('(prefers-color-scheme: dark)')
             .addEventListener('change', function () {
               if (getPref() === 'system') applyTheme(document, 'system');
             });
