@@ -1,23 +1,41 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Picture from '../components/Picture.astro';
+import LivingMesh from '../components/LivingMesh.astro';
 
 // TODO logo officiel : remplacer la composition typographique de la section « Trois lettres. Une seule maison. » par le SVG ou PNG transparent officiel (< 40 Ko) dès réception.
 
 const marqueeText =
   "Accompagnement social · Sécurité incendie · Établissements recevant du public · Événementiel · Autonomie au quotidien · Commissions de sécurité · Coordination d'équipes · ";
+
+const organizationJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'SSE Solutions',
+  alternateName: 'SSE Solutions — Social, Security and Events',
+  url: 'https://ssesolutions.fr',
+  email: ['cccare@ssesolutions.fr', 'ccconsulting@ssesolutions.fr'],
+  areaServed: {
+    '@type': 'AdministrativeArea',
+    name: 'Essonne',
+  },
+};
 ---
 
 <BaseLayout
   title="SSE Solutions — Social. Sécurité. Événements."
-  description="Trois activités, une même exigence : accompagner les personnes (CC Care), protéger les lieux (CC Consulting), réussir les moments qui comptent (CC Events)."
+  description="Trois activités, une même exigence : accompagner les personnes, protéger les lieux, réussir les moments qui comptent."
+  jsonLd={organizationJsonLd}
 >
-  <!-- 1. HERO -->
+  <!-- 1. HERO AVEC ARRIÈRE-PLAN VIVANT WEBGL + ARCHITECTURE EN FONDU SUR LA MOITIÉ DROITE -->
   <section class="hero-home">
+    <LivingMesh />
+
     <div class="hero-bg-media" aria-hidden="true">
       <Picture
         slug="01-hero-architecture"
         alt="Architecture minimaliste en béton brut éclairée par une lumière rasante, créant des lignes géométriques sobres"
+        sizes="100vw"
         loading="eager"
         fetchpriority="high"
         parallax={false}
@@ -46,8 +64,14 @@ const marqueeText =
         </p>
 
         <div class="btn-group hero-actions" data-hero-fade>
-          <a href="#activites" class="btn-primary">Découvrir nos activités</a>
-          <a href="/contact" class="btn-secondary">Nous écrire</a>
+          <a href="#activites" class="btn-primary" data-magnetic data-glow>
+            <span>Découvrir nos activités</span>
+            <span class="btn-arrow" aria-hidden="true">→</span>
+          </a>
+          <a href="/contact" class="btn-secondary glass" data-glow>
+            <span>Nous écrire</span>
+            <span class="btn-arrow" aria-hidden="true">→</span>
+          </a>
         </div>
       </div>
 
@@ -82,12 +106,12 @@ const marqueeText =
       </div>
 
       <div class="activities-wrapper" data-activities-interactive>
-        <!-- Aperçu flottant au survol sur ordinateur -->
         <div class="activities-floating-preview" id="activities-floating-preview" aria-hidden="true">
           <div class="preview-slide is-active" data-preview-slide="01">
             <Picture
               slug="02-accueil-cc-care"
               alt="Deux personnes assises autour d’une table examinant ensemble des documents administratifs dans un cadre calme"
+              sizes="360px"
               parallax={false}
             />
           </div>
@@ -95,6 +119,7 @@ const marqueeText =
             <Picture
               slug="03-accueil-cc-consulting"
               alt="Couloir épuré et dégagé d’un établissement contemporain aux lignes sobres et éclairage maîtrisé"
+              sizes="360px"
               parallax={false}
             />
           </div>
@@ -102,6 +127,7 @@ const marqueeText =
             <Picture
               slug="04-accueil-cc-events"
               alt="Grande salle de réception et scène éclairée lors d’un événement professionnel, public vu de dos"
+              sizes="360px"
               parallax={false}
             />
           </div>
@@ -109,18 +135,26 @@ const marqueeText =
 
         <ul class="activities-list">
           <!-- 01 CC Care -->
-          <li class="activity-row activity-row--care" data-activity-row="01" data-reveal>
+          <li
+            class="activity-row activity-row--care"
+            data-activity-row="01"
+            data-tilt-card
+            data-glow
+            data-reveal
+          >
             <div class="activity-mobile-photo media-frame">
               <Picture
                 slug="02-accueil-cc-care"
                 alt="Deux personnes assises autour d’une table examinant ensemble des documents administratifs dans un cadre calme"
+                sizes="(max-width: 960px) 92vw, 360px"
                 parallax={false}
+                transitionName="activity-hero-care"
               />
             </div>
             <a href="/cc-care" class="activity-link">
               <div class="activity-meta">
-                <span class="num-index">01</span>
-                <span class="activity-badge">Social</span>
+                <span class="num-index activity-num">01</span>
+                <span class="activity-badge glass">Social</span>
               </div>
               <div class="activity-main">
                 <h3 class="activity-name">CC Care</h3>
@@ -133,18 +167,26 @@ const marqueeText =
           </li>
 
           <!-- 02 CC Consulting -->
-          <li class="activity-row activity-row--consulting" data-activity-row="02" data-reveal>
+          <li
+            class="activity-row activity-row--consulting"
+            data-activity-row="02"
+            data-tilt-card
+            data-glow
+            data-reveal
+          >
             <div class="activity-mobile-photo media-frame">
               <Picture
                 slug="03-accueil-cc-consulting"
                 alt="Couloir épuré et dégagé d’un établissement contemporain aux lignes sobres et éclairage maîtrisé"
+                sizes="(max-width: 960px) 92vw, 360px"
                 parallax={false}
+                transitionName="activity-hero-consulting"
               />
             </div>
             <a href="/cc-consulting" class="activity-link">
               <div class="activity-meta">
-                <span class="num-index">02</span>
-                <span class="activity-badge">Sécurité</span>
+                <span class="num-index activity-num">02</span>
+                <span class="activity-badge glass">Sécurité</span>
               </div>
               <div class="activity-main">
                 <h3 class="activity-name">CC Consulting</h3>
@@ -157,18 +199,26 @@ const marqueeText =
           </li>
 
           <!-- 03 CC Events -->
-          <li class="activity-row activity-row--events" data-activity-row="03" data-reveal>
+          <li
+            class="activity-row activity-row--events"
+            data-activity-row="03"
+            data-tilt-card
+            data-glow
+            data-reveal
+          >
             <div class="activity-mobile-photo media-frame">
               <Picture
                 slug="04-accueil-cc-events"
                 alt="Grande salle de réception et scène éclairée lors d’un événement professionnel, public vu de dos"
+                sizes="(max-width: 960px) 92vw, 360px"
                 parallax={false}
+                transitionName="activity-hero-events"
               />
             </div>
             <a href="/cc-events" class="activity-link">
               <div class="activity-meta">
-                <span class="num-index">03</span>
-                <span class="activity-badge">Événementiel</span>
+                <span class="num-index activity-num">03</span>
+                <span class="activity-badge glass">Événementiel</span>
               </div>
               <div class="activity-main">
                 <h3 class="activity-name">CC Events</h3>
@@ -227,26 +277,29 @@ const marqueeText =
             </span>
           </h2>
           <p class="prose-measure programme-desc" data-reveal>
-            Un programme en ligne pour aider les adultes accompagnés par les structures sociales à gagner en autonomie au quotidien. Chaque atelier existe en français courant et en FALC, Facile à lire et à comprendre.
+            Un programme en ligne pour aider les adultes accompagnés par les structures sociales à gagner en autonomie au quotidien. Chaque atelier existe en français courant et en version FALC (Facile à lire et à comprendre), relue par des personnes concernées avant diffusion.
           </p>
 
           <dl class="stats-grid" data-reveal>
             <div class="stat-item">
               <dt class="stat-label">modules thématiques</dt>
-              <dd class="stat-value">35</dd>
+              <dd class="stat-value" data-count-to="35">35</dd>
             </div>
             <div class="stat-item">
               <dt class="stat-label">ateliers</dt>
-              <dd class="stat-value">244</dd>
+              <dd class="stat-value" data-count-to="244">244</dd>
             </div>
             <div class="stat-item">
               <dt class="stat-label">versions de chaque atelier : FALC et français courant</dt>
-              <dd class="stat-value">2</dd>
+              <dd class="stat-value" data-count-to="2">2</dd>
             </div>
           </dl>
 
           <div class="btn-group" data-reveal>
-            <a href="/cc-care/autonomie-inclusion" class="btn-primary">Découvrir le programme</a>
+            <a href="/cc-care/autonomie-inclusion" class="btn-primary" data-magnetic data-glow>
+              <span>Découvrir le programme</span>
+              <span class="btn-arrow" aria-hidden="true">→</span>
+            </a>
           </div>
         </div>
 
@@ -255,6 +308,7 @@ const marqueeText =
             <Picture
               slug="05-accueil-programme"
               alt="Personne adulte utilisant un ordinateur portable sur une table en bois baignée de lumière naturelle"
+              sizes="(max-width: 960px) 92vw, 520px"
             />
           </div>
         </div>
@@ -337,22 +391,22 @@ const marqueeText =
       </div>
 
       <ol class="commitments-grid grid-12">
-        <li class="commitment-card" data-reveal>
+        <li class="commitment-card glass" data-glow data-reveal>
           <span class="num-index">01</span>
           <h3 class="card-title">Un interlocuteur.</h3>
           <p>Une personne qui connaît votre dossier, du premier échange au dernier.</p>
         </li>
-        <li class="commitment-card" data-reveal>
+        <li class="commitment-card glass" data-glow data-reveal>
           <span class="num-index">02</span>
           <h3 class="card-title">Des écrits clairs.</h3>
           <p>Des comptes rendus courts, datés et compréhensibles par tous.</p>
         </li>
-        <li class="commitment-card" data-reveal>
+        <li class="commitment-card glass" data-glow data-reveal>
           <span class="num-index">03</span>
           <h3 class="card-title">Le terrain.</h3>
           <p>Des solutions pensées pour votre établissement, pas pour un modèle type.</p>
         </li>
-        <li class="commitment-card" data-reveal>
+        <li class="commitment-card glass" data-glow data-reveal>
           <span class="num-index">04</span>
           <h3 class="card-title">La discrétion.</h3>
           <p>Les situations sociales et les informations de sécurité restent confidentielles.</p>
@@ -361,8 +415,9 @@ const marqueeText =
     </div>
   </section>
 
-  <!-- 8. SECTION CONTACT (FIN DE PAGE) -->
-  <section class="section section--secondary section--spacious cta-final">
+  <!-- 8. SECTION CONTACT (FIN DE PAGE AVEC ARRIÈRE-PLAN VIVANT WEBGL) -->
+  <section class="section section--spacious cta-final">
+    <LivingMesh />
     <div class="container grid-12">
       <div class="cta-final-inner">
         <h2 class="section-title" data-reveal-title>
@@ -374,7 +429,10 @@ const marqueeText =
           Dites-nous en quelques lignes ce dont vous avez besoin. Nous vous répondons sous 48 heures ouvrées.
         </p>
         <div class="btn-group" data-reveal>
-          <a href="/contact" class="btn-primary">Nous écrire</a>
+          <a href="/contact" class="btn-primary" data-magnetic data-glow>
+            <span>Nous écrire</span>
+            <span class="btn-arrow" aria-hidden="true">→</span>
+          </a>
         </div>
       </div>
     </div>
@@ -390,30 +448,35 @@ const marqueeText =
     align-items: flex-end;
     padding-top: 7.5rem;
     padding-bottom: var(--space-40);
-    border-bottom: 1px solid var(--border-steel);
+    border-bottom: 1px solid var(--line);
     overflow: hidden;
+    isolation: isolate;
   }
 
+  /* 2.2 Image d'architecture en fondu par-dessus le dégradé (mask-image linéaire 0 à 100 % sur la moitié droite) */
   .hero-bg-media {
     position: absolute;
     inset: 0;
     z-index: 0;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, transparent 45%, #000 100%);
+    mask-image: linear-gradient(90deg, transparent 0%, transparent 45%, #000 100%);
+    pointer-events: none;
   }
 
+  .hero-bg-media :global(.picture-placeholder),
   .hero-bg-media :global(picture),
   .hero-bg-media :global(img) {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    opacity: 0.22;
+    opacity: 0.34;
     filter: grayscale(35%) contrast(1.05);
   }
 
   .hero-bg-overlay {
     position: absolute;
     inset: 0;
-    background: radial-gradient(circle at 75% 25%, rgba(17, 20, 22, 0.35) 0%, rgba(17, 20, 22, 0.92) 70%),
-      linear-gradient(180deg, rgba(17, 20, 22, 0.65) 0%, #111416 100%);
+    background: linear-gradient(180deg, var(--hero-scrim-start) 0%, var(--hero-scrim-end) 100%);
   }
 
   .hero-home-inner {
@@ -433,7 +496,7 @@ const marqueeText =
   .hero-lead {
     margin-top: var(--space-40);
     font-size: clamp(1.125rem, 1.35vw, 1.375rem);
-    color: var(--text-primary);
+    color: var(--text);
   }
 
   .hero-actions {
@@ -444,7 +507,7 @@ const marqueeText =
     display: flex;
     justify-content: flex-end;
     padding-top: var(--space-24);
-    border-top: 1px solid rgba(44, 50, 55, 0.65);
+    border-top: 1px solid var(--line);
   }
 
   .scroll-indicator-link {
@@ -454,25 +517,25 @@ const marqueeText =
     font-size: 0.75rem;
     font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.18em;
-    color: var(--text-secondary);
-    transition: color 0.2s ease;
+    letter-spacing: 0.14em;
+    color: var(--text-muted);
+    transition: color 250ms var(--ease-out);
   }
 
   .scroll-indicator-link:hover {
-    color: var(--accent-gold);
+    color: var(--accent);
   }
 
   .scroll-line {
     width: 2rem;
     height: 1px;
-    background-color: var(--accent-gold);
+    background-color: var(--accent);
   }
 
   /* 2. BANDEAU DÉFILANT */
   .marquee-band {
-    background-color: var(--bg-secondary);
-    border-bottom: 1px solid var(--border-steel);
+    background-color: var(--surface);
+    border-bottom: 1px solid var(--line);
     padding-block: 1.125rem;
     overflow: hidden;
     white-space: nowrap;
@@ -490,11 +553,11 @@ const marqueeText =
 
   .marquee-item {
     font-family: var(--font-sans);
-    font-size: 0.8125rem;
+    font-size: 0.75rem;
     font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.18em;
-    color: var(--text-secondary);
+    letter-spacing: 0.14em;
+    color: var(--text-muted);
     padding-right: 0.5rem;
   }
 
@@ -528,6 +591,7 @@ const marqueeText =
 
   .activities-wrapper {
     position: relative;
+    perspective: 900px;
   }
 
   .activities-floating-preview {
@@ -545,12 +609,12 @@ const marqueeText =
       pointer-events: none;
       z-index: 10;
       opacity: 0;
-      transform: scale(0.94);
-      transition: opacity 0.3s ease;
-      border: 1px solid var(--accent-gold);
+      transform: scale(0.96);
+      transition: opacity 350ms var(--ease-out);
+      border: 1px solid var(--line);
       border-radius: var(--radius-sharp);
       overflow: hidden;
-      background-color: var(--bg-secondary);
+      background-color: var(--surface);
     }
 
     .activities-floating-preview.is-visible {
@@ -561,45 +625,44 @@ const marqueeText =
       position: absolute;
       inset: 0;
       opacity: 0;
-      transition: opacity 0.3s ease;
+      transition: opacity 350ms var(--ease-out), transform 700ms var(--ease-out);
     }
 
     .preview-slide.is-active {
       opacity: 1;
-    }
-
-    .preview-slide :global(picture),
-    .preview-slide :global(img) {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+      transform: scale(1.04);
     }
   }
 
   .activities-list {
-    border-top: 1px solid var(--border-steel);
+    border-top: 1px solid var(--line);
   }
 
   .activity-row {
-    border-bottom: 1px solid var(--border-steel);
+    border-bottom: 1px solid var(--line);
     position: relative;
-    transition: background-color 0.25s ease;
+    transform-style: preserve-3d;
+    transition: transform 400ms var(--ease-out), background-color 250ms var(--ease-out);
   }
 
-  /* Couleurs d'accent par activité sur sa ligne à l'accueil */
+  /* 2.5 Teintes d'accent par activité */
   .activity-row--care {
-    --row-accent: var(--cc-care-green);
-    --row-sub: var(--cc-care-blue);
+    --row-tint: var(--tint-care);
+    --pointer-glow: color-mix(in srgb, var(--tint-care) 16%, transparent);
   }
 
   .activity-row--consulting {
-    --row-accent: var(--accent-gold);
-    --row-sub: var(--cc-consulting-navy);
+    --row-tint: var(--tint-consulting);
+    --pointer-glow: color-mix(in srgb, var(--tint-consulting) 16%, transparent);
   }
 
   .activity-row--events {
-    --row-accent: var(--cc-events-gold);
-    --row-sub: var(--cc-events-black);
+    --row-tint: var(--tint-events);
+    --pointer-glow: color-mix(in srgb, var(--tint-events) 16%, transparent);
+  }
+
+  .activity-row .activity-num {
+    color: var(--row-tint);
   }
 
   .activity-row::before {
@@ -609,10 +672,10 @@ const marqueeText =
     top: 0;
     bottom: 0;
     width: 3px;
-    background-color: var(--row-accent);
+    background-color: var(--row-tint);
     transform: scaleY(0);
     transform-origin: bottom;
-    transition: transform 0.3s var(--ease-out-expo);
+    transition: transform 350ms var(--ease-out);
   }
 
   .activity-row:hover::before,
@@ -623,6 +686,10 @@ const marqueeText =
   .activity-mobile-photo {
     margin-top: var(--space-24);
     aspect-ratio: 16 / 10;
+  }
+
+  .activity-row:hover .activity-mobile-photo :global(img) {
+    transform: scale(1.04);
   }
 
   @media (min-width: 960px) {
@@ -660,16 +727,10 @@ const marqueeText =
     font-size: 0.75rem;
     font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.16em;
-    color: var(--text-secondary);
-    padding: 0.2rem 0.6rem;
-    border: 1px solid var(--border-steel);
+    letter-spacing: 0.14em;
+    color: var(--row-tint);
+    padding: 0.25rem 0.65rem;
     border-radius: var(--radius-sharp);
-  }
-
-  .activity-row:hover .activity-badge {
-    border-color: var(--row-accent);
-    color: var(--text-primary);
   }
 
   .activity-main {
@@ -689,29 +750,29 @@ const marqueeText =
   .activity-name {
     font-family: var(--font-display);
     font-size: clamp(1.75rem, 3vw, 2.75rem);
-    color: var(--text-primary);
-    transition: color 0.2s ease;
+    color: var(--text);
+    transition: color 250ms var(--ease-out);
   }
 
   .activity-row:hover .activity-name {
-    color: var(--row-accent);
+    color: var(--row-tint);
   }
 
   .activity-desc {
-    color: var(--text-secondary);
+    color: var(--text-muted);
     max-width: 54ch;
   }
 
   .activity-arrow {
     font-size: 1.5rem;
-    color: var(--text-secondary);
+    color: var(--text-muted);
     justify-self: end;
-    transition: transform 0.25s ease, color 0.25s ease;
+    transition: transform 300ms var(--ease-out), color 250ms var(--ease-out);
   }
 
   .activity-row:hover .activity-arrow {
-    transform: translateX(6px);
-    color: var(--row-accent);
+    transform: translateX(4px);
+    color: var(--row-tint);
   }
 
   /* 4. SECTION À PROPOS */
@@ -747,7 +808,7 @@ const marqueeText =
     display: inline-flex;
     align-items: center;
     gap: 1.5rem;
-    padding: var(--space-32, 2rem) 0;
+    padding: var(--space-24) 0;
     border-top: 1px solid var(--line);
     border-bottom: 1px solid var(--line);
     font-family: var(--font-display);
@@ -775,8 +836,12 @@ const marqueeText =
   }
 
   /* 5. SECTION PROGRAMME */
+  .eyebrow--care {
+    color: var(--tint-care);
+  }
+
   .eyebrow--care::before {
-    background-color: var(--cc-care-green);
+    background-color: var(--tint-care);
   }
 
   .programme-grid {
@@ -812,8 +877,8 @@ const marqueeText =
     gap: var(--space-24);
     padding-block: var(--space-24);
     margin-bottom: var(--space-40);
-    border-top: 1px solid var(--border-steel);
-    border-bottom: 1px solid var(--border-steel);
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
   }
 
   @media (min-width: 640px) {
@@ -832,13 +897,13 @@ const marqueeText =
     font-family: var(--font-display);
     font-size: clamp(2.25rem, 3.5vw, 3.25rem);
     line-height: 1;
-    color: var(--accent-gold);
+    color: var(--accent);
     font-variant-numeric: tabular-nums;
   }
 
   .stat-label {
-    font-size: 0.875rem;
-    color: var(--text-secondary);
+    font-size: var(--fs-small);
+    color: var(--text-muted);
     line-height: 1.4;
   }
 
@@ -878,13 +943,13 @@ const marqueeText =
     top: 0.5rem;
     bottom: 0.5rem;
     width: 1px;
-    background-color: var(--border-steel);
+    background-color: var(--line);
   }
 
   .method-rail-progress {
     width: 2px;
     height: 100%;
-    background-color: var(--accent-gold);
+    background-color: var(--accent);
     transform: scaleY(0.25);
     transform-origin: top;
   }
@@ -901,7 +966,7 @@ const marqueeText =
     gap: var(--space-16);
     align-items: baseline;
     opacity: 0.38;
-    transition: opacity 0.35s ease;
+    transition: opacity 350ms var(--ease-out);
   }
 
   .method-step.is-active {
@@ -919,10 +984,8 @@ const marqueeText =
 
   .commitment-card {
     grid-column: 1 / -1;
-    border: 1px solid var(--border-steel);
     border-radius: var(--radius-sharp);
     padding: var(--space-40);
-    background-color: var(--bg-secondary);
     display: flex;
     flex-direction: column;
     gap: var(--space-16);
@@ -941,13 +1004,21 @@ const marqueeText =
   }
 
   .commitment-card p {
-    color: var(--text-secondary);
+    color: var(--text-muted);
     font-size: 0.98rem;
   }
 
   /* 8. CONTACT FIN DE PAGE */
+  .cta-final {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+  }
+
   .cta-final-inner {
     grid-column: 1 / -1;
+    position: relative;
+    z-index: 1;
   }
 
   @media (min-width: 960px) {
@@ -959,6 +1030,6 @@ const marqueeText =
   .cta-final-text {
     margin-top: var(--space-24);
     margin-bottom: var(--space-40);
+    color: var(--text);
   }
 </style>
-
