@@ -1,18 +1,40 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Picture from '../../components/Picture.astro';
+import { SHOW_CARE_FAQ, CARE_FAQ_ITEMS } from '../../config/flags';
+
+const activeFaqItems = CARE_FAQ_ITEMS.filter((item) => item.answer.trim().length > 0);
+const faqJsonLd =
+  SHOW_CARE_FAQ && activeFaqItems.length > 0
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: activeFaqItems.map((item) => ({
+          '@type': 'Question',
+          name: item.question,
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: item.answer,
+          },
+        })),
+      }
+    : undefined;
 ---
 
 <BaseLayout
   title="CC Care · Social — SSE Solutions"
   description="CC Care mène des missions d'accompagnement social, conduites par une assistante sociale, dans les établissements de santé, les structures sociales et les entreprises."
   theme="cc-care"
+  jsonLd={faqJsonLd}
 >
   <section class="section hero-activity">
     <div class="container grid-12 hero-activity-grid">
       <div class="hero-activity-content">
         <p class="eyebrow" data-hero-fade>CC CARE · SOCIAL</p>
-        <h1 class="hero-title">
+        <h1 class="hero-title" data-hero-fade>
+          Une assistante sociale pour vos patients, vos usagers et vos salariés.
+        </h1>
+        <p class="hero-verbs" aria-label="Accompagner. Simplifier. Rendre autonome.">
           <span class="reveal-mask">
             <span class="reveal-line" data-hero-line>Accompagner.</span>
           </span>
@@ -22,14 +44,14 @@ import Picture from '../../components/Picture.astro';
           <span class="reveal-mask">
             <span class="reveal-line" data-hero-line>Rendre autonome.</span>
           </span>
-        </h1>
+        </p>
         <p class="prose-measure hero-activity-lead" data-hero-fade>
           CC Care mène des missions d'accompagnement social, conduites par une assistante sociale, dans les établissements de santé, les structures sociales et les entreprises.
         </p>
 
         <div class="btn-group hero-activity-actions" data-hero-fade>
           <a href="/contact?sujet=cc-care" class="btn-primary" data-magnetic data-glow>
-            <span>Nous écrire</span>
+            <span>Exposer une situation</span>
             <span class="btn-arrow" aria-hidden="true">→</span>
           </a>
           <a href="/cc-care/autonomie-inclusion" class="btn-secondary glass" data-glow>
@@ -60,6 +82,38 @@ import Picture from '../../components/Picture.astro';
           />
         </div>
       </div>
+    </div>
+  </section>
+
+  <section class="section section--spacious situations-section">
+    <div class="container">
+      <p class="eyebrow" data-reveal>SITUATIONS CONCRÈTES</p>
+      <h2 class="section-title" data-reveal-title>
+        <span class="reveal-mask">
+          <span class="reveal-line">Vous reconnaissez ces situations ?</span>
+        </span>
+      </h2>
+
+      <ul class="situations-grid grid-12">
+        <li class="situation-card glass" data-glow data-reveal>
+          <span class="num-index">01</span>
+          <p class="situation-text">
+            Une sortie d'hospitalisation bloquée faute de relais à domicile.
+          </p>
+        </li>
+        <li class="situation-card glass" data-glow data-reveal>
+          <span class="num-index">02</span>
+          <p class="situation-text">
+            Une personne qui renonce à un droit parce que la démarche est trop complexe.
+          </p>
+        </li>
+        <li class="situation-card glass" data-glow data-reveal>
+          <span class="num-index">03</span>
+          <p class="situation-text">
+            Un salarié en difficulté personnelle que l'entreprise ne sait pas comment aider.
+          </p>
+        </li>
+      </ul>
     </div>
   </section>
 
@@ -173,6 +227,28 @@ import Picture from '../../components/Picture.astro';
     </div>
   </section>
 
+  {SHOW_CARE_FAQ && (
+    <section class="section section--spacious faq-section">
+      <div class="container">
+        <p class="eyebrow" data-reveal>QUESTIONS FRÉQUENTES</p>
+        <h2 class="section-title" data-reveal-title>
+          <span class="reveal-mask">
+            <span class="reveal-line">Vos questions sur l'accompagnement social.</span>
+          </span>
+        </h2>
+
+        <dl class="faq-list">
+          {CARE_FAQ_ITEMS.map((item) => (
+            <div class="faq-item glass" data-glow data-reveal>
+              <dt class="faq-question">{item.question}</dt>
+              {item.answer && <dd class="faq-answer prose-measure">{item.answer}</dd>}
+            </div>
+          ))}
+        </dl>
+      </div>
+    </section>
+  )}
+
   <section class="section section--spacious">
     <div class="container grid-12">
       <div class="activity-contact-box">
@@ -186,7 +262,7 @@ import Picture from '../../components/Picture.astro';
             cccare@<wbr />ssesolutions.fr
           </a>
           <a href="/contact?sujet=cc-care" class="btn-primary" data-magnetic data-glow>
-            <span>Nous écrire</span>
+            <span>Exposer une situation</span>
             <span class="btn-arrow" aria-hidden="true">→</span>
           </a>
         </div>
@@ -227,10 +303,80 @@ import Picture from '../../components/Picture.astro';
     }
   }
 
+  .hero-title {
+    font-size: clamp(2.1rem, 1.35rem + 3vw, 3.6rem);
+    max-width: 24ch;
+  }
+
+  .hero-verbs {
+    margin-top: var(--space-24);
+    font-family: var(--font-display);
+    font-size: clamp(1.35rem, 1rem + 1.5vw, 2.15rem);
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    color: var(--activity-tint);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45em;
+  }
+
   .hero-activity-lead {
-    margin-top: var(--space-40);
+    margin-top: var(--space-24);
     font-size: clamp(1.125rem, 1.3vw, 1.3rem);
     color: var(--text);
+  }
+
+  .situations-grid {
+    margin-top: var(--space-64);
+    row-gap: var(--space-24);
+  }
+
+  .situation-card {
+    --pointer-glow: color-mix(in srgb, var(--tint-care) 16%, transparent);
+    grid-column: 1 / -1;
+    border-top: 2px solid var(--activity-tint);
+    border-radius: var(--radius-sharp);
+    padding: var(--space-40);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+  }
+
+  @media (min-width: 768px) {
+    .situation-card {
+      grid-column: span 4;
+    }
+  }
+
+  .situation-text {
+    font-family: var(--font-display);
+    font-size: var(--fs-h3);
+    line-height: 1.38;
+    color: var(--text);
+  }
+
+  .faq-list {
+    margin-top: var(--space-64);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-24);
+  }
+
+  .faq-item {
+    padding: var(--space-40);
+    border-radius: var(--radius-sharp);
+    border-left: 2px solid var(--activity-tint);
+  }
+
+  .faq-question {
+    font-family: var(--font-display);
+    font-size: var(--fs-h3);
+    color: var(--text);
+  }
+
+  .faq-answer {
+    margin-top: var(--space-16);
+    color: var(--text-muted);
   }
 
   .hero-activity-actions {
