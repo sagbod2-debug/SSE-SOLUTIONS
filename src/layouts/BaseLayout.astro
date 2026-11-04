@@ -153,6 +153,14 @@ const ogImageUrl = ogImage || `${siteOrigin}/og/${slugForOg}.png`;
     <ClientRouter />
   </head>
   <body>
+    <!-- 7.3 Réfraction optique sur Chromium -->
+    <svg class="liquid-glass-svg-defs" width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute;width:0;height:0;overflow:hidden;pointer-events:none;">
+      <filter id="liquid-glass">
+        <feTurbulence type="fractalNoise" baseFrequency="0.015" numOctaves="2" result="noise" />
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="18" xChannelSelector="R" yChannelSelector="G" />
+      </filter>
+    </svg>
+
     <a href="#main-content" class="skip-link">Aller au contenu</a>
 
     <Header />

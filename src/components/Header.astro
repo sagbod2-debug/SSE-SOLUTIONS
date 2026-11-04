@@ -9,7 +9,7 @@ const isActivityActive =
   currentPath.startsWith('/cc-events');
 ---
 
-<header class="site-header" id="site-header">
+<header class="site-header glass" id="site-header">
   <div class="container header-inner">
     <a href="/" class="brand-wordmark" aria-label="SSE Solutions — Accueil">
       <span class="brand-sse">SSE</span>
@@ -234,25 +234,37 @@ const isActivityActive =
     left: 0;
     right: 0;
     z-index: 100;
-    background-color: transparent;
-    border-bottom: 1px solid transparent;
-    transition: background-color 300ms var(--ease-out), border-color 300ms var(--ease-out);
+    background: var(--glass-bg);
+    -webkit-backdrop-filter: blur(24px) saturate(180%) brightness(1.04);
+    backdrop-filter: blur(24px) saturate(180%) brightness(1.04);
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    transition: background-color 300ms var(--ease-out), border-color 300ms var(--ease-out), box-shadow 300ms var(--ease-out);
   }
 
-  /* 2.1 Application de .glass une fois la page défilée (.is-scrolled) */
+  /* 7.8 Léger halo de la couleur de l'activité derrière l'en-tête en verre */
+  :global(html[data-activity]) .site-header {
+    box-shadow:
+      var(--glass-shadow),
+      0 6px 32px color-mix(in srgb, var(--activity-tint) 18%, transparent);
+  }
+
   .site-header.is-scrolled,
   .site-header.menu-open {
     background: var(--glass-bg);
-    -webkit-backdrop-filter: blur(20px) saturate(160%);
-    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%) brightness(1.04);
+    backdrop-filter: blur(24px) saturate(180%) brightness(1.04);
     border-bottom: 1px solid var(--glass-border);
-    box-shadow: var(--glass-highlight);
   }
 
   @media (prefers-reduced-transparency: reduce) {
+    .site-header,
     .site-header.is-scrolled,
     .site-header.menu-open {
-      background: color-mix(in srgb, var(--surface) 96%, transparent) !important;
+      background: var(--surface) !important;
       -webkit-backdrop-filter: none !important;
       backdrop-filter: none !important;
     }

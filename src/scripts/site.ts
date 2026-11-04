@@ -95,16 +95,32 @@ function initThemeSwitcher() {
   });
 }
 
+function detectSvgRefractionSupport() {
+  try {
+    const ua = navigator.userAgent || '';
+    const isChromium =
+      /Chrome\/|Chromium\/|Edg\//.test(ua) && !/Firefox\/|FxiOS\/|OPR\//.test(ua);
+    const supportsFilter =
+      typeof CSS !== 'undefined' &&
+      typeof CSS.supports === 'function' &&
+      CSS.supports('backdrop-filter', 'url(#liquid-glass)');
+    if (isChromium && supportsFilter) {
+      document.documentElement.classList.add('supports-svg-refraction');
+    }
+  } catch {}
+}
+
 function initHeader() {
+  detectSvgRefractionSupport();
   initThemeSwitcher();
   const header = document.getElementById('site-header');
   if (!header) return;
 
   const updateScroll = () => {
     if (window.scrollY > 24) {
-      header.classList.add('is-scrolled', 'glass');
+      header.classList.add('is-scrolled');
     } else {
-      header.classList.remove('is-scrolled', 'glass');
+      header.classList.remove('is-scrolled');
     }
   };
   updateScroll();
@@ -296,9 +312,9 @@ function initAnimations() {
 
       // Interactions pointeur avec gsap.quickTo() uniquement (aucun nouveau tween par pointermove)
       if (canHover) {
-        // 1) Reflet verre qui suit le pointeur via gsap.quickTo()
+        // 1) Reflet verre qui suit le pointeur via gsap.quickTo() (280 px radial sur .glass et boutons)
         const glowTargets = document.querySelectorAll<HTMLElement>(
-          '[data-glow], .btn-primary, .btn-secondary, [data-activity-row], [data-activity-pill]'
+          '.glass, [data-glow], .btn-primary, .btn-secondary, [data-activity-row], [data-activity-pill]'
         );
         glowTargets.forEach((el) => {
           const pos = { x: 0, y: 0 };

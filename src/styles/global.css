@@ -31,8 +31,9 @@ html[data-theme="light"] {
   --glass-bg: rgba(255, 255, 255, 0.42);
   --glass-border: rgba(255, 255, 255, 0.75);
   --glass-outer-ring: 0 0 0 1px rgba(11, 13, 18, 0.06);
-  --glass-shadow: 0 12px 40px rgba(11, 13, 18, 0.10);
+  --glass-shadow: 0 0 0 1px rgba(11, 13, 18, 0.06), 0 12px 40px rgba(11, 13, 18, 0.10);
   --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.85);
+  --glass-specular-top: rgba(255, 255, 255, 0.60);
   --glass-glow-color: rgba(255, 255, 255, 0.35);
   --hero-scrim-start: rgba(255, 255, 255, 0.55);
   --hero-scrim-end: rgba(255, 255, 255, 0.94);
@@ -62,6 +63,7 @@ html[data-theme="light"] {
     --glass-outer-ring: 0 0 0 1px rgba(255, 255, 255, 0.04);
     --glass-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
     --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.18);
+    --glass-specular-top: rgba(255, 255, 255, 0.60);
     --glass-glow-color: rgba(255, 255, 255, 0.12);
     --hero-scrim-start: rgba(10, 11, 15, 0.45);
     --hero-scrim-end: rgba(10, 11, 15, 0.92);
@@ -95,6 +97,7 @@ html[data-theme="dark"] {
   --glass-outer-ring: 0 0 0 1px rgba(255, 255, 255, 0.04);
   --glass-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
   --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  --glass-specular-top: rgba(255, 255, 255, 0.60);
   --glass-glow-color: rgba(255, 255, 255, 0.12);
   --hero-scrim-start: rgba(10, 11, 15, 0.45);
   --hero-scrim-end: rgba(10, 11, 15, 0.92);
@@ -297,27 +300,134 @@ select {
   outline: 2px solid var(--text) !important;
 }
 
-/* 2.1 Classe utilitaire .glass (Liquid Glass) */
+/* 7.3 Matériau « Liquid Glass » bien visible (.glass) */
+@property --iridescent-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes glass-iridescent-spin {
+  to {
+    --iridescent-angle: 360deg;
+  }
+}
+
 .glass {
   background: var(--glass-bg);
-  -webkit-backdrop-filter: blur(20px) saturate(160%);
-  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%) brightness(1.04);
+  backdrop-filter: blur(24px) saturate(180%) brightness(1.04);
   border: 1px solid var(--glass-border);
-  box-shadow: var(--glass-highlight);
+  box-shadow: var(--glass-shadow);
   position: relative;
+}
+
+/* Réfraction optique SVG sur Chromium lorsque supportée */
+html.supports-svg-refraction .glass--refract {
+  -webkit-backdrop-filter: url(#liquid-glass) blur(24px) saturate(180%) brightness(1.04);
+  backdrop-filter: url(#liquid-glass) blur(24px) saturate(180%) brightness(1.04);
+}
+
+/* Reflet spéculaire (::before) : dégradé linéaire blanc 60% -> 0% sur le tiers supérieur + radial 280px suivant --mx, --my */
+.glass::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(
+      280px circle at var(--mx, 50%) var(--my, -999px),
+      var(--glass-glow-color),
+      transparent 70%
+    ),
+    linear-gradient(
+      180deg,
+      var(--glass-specular-top, rgba(255, 255, 255, 0.60)) 0%,
+      rgba(255, 255, 255, 0) 33.33%
+    );
+}
+
+html[data-theme="dark"] .glass::before {
+  background:
+    radial-gradient(
+      280px circle at var(--mx, 50%) var(--my, -999px),
+      var(--glass-glow-color),
+      transparent 70%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.16) 0%,
+      rgba(255, 255, 255, 0) 33.33%
+    );
+}
+
+/* Arête irisée (::after) : filet de 1 px en conic-gradient doux (vert, bleu-vert, rouge, violet à 25 % d'opacité), masqué au centre */
+.glass::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  pointer-events: none;
+  z-index: 0;
+  background: conic-gradient(
+    from var(--iridescent-angle, 0deg),
+    rgba(11, 122, 90, 0.25),
+    rgba(10, 122, 136, 0.25),
+    rgba(212, 42, 58, 0.25),
+    rgba(91, 75, 196, 0.25),
+    rgba(11, 122, 90, 0.25)
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  opacity: 0.85;
+  transition: opacity 300ms var(--ease-out);
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .glass:hover::after {
+    opacity: 1;
+    animation: glass-iridescent-spin 6s linear infinite;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glass::before {
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.25) 0%,
+      rgba(255, 255, 255, 0) 33.33%
+    ) !important;
+  }
+  .glass::after,
+  .glass:hover::after {
+    animation: none !important;
+  }
 }
 
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
   .glass {
-    background: color-mix(in srgb, var(--surface) 96%, transparent);
+    background: var(--surface);
   }
 }
 
 @media (prefers-reduced-transparency: reduce) {
   .glass {
-    background: color-mix(in srgb, var(--surface) 96%, transparent) !important;
+    background: var(--surface) !important;
     -webkit-backdrop-filter: none !important;
     backdrop-filter: none !important;
+  }
+  .glass::before,
+  .glass::after {
+    display: none !important;
   }
 }
 
@@ -328,10 +438,14 @@ select {
     backdrop-filter: none !important;
     border-color: var(--line) !important;
   }
+  .glass::before,
+  .glass::after {
+    display: none !important;
+  }
 }
 
 /* Reflet qui suit le pointeur sur ordinateur ((hover: hover)) */
-@media (hover: hover) {
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
   [data-glow],
   .btn-primary,
   .btn-secondary,
@@ -339,9 +453,9 @@ select {
     position: relative;
     overflow: hidden;
   }
-  [data-glow]::before,
-  .btn-primary::before,
-  .btn-secondary::before,
+  [data-glow]:not(.glass)::before,
+  .btn-primary:not(.glass)::before,
+  .btn-secondary:not(.glass)::before,
   [data-activity-row]::after {
     content: '';
     position: absolute;
@@ -351,14 +465,14 @@ select {
     opacity: 0;
     transition: opacity 300ms var(--ease-out);
     background: radial-gradient(
-      240px circle at var(--mx, 50%) var(--my, 50%),
+      280px circle at var(--mx, 50%) var(--my, 50%),
       var(--pointer-glow, var(--glass-glow-color)),
       transparent 70%
     );
   }
-  [data-glow]:hover::before,
-  .btn-primary:hover::before,
-  .btn-secondary:hover::before,
+  [data-glow]:not(.glass):hover::before,
+  .btn-primary:not(.glass):hover::before,
+  .btn-secondary:not(.glass):hover::before,
   [data-activity-row]:hover::after {
     opacity: 1;
   }
@@ -502,9 +616,9 @@ h3,
   font-family: var(--font-sans);
   font-weight: 600;
   font-size: var(--fs-small);
-  letter-spacing: 0.04em;
+  letter-spacing: 0.02em;
   padding: 0.95rem 1.65rem;
-  border-radius: var(--radius-sharp);
+  border-radius: 999px;
   border: 1px solid var(--accent-fill);
   cursor: pointer;
   position: relative;
@@ -552,17 +666,17 @@ h3,
   font-family: var(--font-sans);
   font-weight: 500;
   font-size: var(--fs-small);
-  letter-spacing: 0.03em;
+  letter-spacing: 0.02em;
   padding: 0.9rem 1.4rem;
-  border-radius: var(--radius-sharp);
+  border-radius: 999px;
   cursor: pointer;
   min-height: 3rem;
   background: var(--glass-bg);
-  -webkit-backdrop-filter: blur(20px) saturate(160%);
-  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%) brightness(1.04);
+  backdrop-filter: blur(24px) saturate(180%) brightness(1.04);
   border: 1px solid var(--glass-border);
-  box-shadow: var(--glass-highlight);
-  transition: border-color 300ms var(--ease-out), background-color 300ms var(--ease-out);
+  box-shadow: var(--glass-shadow);
+  transition: border-color 300ms var(--ease-out), background-color 300ms var(--ease-out), transform 250ms var(--ease-out);
 }
 
 .btn-secondary:hover {
@@ -571,7 +685,7 @@ h3,
 
 @media (prefers-reduced-transparency: reduce) {
   .btn-secondary {
-    background: color-mix(in srgb, var(--surface) 96%, transparent) !important;
+    background: var(--surface) !important;
     -webkit-backdrop-filter: none !important;
     backdrop-filter: none !important;
   }
