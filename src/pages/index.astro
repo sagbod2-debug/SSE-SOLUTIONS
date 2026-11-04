@@ -2,6 +2,8 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Picture from '../components/Picture.astro';
 
+// TODO logo officiel : remplacer la composition typographique de la section « Trois lettres. Une seule maison. » par le SVG ou PNG transparent officiel (< 40 Ko) dès réception.
+
 const marqueeText =
   "Accompagnement social · Sécurité incendie · Établissements recevant du public · Événementiel · Autonomie au quotidien · Commissions de sécurité · Coordination d'équipes · ";
 ---
@@ -203,14 +205,10 @@ const marqueeText =
         </p>
 
         <div class="about-logo-box">
-          <div class="logo-panel">
-            <img
-              src="/logos/logo_SSE_Solutions.png"
-              alt="Logo officiel SSE Solutions — Social, Security and Events"
-              width="440"
-              height="305"
-              loading="lazy"
-            />
+          <div class="brand-wordmark-large" aria-label="SSE Solutions — Social, Security and Events">
+            <span class="brand-wordmark-sse">SSE</span>
+            <span class="brand-wordmark-rule" aria-hidden="true"></span>
+            <span class="brand-wordmark-solutions">Solutions</span>
           </div>
         </div>
       </div>
@@ -741,8 +739,39 @@ const marqueeText =
 
   .about-text {
     font-size: clamp(1.125rem, 1.3vw, 1.25rem);
-    color: var(--text-primary);
+    color: var(--text);
     margin-bottom: var(--space-40);
+  }
+
+  .brand-wordmark-large {
+    display: inline-flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: var(--space-32, 2rem) 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    font-family: var(--font-display);
+    text-transform: uppercase;
+  }
+
+  .brand-wordmark-sse {
+    font-size: clamp(2.5rem, 5vw, 4.25rem);
+    letter-spacing: 0.12em;
+    color: var(--text);
+    line-height: 1;
+  }
+
+  .brand-wordmark-rule {
+    width: 1px;
+    height: 3rem;
+    background-color: var(--accent);
+  }
+
+  .brand-wordmark-solutions {
+    font-size: clamp(1.25rem, 2.4vw, 2rem);
+    letter-spacing: 0.24em;
+    color: var(--text-muted);
+    line-height: 1;
   }
 
   /* 5. SECTION PROGRAMME */
