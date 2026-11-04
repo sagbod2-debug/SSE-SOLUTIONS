@@ -1,54 +1,54 @@
 {
   "01-hero-architecture": {
-    "dominantColor": "#595d5e",
+    "dominantColor": "#14161C",
     "blurDataUrl": "data:image/webp;base64,UklGRl4AAABXRUJQVlA4IFIAAABQBACdASoUAA0APsFQpEsnpKOhsAgA8BgJYwCdACPuP7CD8ul5DR0CYIdAAP59Fp1E/gxRK7vy1Mrd/rQUudnXpZJ1sdF/UGCwBI6k/9BAiAAA"
   },
   "02-accueil-cc-care": {
-    "dominantColor": "#757f87",
+    "dominantColor": "#14161C",
     "blurDataUrl": "data:image/webp;base64,UklGRlYAAABXRUJQVlA4IEoAAACwAwCdASoUAA0APsFQpEsnpKOhsAgA8BgJZwCdABbYOf7GKm0SwAD+3ZfL0qPRQWx6bSFee5ezilRNQ84BdElBvZuNhlR2hAeAAA=="
   },
   "03-accueil-cc-consulting": {
-    "dominantColor": "#71716f",
+    "dominantColor": "#14161C",
     "blurDataUrl": "data:image/webp;base64,UklGRlYAAABXRUJQVlA4IEoAAAAQBACdASoUAA0APsFcpEwnpaOiMAgA8BgJZwC/OCFmP4Jvs0upfWtMAAD+JeA60i2Wrkb7OPufbfqSrmg59PHuD7w2mhkChdrgAA=="
   },
   "04-accueil-cc-events": {
-    "dominantColor": "#aaa695",
+    "dominantColor": "#14161C",
     "blurDataUrl": "data:image/webp;base64,UklGRlYAAABXRUJQVlA4IEoAAADQAwCdASoUAA0APsFQoUqnpKMhsAgA8BgJZQC7AB495k3Aq7z6EiAA2/dQ0Ybh7+o14yeV+t52cnmSnvw0hinTLLpatoznexjAAA=="
   },
   "05-accueil-programme": {
-    "dominantColor": "#7d7674",
+    "dominantColor": "#14161C",
     "blurDataUrl": "data:image/webp;base64,UklGRlQAAABXRUJQVlA4IEgAAACQAwCdASoUAA0APsFUpEqnpSOhsAgA8BgJZwDCgB6PT/y0OXaYAP6pf35HeF2tl/e8AFnIGcprVdij7j3ue5zFBEWY5NcwAAA="
   },
   "06-cc-care-hero": {
-    "dominantColor": "#555c5c",
+    "dominantColor": "#14161C",
     "blurDataUrl": "data:image/webp;base64,UklGRlwAAABXRUJQVlA4IFAAAACwAwCdASoUAA0APsFOoEqnpCMhsAgA8BgJZQDCgBRttu5fHMckgADOLlwF1zsTGcwRJ9DQbYJVM5mvzwhXXVrMz9ecXpV1os3n72w1WWwAAA=="
   },
   "07-cc-care-missions": {
-    "dominantColor": "#7a796c",
+    "dominantColor": "#14161C",
     "blurDataUrl": "data:image/webp;base64,UklGRkwAAABXRUJQVlA4IEAAAABQAwCdASoUAA0APsFQoUsnpKMhsAgA8BgJZwDCgAMbggsgAAD3dEVk5Mc2v874RzWI66M6PI70ofym//ChQAAA"
   },
   "08-autonomie-hero": {
-    "dominantColor": "#c5baab",
+    "dominantColor": "#14161C",
     "blurDataUrl": "data:image/webp;base64,UklGRk4AAABXRUJQVlA4IEIAAACwAwCdASoUAA0APsFSoUsnpKMhsAgA8BgJZQC7ACHfwrqx+W2uAAD+7UhZpO8gxkFfYprsVp0ZW5wb57OwZm/YAAA="
   },
   "09-autonomie-parcours": {
-    "dominantColor": "#876d56",
+    "dominantColor": "#14161C",
     "blurDataUrl": "data:image/webp;base64,UklGRlAAAABXRUJQVlA4IEQAAADQAwCdASoUAA0APsFQoUqnpKMhsAgA8BgJQBOmUGVshvFXBkcs+DYA4cGvw1DzIDq7zx8eVHtwys0ad3RMZNAtdEAAAA=="
   },
   "10-cc-consulting-hero": {
-    "dominantColor": "#6f7e86",
+    "dominantColor": "#14161C",
     "blurDataUrl": "data:image/webp;base64,UklGRl4AAABXRUJQVlA4IFIAAADwAwCdASoUAA0APsFSoUqnpKMhsAgA8BgJZQCdACEmJkij57t+S4kAAP3V0pjjrxRbL9WbOVZaIyEA0+m81J1D9GD1mb78fewEjrIRJAI6ocAA"
   },
   "11-cc-consulting-services": {
-    "dominantColor": "#53514f",
+    "dominantColor": "#14161C",
     "blurDataUrl": "data:image/webp;base64,UklGRlwAAABXRUJQVlA4IFAAAAAwBACdASoUAA0APsFcpEwnpaOiMAgA8BgJZQC06CFU2WSX6SZpOluwzAAA/unFHMFG5GidX81sUrPpieYwDHctGVetVGoxWfalQLNrlUaAAA=="
   },
   "12-cc-events-hero": {
-    "dominantColor": "#98786a",
+    "dominantColor": "#14161C",
     "blurDataUrl": "data:image/webp;base64,UklGRlYAAABXRUJQVlA4IEoAAADQAwCdASoUAA0APsFQoksnpKMhsAgA8BgJQBOmUABfMn7Jgu9N2sAA/j9LXABDKjtAT+0WGsTqraukqsTTS2OUYLaG6EQ17yAAAA=="
   },
   "13-cc-events-services": {
-    "dominantColor": "#242e44",
+    "dominantColor": "#14161C",
     "blurDataUrl": "data:image/webp;base64,UklGRlIAAABXRUJQVlA4IEYAAADQAwCdASoUAA0APsFOoEqnpCMhsAgA8BgJYwCw7CHfZSTToNVXMAAA/vFmtYGcFd3YEMecYvZHStBafdIKbN9khMzIAAAA"
   }
 }

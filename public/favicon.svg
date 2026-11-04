@@ -1,18 +1,18 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
   <style>
-    .bg { fill: #111416; }
-    .border { stroke: #C9A24B; }
-    .txt { fill: #EDEEEF; font-family: 'Marcellus', Georgia, serif; font-size: 23px; letter-spacing: 1.5px; }
-    .rule { stroke: #C9A24B; }
-    @media (prefers-color-scheme: light) {
-      .bg { fill: #F6F4EF; }
-      .border { stroke: #7A5C17; }
-      .txt { fill: #15181A; }
-      .rule { stroke: #7A5C17; }
+    .bg { fill: #FFFFFF; }
+    .border { stroke: #0B0D12; }
+    .txt { fill: #0B0D12; font-family: 'Hanken Grotesk', -apple-system, sans-serif; font-weight: 600; font-size: 22px; letter-spacing: -0.5px; }
+    .rule { stroke: #0B7A5A; }
+    @media (prefers-color-scheme: dark) {
+      .bg { fill: #0A0B0F; }
+      .border { stroke: #F4F6FA; }
+      .txt { fill: #F4F6FA; }
+      .rule { stroke: #4FD1A5; }
     }
   </style>
-  <rect class="bg" width="64" height="64" rx="4" />
-  <rect class="border" x="2" y="2" width="60" height="60" rx="2" fill="none" stroke-width="1.5" />
+  <rect class="bg" width="64" height="64" rx="12" />
+  <rect class="border" x="2" y="2" width="60" height="60" rx="10" fill="none" stroke-width="1.5" stroke-opacity="0.22" />
   <text class="txt" x="32" y="38" text-anchor="middle">SSE</text>
-  <line class="rule" x1="16" y1="46" x2="48" y2="46" stroke-width="1.5" />
+  <line class="rule" x1="18" y1="46" x2="46" y2="46" stroke-width="2" stroke-linecap="round" />
 </svg>

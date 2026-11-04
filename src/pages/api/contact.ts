@@ -70,7 +70,7 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
     // Repli HTML classique sans mettre de données personnelles dans l'URL
     const html = `<!doctype html><html lang="fr"><head><meta charset="utf-8"><title>${
       payload.ok ? 'Message envoyé' : 'Erreur d’envoi'
-    } — SSE Solutions</title><meta name="viewport" content="width=device-width,initial-scale=1"><style>body{background:#111416;color:#EDEEEF;font-family:sans-serif;padding:3rem;max-width:42rem;margin:0 auto;line-height:1.6}a{color:#C9A24B}</style></head><body><h1>${
+    } — SSE Solutions</title><meta name="viewport" content="width=device-width,initial-scale=1"><style>body{background:#0A0B0F;color:#F4F6FA;font-family:sans-serif;padding:3rem;max-width:42rem;margin:0 auto;line-height:1.6}a{color:#4FD1A5}</style></head><body><h1>${
       payload.ok ? 'Message envoyé.' : 'Envoi impossible.'
     }</h1><p role="${payload.ok ? 'status' : 'alert'}">${escapeHtml(payload.message)}</p>${
       payload.fallbackEmail
@@ -192,14 +192,14 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
     }
 
     const htmlBody = `
-      <div style="font-family:sans-serif;line-height:1.6;color:#15181A;max-width:600px">
+      <div style="font-family:sans-serif;line-height:1.6;color:#0B0D12;max-width:600px">
         <h2 style="margin-bottom:16px">Nouveau message — ${escapeHtml(sujet)}</h2>
         <p><strong>Nom et prénom :</strong> ${escapeHtml(nom)}</p>
         <p><strong>Structure ou entreprise :</strong> ${escapeHtml(structure || 'Non renseignée')}</p>
         <p><strong>E-mail :</strong> ${escapeHtml(email)}</p>
         <p><strong>Téléphone :</strong> ${escapeHtml(telephone || 'Non renseigné')}</p>
         <p><strong>Sujet :</strong> ${escapeHtml(sujet)}</p>
-        <hr style="border:none;border-top:1px solid #ddd;margin:20px 0" />
+        <hr style="border:none;border-top:1px solid #e2e8f0;margin:20px 0" />
         <p style="white-space:pre-wrap">${escapeHtml(message)}</p>
       </div>
     `;

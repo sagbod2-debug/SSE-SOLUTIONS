@@ -1,98 +1,104 @@
 @import './fonts.css';
 
 :root,
-html[data-theme="dark"] {
-  color-scheme: dark;
+html[data-theme="light"] {
+  color-scheme: light;
 
-  /* 1.3 Variables de thème — Sombre (par défaut) */
-  --bg: #111416;
-  --surface: #1A1E21;
-  --text: #EDEEEF;
-  --text-muted: #A3AAB1;
-  --accent: #C9A24B;
-  --accent-fill: #C9A24B;
-  --accent-fill-hover: #E0BE6A;
-  --accent-fill-text: #111416;
-  --line: rgba(255, 255, 255, 0.10);
+  /* 7.1 Variables de thème — Clair (fond blanc pur #FFFFFF) */
+  --bg: #FFFFFF;
+  --surface: #FFFFFF;
+  --text: #0B0D12;
+  --text-muted: #5B6270;
+  --accent: #0B0D12;
+  --accent-fill: #0B0D12;
+  --accent-fill-hover: #14161C;
+  --accent-fill-text: #FFFFFF;
+  --line: rgba(11, 13, 18, 0.08);
 
-  /* Alias de compatibilité interne (aucune couleur en dur) */
   --bg-primary: var(--bg);
   --bg-secondary: var(--surface);
   --border-steel: var(--line);
   --text-primary: var(--text);
   --text-secondary: var(--text-muted);
-  --accent-gold: var(--accent);
-  --accent-gold-hover: var(--accent-fill-hover);
 
-  /* 2.5 Teintes par activité — Sombre */
-  --tint-care: #8FB5A0;
-  --tint-consulting: #D98A6A;
-  --tint-events: #8FA8D9;
+  /* 7.1 Teintes par activité — Clair */
+  --tint-care: #0B7A5A;
+  --tint-autonomie: #0A7A88;
+  --tint-consulting: #D42A3A;
+  --tint-events: #5B4BC4;
 
-  /* 2.1 Matériau verre — Sombre */
-  --glass-bg: rgba(17, 20, 22, 0.55);
-  --glass-border: rgba(255, 255, 255, 0.08);
-  --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.10);
-  --glass-glow-color: rgba(255, 255, 255, 0.06);
-  --hero-scrim-start: rgba(17, 20, 22, 0.45);
-  --hero-scrim-end: rgba(17, 20, 22, 0.92);
-  --image-light-veil: transparent;
+  /* 7.3 Liquid Glass — Clair */
+  --glass-bg: rgba(255, 255, 255, 0.42);
+  --glass-border: rgba(255, 255, 255, 0.75);
+  --glass-outer-ring: 0 0 0 1px rgba(11, 13, 18, 0.06);
+  --glass-shadow: 0 12px 40px rgba(11, 13, 18, 0.10);
+  --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.85);
+  --glass-glow-color: rgba(255, 255, 255, 0.35);
+  --hero-scrim-start: rgba(255, 255, 255, 0.55);
+  --hero-scrim-end: rgba(255, 255, 255, 0.94);
+  --image-light-veil: rgba(255, 255, 255, 0.08);
 }
 
-@media (prefers-color-scheme: light) {
-  html:not([data-theme="dark"]) {
-    color-scheme: light;
-    --bg: #F6F4EF;
-    --surface: #FFFFFF;
-    --text: #15181A;
-    --text-muted: #545B62;
-    --accent: #7A5C17;
-    --accent-fill: #C9A24B;
-    --accent-fill-hover: #D4B05C;
-    --accent-fill-text: #15181A;
-    --line: rgba(21, 24, 26, 0.12);
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #0A0B0F;
+    --surface: #14161C;
+    --text: #F4F6FA;
+    --text-muted: #A1A8B5;
+    --accent: #F4F6FA;
+    --accent-fill: #FFFFFF;
+    --accent-fill-hover: #F4F6FA;
+    --accent-fill-text: #0B0D12;
+    --line: rgba(255, 255, 255, 0.10);
 
-    --tint-care: #3F6B55;
-    --tint-consulting: #A6512F;
-    --tint-events: #3F5A94;
+    --tint-care: #4FD1A5;
+    --tint-autonomie: #4FD6E8;
+    --tint-consulting: #FF6B75;
+    --tint-events: #A99BFF;
 
-    --glass-bg: rgba(246, 244, 239, 0.60);
-    --glass-border: rgba(21, 24, 26, 0.08);
-    --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.70);
-    --glass-glow-color: rgba(255, 255, 255, 0.35);
-    --hero-scrim-start: rgba(246, 244, 239, 0.55);
-    --hero-scrim-end: rgba(246, 244, 239, 0.94);
-    --image-light-veil: rgba(246, 244, 239, 0.08);
+    --glass-bg: rgba(255, 255, 255, 0.06);
+    --glass-border: rgba(255, 255, 255, 0.16);
+    --glass-outer-ring: 0 0 0 1px rgba(255, 255, 255, 0.04);
+    --glass-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+    --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.18);
+    --glass-glow-color: rgba(255, 255, 255, 0.12);
+    --hero-scrim-start: rgba(10, 11, 15, 0.45);
+    --hero-scrim-end: rgba(10, 11, 15, 0.92);
+    --image-light-veil: transparent;
   }
 }
 
-html[data-theme="light"] {
-  color-scheme: light;
+html[data-theme="dark"] {
+  color-scheme: dark;
 
-  /* 1.3 Variables de thème — Clair */
-  --bg: #F6F4EF;
-  --surface: #FFFFFF;
-  --text: #15181A;
-  --text-muted: #545B62;
-  --accent: #7A5C17;
-  --accent-fill: #C9A24B;
-  --accent-fill-hover: #D4B05C;
-  --accent-fill-text: #15181A;
-  --line: rgba(21, 24, 26, 0.12);
+  /* 7.1 Variables de thème — Sombre (#0A0B0F) */
+  --bg: #0A0B0F;
+  --surface: #14161C;
+  --text: #F4F6FA;
+  --text-muted: #A1A8B5;
+  --accent: #F4F6FA;
+  --accent-fill: #FFFFFF;
+  --accent-fill-hover: #F4F6FA;
+  --accent-fill-text: #0B0D12;
+  --line: rgba(255, 255, 255, 0.10);
 
-  /* 2.5 Teintes par activité — Clair */
-  --tint-care: #3F6B55;
-  --tint-consulting: #A6512F;
-  --tint-events: #3F5A94;
+  /* 7.1 Teintes par activité — Sombre */
+  --tint-care: #4FD1A5;
+  --tint-autonomie: #4FD6E8;
+  --tint-consulting: #FF6B75;
+  --tint-events: #A99BFF;
 
-  /* 2.1 Matériau verre — Clair */
-  --glass-bg: rgba(246, 244, 239, 0.60);
-  --glass-border: rgba(21, 24, 26, 0.08);
-  --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.70);
-  --glass-glow-color: rgba(255, 255, 255, 0.35);
-  --hero-scrim-start: rgba(246, 244, 239, 0.55);
-  --hero-scrim-end: rgba(246, 244, 239, 0.94);
-  --image-light-veil: rgba(246, 244, 239, 0.08);
+  /* 7.3 Liquid Glass — Sombre */
+  --glass-bg: rgba(255, 255, 255, 0.06);
+  --glass-border: rgba(255, 255, 255, 0.16);
+  --glass-outer-ring: 0 0 0 1px rgba(255, 255, 255, 0.04);
+  --glass-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+  --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  --glass-glow-color: rgba(255, 255, 255, 0.12);
+  --hero-scrim-start: rgba(10, 11, 15, 0.45);
+  --hero-scrim-end: rgba(10, 11, 15, 0.92);
+  --image-light-veil: transparent;
 }
 
 :root {
@@ -136,17 +142,25 @@ html[data-theme="light"] {
   }
 }
 
-/* 2.5 Attribution de la teinte par activité */
+/* 2.5 / 7.1 Attribution de la teinte par activité */
 html[data-activity="cc-care"] {
   --activity-tint: var(--tint-care);
+  --accent: var(--tint-care);
+}
+
+html[data-activity="autonomie-inclusion"] {
+  --activity-tint: var(--tint-autonomie);
+  --accent: var(--tint-autonomie);
 }
 
 html[data-activity="cc-consulting"] {
   --activity-tint: var(--tint-consulting);
+  --accent: var(--tint-consulting);
 }
 
 html[data-activity="cc-events"] {
   --activity-tint: var(--tint-events);
+  --accent: var(--tint-events);
 }
 
 /* 3.4 Contraste renforcé (@media (prefers-contrast: more)) */
@@ -160,9 +174,9 @@ html[data-activity="cc-events"] {
   }
   html[data-theme="light"] {
     --text-muted: var(--text);
-    --line: rgba(21, 24, 26, 0.30);
+    --line: rgba(11, 13, 18, 0.30);
     --glass-bg: var(--surface);
-    --glass-border: rgba(21, 24, 26, 0.30);
+    --glass-border: rgba(11, 13, 18, 0.30);
   }
 }
 
@@ -559,12 +573,11 @@ h3,
   }
 }
 
-/* Panneau de présentation pour les logos avec fond blanc */
+/* Panneau de présentation pour les logos */
 .logo-panel {
-  background-color: #F6F4EF;
-  border: 1px solid var(--line);
-  border-radius: var(--radius-sharp);
-  padding: var(--space-24);
+  background-color: transparent;
+  border: none;
+  padding: 0;
   display: inline-flex;
   align-items: center;
   justify-content: center;

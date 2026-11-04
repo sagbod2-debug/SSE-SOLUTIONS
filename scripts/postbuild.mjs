@@ -76,10 +76,34 @@ if (fs.existsSync(funcDir) && fs.existsSync(vcConfigPath)) {
     fs.rmSync(funcNodeModules, { recursive: true, force: true });
   }
 
-  // Write standalone Node.js handler that invokes compiled /api/contact directly
-  const handlerCode = `import { page } from './dist/server/pages/api/contact.astro.mjs';
+  // Copy 404.html into _render.func so unknown routes always return full 404.astro HTML with HTTP 404
+  const fourOhFourSrc = path.join(staticDir, '404.html');
+  if (fs.existsSync(fourOhFourSrc)) {
+    fs.copyFileSync(fourOhFourSrc, path.join(funcDir, '404.html'));
+  }
+
+  // Write standalone Node.js handler that invokes compiled /api/contact directly and serves 404.html for unknown routes
+  const handlerCode = `import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { page } from './dist/server/pages/api/contact.astro.mjs';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const fourOhFourHtml = fs.existsSync(path.join(__dirname, '404.html'))
+  ? fs.readFileSync(path.join(__dirname, '404.html'), 'utf8')
+  : '<!doctype html><html lang="fr"><head><meta charset="utf-8"><title>Cette page n’existe pas — SSE Solutions</title></head><body><h1>Cette page n’existe pas.</h1></body></html>';
 
 export default async function handler(req, res) {
+  const rawUrl = req.url || '/';
+  const pathname = rawUrl.split('?')[0];
+
+  if (!pathname.startsWith('/api/contact')) {
+    res.statusCode = 404;
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.end(fourOhFourHtml);
+    return;
+  }
+
   const mod = page();
   const method = (req.method || 'GET').toUpperCase();
 
@@ -178,11 +202,8 @@ if (fs.existsSync(vercelConfigPath)) {
       dest: '_render',
     },
     {
-      handle: 'error',
-    },
-    {
       src: '/.*',
-      dest: '/404.html',
+      dest: '_render',
       status: 404,
     },
   ];

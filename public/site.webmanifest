@@ -4,8 +4,8 @@
   "description": "Accompagner les personnes (CC Care), protéger les lieux (CC Consulting), réussir les moments qui comptent (CC Events).",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#111416",
-  "theme_color": "#111416",
+  "background_color": "#FFFFFF",
+  "theme_color": "#FFFFFF",
   "icons": [
     {
       "src": "/favicon.svg",
