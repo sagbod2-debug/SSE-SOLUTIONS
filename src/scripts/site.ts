@@ -278,10 +278,13 @@ function initAnimations() {
 
       // Condition (prefers-reduced-motion: reduce) : aucune animation ne tourne
       if (reduceMotion || !motionOk) {
-        gsap.set('.reveal-line, [data-reveal], [data-parallax-img], [data-hero-line], [data-hero-fade]', {
-          clearProps: 'all',
-          opacity: 1,
-        });
+        gsap.set(
+          '.reveal-line, [data-reveal], [data-parallax-img], [data-hero-line], [data-hero-fade], [data-opening-item], [data-idea-panel], [data-solution-card]',
+          {
+            clearProps: 'all',
+            opacity: 1,
+          }
+        );
         document.querySelectorAll('.method-step').forEach((el) => el.classList.add('is-active'));
         document.querySelectorAll<HTMLElement>('[data-count-to]').forEach((el) => {
           const target = el.getAttribute('data-count-to');
@@ -558,6 +561,187 @@ function initAnimations() {
           ).set(sheen, { opacity: 0 });
         }
       });
+
+      // 7.6 Section 1 — Ouverture : entrée en cascade (logo, nom, accroche, boutons, 120 ms d'écart)
+      const openingItems = document.querySelectorAll('[data-opening-item]');
+      if (openingItems.length > 0) {
+        gsap.fromTo(
+          openingItems,
+          { opacity: 0, y: 22 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.85,
+            stagger: 0.12,
+            ease: 'power3.out',
+            delay: 0.08,
+            onStart: () => applyWillChange(openingItems, 'transform, opacity'),
+            onComplete: () => clearWillChange(openingItems),
+          }
+        );
+      }
+
+      // 7.6 Section 2 — « Notre idée » : panneau qui monte (scale 0.86 -> 1, border-radius 40px -> 24px, scrub: 1)
+      // + séquence HTML/SVG des 3 activités qui s'assemblent en une seule maison puis se séparent
+      const ideaPanel = document.querySelector<HTMLElement>('[data-idea-panel]');
+      if (ideaPanel) {
+        gsap.set(ideaPanel, { scale: 0.86, borderRadius: '40px' });
+        gsap.to(ideaPanel, {
+          scale: 1,
+          borderRadius: '24px',
+          ease: 'none',
+          scrollTrigger: {
+            trigger: ideaPanel,
+            start: 'top 90%',
+            end: 'top 25%',
+            scrub: 1,
+          },
+        });
+
+        const nodeLeft = ideaPanel.querySelector<HTMLElement>('[data-idea-node="left"]');
+        const nodeCenter = ideaPanel.querySelector<HTMLElement>('[data-idea-node="center"]');
+        const nodeRight = ideaPanel.querySelector<HTMLElement>('[data-idea-node="right"]');
+        const houseCore = ideaPanel.querySelector<HTMLElement>('[data-idea-core]');
+        const houseSvgGroup = ideaPanel.querySelector<HTMLElement>('[data-idea-house]');
+
+        if (isDesktop && nodeLeft && nodeCenter && nodeRight && houseCore) {
+          gsap.set(houseCore, { scale: 0.84, opacity: 0.25 });
+          if (houseSvgGroup) gsap.set(houseSvgGroup, { opacity: 0.35, scale: 0.94, transformOrigin: '50% 50%' });
+
+          const ideaTl = gsap.timeline({
+            scrollTrigger: {
+              trigger: ideaPanel,
+              start: 'top 75%',
+              end: 'bottom 20%',
+              scrub: 1,
+            },
+          });
+
+          // Phase 1 : les 3 activités convergent et s'assemblent en une seule maison
+          ideaTl
+            .to(nodeLeft, { x: 110, y: 8, scale: 0.92, duration: 1, ease: 'power2.inOut' }, 0)
+            .to(nodeRight, { x: -110, y: 8, scale: 0.92, duration: 1, ease: 'power2.inOut' }, 0)
+            .to(nodeCenter, { y: -26, scale: 0.92, duration: 1, ease: 'power2.inOut' }, 0)
+            .to(houseCore, { scale: 1.06, opacity: 1, duration: 1, ease: 'power2.out' }, 0)
+            // Phase 2 : elles se séparent à nouveau chacune dans son métier tout en gardant la maison commune
+            .to(nodeLeft, { x: 0, y: 0, scale: 1, duration: 1, ease: 'power2.inOut' }, 1.1)
+            .to(nodeRight, { x: 0, y: 0, scale: 1, duration: 1, ease: 'power2.inOut' }, 1.1)
+            .to(nodeCenter, { y: 0, scale: 1, duration: 1, ease: 'power2.inOut' }, 1.1)
+            .to(houseCore, { scale: 1, opacity: 0.95, duration: 1, ease: 'power2.inOut' }, 1.1);
+
+          if (houseSvgGroup) {
+            ideaTl
+              .to(houseSvgGroup, { opacity: 1, scale: 1, duration: 1, ease: 'power2.out' }, 0)
+              .to(houseSvgGroup, { opacity: 0.75, scale: 0.98, duration: 1, ease: 'power2.inOut' }, 1.1);
+          }
+        }
+      }
+
+      // 7.6 Section 3 — « Nos solutions » : section épinglée, 4 grandes cartes qui arrivent l'une après l'autre
+      const solutionsSection = document.querySelector<HTMLElement>('[data-solutions-pin]');
+      const solutionsStack = document.querySelector<HTMLElement>('[data-solutions-stack]');
+      const solutionCards = gsap.utils.toArray<HTMLElement>('[data-solution-card]');
+
+      if (solutionsSection && solutionsStack && solutionCards.length > 1) {
+        if (isDesktop) {
+          solutionsStack.classList.add('is-pinned-ready');
+
+          solutionCards.forEach((card, idx) => {
+            if (idx === 0) {
+              gsap.set(card, {
+                y: 0,
+                scale: 1,
+                opacity: 1,
+                zIndex: 10,
+                pointerEvents: 'auto',
+              });
+            } else {
+              gsap.set(card, {
+                y: 80,
+                scale: 0.98,
+                opacity: 0,
+                zIndex: 10 + idx,
+                pointerEvents: 'none',
+              });
+            }
+          });
+
+          const solTl = gsap.timeline({
+            scrollTrigger: {
+              trigger: solutionsSection,
+              start: 'top top+=72',
+              end: `+=${(solutionCards.length - 1) * 90}%`,
+              pin: true,
+              scrub: 0.75,
+              onUpdate: (self) => {
+                const activeIdx = Math.min(
+                  solutionCards.length - 1,
+                  Math.round(self.progress * (solutionCards.length - 1))
+                );
+                solutionCards.forEach((c, idx) => {
+                  c.style.pointerEvents = idx === activeIdx ? 'auto' : 'none';
+                });
+                const activeTint = solutionCards[activeIdx]?.getAttribute('data-particle-tint');
+                if (activeTint) {
+                  solutionsSection.setAttribute('data-particle-tint', activeTint);
+                }
+              },
+            },
+          });
+
+          for (let i = 1; i < solutionCards.length; i++) {
+            const prev = solutionCards[i - 1];
+            const curr = solutionCards[i];
+            const stepPos = i - 1;
+
+            // La carte précédente recule légèrement et s'assombrit
+            solTl.to(
+              prev,
+              {
+                scale: 0.93,
+                y: -24,
+                opacity: 0,
+                duration: 0.85,
+                ease: 'power2.inOut',
+              },
+              stepPos
+            );
+
+            // La nouvelle carte monte de 80 px vers sa place nette
+            solTl.fromTo(
+              curr,
+              { y: 80, scale: 0.98, opacity: 0 },
+              {
+                y: 0,
+                scale: 1,
+                opacity: 1,
+                duration: 0.85,
+                ease: 'power2.out',
+              },
+              stepPos + 0.1
+            );
+          }
+        } else {
+          solutionsStack.classList.remove('is-pinned-ready');
+          solutionCards.forEach((card) => {
+            gsap.fromTo(
+              card,
+              { opacity: 0, y: 80 },
+              {
+                opacity: 1,
+                y: 0,
+                duration: 0.75,
+                ease: 'power3.out',
+                scrollTrigger: {
+                  trigger: card,
+                  start: 'top 88%',
+                  once: true,
+                },
+              }
+            );
+          });
+        }
+      }
 
       // Animations d'entrée du hero (transform + opacity uniquement)
       const heroLines = document.querySelectorAll('[data-hero-line]');

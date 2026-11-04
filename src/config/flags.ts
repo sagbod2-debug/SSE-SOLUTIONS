@@ -12,12 +12,15 @@ export const SHOW_PILOT_DETAILS = import.meta.env.SHOW_PILOT_DETAILS === 'true' 
 export const SHOW_CONTACT_PHONE = import.meta.env.SHOW_CONTACT_PHONE === 'true' || false;
 export const SHOW_CONTACT_BOOKING = import.meta.env.SHOW_CONTACT_BOOKING === 'true' || false;
 export const SHOW_LINKEDIN = import.meta.env.SHOW_LINKEDIN === 'true' || false;
+export const SHOW_HERO_VIDEO = import.meta.env.SHOW_HERO_VIDEO === 'true' || false;
+export const SHOW_REAL_PHOTOS = import.meta.env.SHOW_REAL_PHOTOS === 'true' || false;
 
 // Valeurs associées aux sections en attente (strictement vides tant qu'elles ne sont pas fournies)
 export const CONTACT_PHONE_DISPLAY = import.meta.env.CONTACT_PHONE_DISPLAY || '';
 export const CONTACT_PHONE_HREF = import.meta.env.CONTACT_PHONE_HREF || '';
 export const CONTACT_BOOKING_URL = import.meta.env.CONTACT_BOOKING_URL || '';
 export const LINKEDIN_URL = import.meta.env.LINKEDIN_URL || '';
+export const HERO_VIDEO_URL = import.meta.env.HERO_VIDEO_URL || '';
 
 export interface TeamMember {
   photo: string;

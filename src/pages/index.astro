@@ -1,13 +1,13 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Picture from '../components/Picture.astro';
 import LivingMesh from '../components/LivingMesh.astro';
-import { SHOW_TEAM, TEAM_MEMBERS } from '../config/flags';
-
-// TODO logo officiel : remplacer la composition typographique de la section « Trois lettres. Une seule maison. » par le SVG ou PNG transparent officiel (< 40 Ko) dès réception.
-
-const marqueeText =
-  "Accompagnement social · Sécurité incendie · Établissements recevant du public · Événementiel · Autonomie au quotidien · Commissions de sécurité · Coordination d'équipes · ";
+import BrandLogo, { type BrandKey } from '../components/BrandLogo.astro';
+import {
+  SHOW_TEAM,
+  TEAM_MEMBERS,
+  SHOW_HERO_VIDEO,
+  HERO_VIDEO_URL,
+} from '../config/flags';
 
 const organizationJsonLd = {
   '@context': 'https://schema.org',
@@ -21,6 +21,80 @@ const organizationJsonLd = {
     name: 'Essonne',
   },
 };
+
+interface SolutionCard {
+  id: string;
+  tintKey: 'care' | 'autonomie' | 'consulting' | 'events';
+  transitionName: string;
+  brand: BrandKey;
+  name: string;
+  href: string;
+  problem: string;
+  solution: string;
+  audience: string;
+  ctaLabel: string;
+}
+
+const solutions: SolutionCard[] = [
+  {
+    id: 'cc-care',
+    tintKey: 'care',
+    transitionName: 'solution-card-care',
+    brand: 'cc-care',
+    name: 'CC Care',
+    href: '/cc-care',
+    problem:
+      'Des dossiers sociaux qui s’accumulent, des équipes débordées, des situations individuelles qui demandent du temps et un cadre clair.',
+    solution:
+      'Un accompagnement social sur site ou à distance, des ateliers collectifs et des écrits clairs pour vos équipes.',
+    audience: 'Établissements de santé, CCAS, structures sociales, entreprises.',
+    ctaLabel: 'Découvrir CC Care',
+  },
+  {
+    id: 'autonomie-inclusion',
+    tintKey: 'autonomie',
+    transitionName: 'solution-card-autonomie',
+    brand: 'cc-care',
+    name: 'Autonomie & Inclusion',
+    href: '/cc-care/autonomie-inclusion',
+    problem:
+      'Des adultes accompagnés qui peinent avec les démarches, le budget, le logement ou le numérique, faute de supports adaptés.',
+    solution:
+      'Un programme en ligne de 35 modules et 244 ateliers, chacun en deux versions : français courant et FALC (Facile à lire et à comprendre).',
+    audience:
+      'Structures sociales, médico-sociales et d’insertion qui veulent équiper leurs équipes.',
+    ctaLabel: 'Découvrir Autonomie & Inclusion',
+  },
+  {
+    id: 'cc-consulting',
+    tintKey: 'consulting',
+    transitionName: 'solution-card-consulting',
+    brand: 'cc-consulting',
+    name: 'CC Consulting',
+    href: '/cc-consulting',
+    problem:
+      'Une commission de sécurité qui approche, un registre incomplet, des prescriptions difficiles à prioriser.',
+    solution:
+      'Un diagnostic sur site, un plan d’action priorisé et une présence à vos côtés avant, pendant et après la visite.',
+    audience:
+      'Directeurs et responsables sécurité d’établissements recevant du public (types J, U, O, R, W, M…).',
+    ctaLabel: 'Découvrir CC Consulting',
+  },
+  {
+    id: 'cc-events',
+    tintKey: 'events',
+    transitionName: 'solution-card-events',
+    brand: 'cc-events',
+    name: 'CC Events',
+    href: '/cc-events',
+    problem:
+      'Un événement à organiser sans équipe dédiée, des prestataires à coordonner, un jour J qui ne laisse pas droit à l’erreur.',
+    solution:
+      'Conception, rétroplanning, coordination des prestataires et présence sur le terrain du montage au démontage.',
+    audience: 'Collectivités, établissements et entreprises qui organisent un temps fort.',
+    ctaLabel: 'Découvrir CC Events',
+  },
+];
 ---
 
 <BaseLayout
@@ -28,381 +102,224 @@ const organizationJsonLd = {
   description="Accompagnement social, sécurité incendie des ERP, événementiel : nous intervenons en Essonne auprès des établissements de santé et des entreprises."
   jsonLd={organizationJsonLd}
 >
-  <!-- 1. HERO AVEC ARRIÈRE-PLAN VIVANT WEBGL + ARCHITECTURE EN FONDU SUR LA MOITIÉ DROITE -->
-  <section class="hero-home">
-    <LivingMesh />
+  <!-- 7.5 Champ de 1 200 particules WebGL natif sur toute la hauteur de l'accueil -->
+  <LivingMesh fixed={true} />
 
-    <div class="hero-bg-media" aria-hidden="true">
-      <Picture
-        slug="01-hero-architecture"
-        alt="Architecture minimaliste en béton brut éclairée par une lumière rasante, créant des lignes géométriques sobres"
-        sizes="100vw"
-        loading="eager"
-        fetchpriority="high"
-        parallax={false}
-      />
-      <div class="hero-bg-overlay"></div>
-    </div>
-
-    <div class="container hero-home-inner">
-      <div class="hero-content">
-        <p class="eyebrow" data-hero-fade>SSE SOLUTIONS · ESSONNE</p>
-
-        <h1 class="hero-title" data-hero-fade>
-          Un seul partenaire pour les personnes, les lieux et les grands moments.
-        </h1>
-
-        <p class="hero-trilogy" aria-label="Social. Sécurité. Événements.">
-          <span class="reveal-mask">
-            <span class="reveal-line" data-hero-line>Social<span class="dot-gold">.</span></span>
-          </span>
-          <span class="reveal-mask">
-            <span class="reveal-line" data-hero-line>Sécurité<span class="dot-gold">.</span></span>
-          </span>
-          <span class="reveal-mask">
-            <span class="reveal-line" data-hero-line>Événements<span class="dot-gold">.</span></span>
-          </span>
-        </p>
-
-        <p class="hero-lead prose-measure" data-hero-fade>
-          Accompagnement social, sécurité incendie des établissements recevant du public, événementiel : nous intervenons en Essonne auprès des établissements de santé, des structures sociales et des entreprises.
-        </p>
-
-        <div class="btn-group hero-actions" data-hero-fade>
-          <a href="#activites" class="btn-primary" data-magnetic data-glow>
-            <span>Trouver la bonne activité</span>
-            <span class="btn-arrow" aria-hidden="true">→</span>
-          </a>
-          <a href="/contact" class="btn-secondary glass" data-glow>
-            <span>Nous écrire</span>
-            <span class="btn-arrow" aria-hidden="true">→</span>
-          </a>
-        </div>
-
-        <nav class="hero-needs-nav" aria-label="Aiguillage rapide par besoin" data-hero-fade>
-          <a
-            href="/cc-care"
-            class="need-pill glass need-pill--care"
-            data-activity-pill="cc-care"
-            data-glow
-          >
-            <span class="need-pill-dot" aria-hidden="true"></span>
-            <span class="need-pill-text">Une situation sociale à accompagner</span>
-            <span class="need-pill-arrow" aria-hidden="true">→</span>
-          </a>
-          <a
-            href="/cc-consulting"
-            class="need-pill glass need-pill--consulting"
-            data-activity-pill="cc-consulting"
-            data-glow
-          >
-            <span class="need-pill-dot" aria-hidden="true"></span>
-            <span class="need-pill-text">Une commission de sécurité approche</span>
-            <span class="need-pill-arrow" aria-hidden="true">→</span>
-          </a>
-          <a
-            href="/cc-events"
-            class="need-pill glass need-pill--events"
-            data-activity-pill="cc-events"
-            data-glow
-          >
-            <span class="need-pill-dot" aria-hidden="true"></span>
-            <span class="need-pill-text">Un événement à organiser</span>
-            <span class="need-pill-arrow" aria-hidden="true">→</span>
-          </a>
-        </nav>
+  <!-- SECTION 1 — OUVERTURE (PLEIN ÉCRAN) -->
+  <section class="opening-section" data-particle-tint="care">
+    <div class="container opening-inner">
+      <div class="opening-logo" data-opening-item>
+        <BrandLogo brand="sse-solutions" size="xl" loading="eager" alt="Logo SSE Solutions" />
       </div>
 
-      <div class="hero-scroll-indicator" data-hero-fade>
-        <a href="#activites" class="scroll-indicator-link">
-          <span class="scroll-line" aria-hidden="true"></span>
-          <span>Défiler</span>
+      <p class="opening-brand-name" data-opening-item>SSE Solutions</p>
+
+      <h1 class="opening-title" data-opening-item>
+        Un seul partenaire pour les personnes, les lieux et les grands moments.
+      </h1>
+
+      <p class="opening-trilogy" data-opening-item>Social. Sécurité. Événements.</p>
+
+      <div class="opening-actions" data-opening-item>
+        <a href="#solutions" class="btn-glass glass" data-magnetic data-glow>
+          <span>Découvrir nos solutions</span>
+          <span class="btn-arrow" aria-hidden="true">→</span>
+        </a>
+        <a href="/contact" class="btn-glass btn-glass--secondary glass" data-glow>
+          <span>Nous écrire</span>
+          <span class="btn-arrow" aria-hidden="true">→</span>
         </a>
       </div>
     </div>
   </section>
 
-  <!-- 2. BANDEAU DÉFILANT -->
-  <section class="marquee-band" aria-label="Métiers de SSE Solutions">
-    <div class="marquee-track">
-      <span class="marquee-item">{marqueeText}</span>
-      <span class="marquee-item" aria-hidden="true">{marqueeText}</span>
-      <span class="marquee-item" aria-hidden="true">{marqueeText}</span>
-    </div>
-  </section>
-
-  <!-- 3. SECTION ACTIVITÉS -->
-  <section class="section section--spacious" id="activites">
+  <!-- SECTION 2 — « NOTRE IDÉE » (PANNEAU QUI MONTE) -->
+  <section class="idea-section" id="notre-idee" data-particle-tint="autonomie">
     <div class="container">
-      <div class="section-header">
-        <p class="eyebrow" data-reveal>NOS ACTIVITÉS</p>
-        <h2 class="section-title" data-reveal-title>
-          <span class="reveal-mask">
-            <span class="reveal-line">Une entreprise. Trois métiers.</span>
-          </span>
-        </h2>
-      </div>
+      <div class="idea-panel glass glass--refract" data-idea-panel>
+        <div class="idea-header">
+          <p class="eyebrow">NOTRE IDÉE</p>
+        </div>
 
-      <div class="activities-wrapper" data-activities-interactive>
-        <div class="activities-floating-preview" id="activities-floating-preview" aria-hidden="true">
-          <div class="preview-slide is-active" data-preview-slide="01">
-            <Picture
-              slug="02-accueil-cc-care"
-              alt="Deux personnes assises autour d’une table examinant ensemble des documents administratifs dans un cadre calme"
-              sizes="360px"
-              parallax={false}
+        <!-- Séquence animée en HTML/SVG pilotée par le défilement : les 3 activités s'assemblent en une seule maison puis se séparent -->
+        <div
+          class="idea-stage"
+          data-idea-stage
+          role="img"
+          aria-label="Trois activités — CC Care, CC Consulting et CC Events — réunies au sein d’une seule maison : SSE Solutions"
+        >
+          <svg
+            class="idea-house-svg"
+            viewBox="0 0 760 260"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          >
+            <!-- Lignes de convergence vers la maison centrale -->
+            <path
+              class="idea-connector idea-connector--left"
+              data-idea-connector
+              d="M150 140 C 245 140, 290 130, 380 130"
+              stroke="var(--tint-care)"
+              stroke-width="1.5"
+              stroke-dasharray="5 5"
             />
-          </div>
-          <div class="preview-slide" data-preview-slide="02">
-            <Picture
-              slug="03-accueil-cc-consulting"
-              alt="Couloir épuré et dégagé d’un établissement contemporain aux lignes sobres et éclairage maîtrisé"
-              sizes="360px"
-              parallax={false}
+            <path
+              class="idea-connector idea-connector--center"
+              data-idea-connector
+              d="M380 205 L 380 130"
+              stroke="var(--tint-consulting)"
+              stroke-width="1.5"
+              stroke-dasharray="5 5"
             />
-          </div>
-          <div class="preview-slide" data-preview-slide="03">
-            <Picture
-              slug="04-accueil-cc-events"
-              alt="Grande salle de réception et scène éclairée lors d’un événement professionnel, public vu de dos"
-              sizes="360px"
-              parallax={false}
+            <path
+              class="idea-connector idea-connector--right"
+              data-idea-connector
+              d="M610 140 C 515 140, 470 130, 380 130"
+              stroke="var(--tint-events)"
+              stroke-width="1.5"
+              stroke-dasharray="5 5"
             />
+
+            <!-- Silhouette de la maison commune SSE Solutions -->
+            <g class="idea-roof-group" data-idea-house>
+              <path
+                d="M270 108 L380 38 L490 108"
+                stroke="var(--text)"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <rect
+                x="292"
+                y="108"
+                width="176"
+                height="104"
+                rx="18"
+                stroke="var(--line)"
+                stroke-width="1.5"
+                fill="var(--glass-bg)"
+              />
+            </g>
+          </svg>
+
+          <div class="idea-nodes">
+            <div class="idea-node idea-node--care glass" data-idea-node="left">
+              <span class="idea-node-dot" aria-hidden="true"></span>
+              <strong>CC Care</strong>
+              <span>Social</span>
+            </div>
+
+            <div class="idea-node idea-node--consulting glass" data-idea-node="center">
+              <span class="idea-node-dot" aria-hidden="true"></span>
+              <strong>CC Consulting</strong>
+              <span>Sécurité</span>
+            </div>
+
+            <div class="idea-node idea-node--events glass" data-idea-node="right">
+              <span class="idea-node-dot" aria-hidden="true"></span>
+              <strong>CC Events</strong>
+              <span>Événementiel</span>
+            </div>
+
+            <div class="idea-house-badge glass" data-idea-core>
+              <span class="idea-house-title">SSE Solutions</span>
+              <span class="idea-house-sub">Une seule maison</span>
+            </div>
           </div>
         </div>
 
-        <ul class="activities-list">
-          <!-- 01 CC Care -->
-          <li
-            class="activity-row activity-row--care"
-            data-activity-row="01"
-            data-tilt-card
-            data-glow
-            data-reveal
-          >
-            <div class="activity-mobile-photo media-frame">
-              <Picture
-                slug="02-accueil-cc-care"
-                alt="Deux personnes assises autour d’une table examinant ensemble des documents administratifs dans un cadre calme"
-                sizes="(max-width: 960px) 92vw, 360px"
-                parallax={false}
-                transitionName="activity-hero-care"
+        {
+          SHOW_HERO_VIDEO && HERO_VIDEO_URL && (
+            <div class="idea-video-slot">
+              <video
+                src={HERO_VIDEO_URL}
+                controls
+                playsinline
+                preload="metadata"
+                class="idea-video"
               />
             </div>
-            <a href="/cc-care" class="activity-link">
-              <div class="activity-meta">
-                <span class="num-index activity-num">01</span>
-                <span class="activity-badge glass">Social</span>
-              </div>
-              <div class="activity-main">
-                <h3 class="activity-name">CC Care</h3>
-                <p class="activity-desc">
-                  Accompagnement social en établissement de santé, en structure sociale et en entreprise.
-                </p>
-              </div>
-              <span class="activity-arrow" aria-hidden="true">→</span>
-            </a>
-          </li>
+          )
+        }
 
-          <!-- 02 CC Consulting -->
-          <li
-            class="activity-row activity-row--consulting"
-            data-activity-row="02"
-            data-tilt-card
-            data-glow
-            data-reveal
-          >
-            <div class="activity-mobile-photo media-frame">
-              <Picture
-                slug="03-accueil-cc-consulting"
-                alt="Couloir épuré et dégagé d’un établissement contemporain aux lignes sobres et éclairage maîtrisé"
-                sizes="(max-width: 960px) 92vw, 360px"
-                parallax={false}
-                transitionName="activity-hero-consulting"
-              />
-            </div>
-            <a href="/cc-consulting" class="activity-link">
-              <div class="activity-meta">
-                <span class="num-index activity-num">02</span>
-                <span class="activity-badge glass">Sécurité</span>
-              </div>
-              <div class="activity-main">
-                <h3 class="activity-name">CC Consulting</h3>
-                <p class="activity-desc">
-                  Mise en conformité incendie des établissements recevant du public et préparation aux commissions de sécurité.
-                </p>
-              </div>
-              <span class="activity-arrow" aria-hidden="true">→</span>
-            </a>
-          </li>
-
-          <!-- 03 CC Events -->
-          <li
-            class="activity-row activity-row--events"
-            data-activity-row="03"
-            data-tilt-card
-            data-glow
-            data-reveal
-          >
-            <div class="activity-mobile-photo media-frame">
-              <Picture
-                slug="04-accueil-cc-events"
-                alt="Grande salle de réception et scène éclairée lors d’un événement professionnel, public vu de dos"
-                sizes="(max-width: 960px) 92vw, 360px"
-                parallax={false}
-                transitionName="activity-hero-events"
-              />
-            </div>
-            <a href="/cc-events" class="activity-link">
-              <div class="activity-meta">
-                <span class="num-index activity-num">03</span>
-                <span class="activity-badge glass">Événementiel</span>
-              </div>
-              <div class="activity-main">
-                <h3 class="activity-name">CC Events</h3>
-                <p class="activity-desc">
-                  Organisation de grands événements et coordination des équipes sur le terrain.
-                </p>
-              </div>
-              <span class="activity-arrow" aria-hidden="true">→</span>
-            </a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  <!-- 4. SECTION À PROPOS -->
-  <section class="section section--secondary section--spacious">
-    <div class="container grid-12 about-grid">
-      <div class="about-left">
-        <p class="eyebrow" data-reveal>QUI SOMMES-NOUS</p>
-        <h2 class="section-title" data-reveal-title>
-          <span class="reveal-mask">
-            <span class="reveal-line">Trois lettres.</span>
-          </span>
-          <span class="reveal-mask">
-            <span class="reveal-line">Une seule maison.</span>
-          </span>
-        </h2>
-      </div>
-
-      <div class="about-right" data-reveal>
-        <p class="about-text prose-measure">
-          SSE Solutions porte les initiales de ses trois métiers : Social, Security and Events. Chaque activité a son savoir-faire, son interlocuteur et sa marque. Toutes partagent la même façon de travailler : comprendre avant d'agir, écrire clairement, suivre jusqu'au bout.
+        <p class="idea-text">
+          SSE Solutions réunit trois activités qui partagent une même méthode : comprendre avant d’agir, écrire clairement, suivre jusqu’au bout.
         </p>
-
-        <div class="about-logo-box">
-          <div class="brand-wordmark-large" aria-label="SSE Solutions — Social, Security and Events">
-            <span class="brand-wordmark-sse">SSE</span>
-            <span class="brand-wordmark-rule" aria-hidden="true"></span>
-            <span class="brand-wordmark-solutions">Solutions</span>
-          </div>
-        </div>
       </div>
     </div>
+  </section>
 
-    {SHOW_TEAM && TEAM_MEMBERS.length > 0 && (
-      <div class="container team-subsection">
-        <div class="section-header">
-          <p class="eyebrow" data-reveal>ÉQUIPE</p>
-          <h3 class="section-title" data-reveal-title>
-            <span class="reveal-mask">
-              <span class="reveal-line">Qui est derrière SSE Solutions</span>
-            </span>
-          </h3>
-        </div>
+  <!-- SECTION 3 — « NOS SOLUTIONS » (4 GRANDES CARTES QUI ARRIVENT L'UNE APRÈS L'AUTRE) -->
+  <section class="solutions-section" id="solutions" data-solutions-pin>
+    <div class="container solutions-container">
+      <div class="solutions-header">
+        <p class="eyebrow">NOS SOLUTIONS</p>
+        <h2 class="section-title">Quatre réponses concrètes, selon votre besoin.</h2>
+      </div>
 
-        <ul class="team-grid grid-12">
-          {TEAM_MEMBERS.map((member) => (
-            <li class="team-card glass" data-glow data-reveal>
-              {member.photo && (
-                <div class="team-photo media-frame">
-                  <img
-                    src={member.photo}
-                    alt={member.name}
-                    width="480"
-                    height="480"
-                    loading="lazy"
-                    decoding="async"
-                  />
+      <div class="solutions-stack" data-solutions-stack>
+        {
+          solutions.map((item, index) => (
+            <article
+              class:list={['solution-card', `solution-card--${item.tintKey}`, 'glass', 'glass--refract']}
+              data-solution-card
+              data-solution-index={index}
+              data-particle-tint={item.tintKey}
+              transition:name={item.transitionName}
+            >
+              <a
+                href={item.href}
+                class="solution-card__link"
+                aria-label={`${item.name} — ${item.ctaLabel}`}
+              >
+                <div class="solution-card__top">
+                  <div class="solution-card__brand">
+                    <BrandLogo brand={item.brand} size="md" loading="lazy" alt={`Logo ${item.name}`} />
+                    <div class="solution-card__titles">
+                      <span class="num-index">0{index + 1}</span>
+                      <h3 class="solution-card__name">{item.name}</h3>
+                    </div>
+                  </div>
+
+                  <span class="btn-glass solution-card__cta glass">
+                    <span>{item.ctaLabel}</span>
+                    <span class="btn-arrow" aria-hidden="true">→</span>
+                  </span>
                 </div>
-              )}
-              <div class="team-body">
-                <h4 class="card-title">{member.name}</h4>
-                <p class="team-role">{member.role}</p>
-                <p class="team-meta">{member.diploma}</p>
-                <p class="team-meta">{member.experienceYears}</p>
-              </div>
-            </li>
-          ))}
-        </ul>
-      </div>
-    )}
-  </section>
 
-  <!-- 5. SECTION PROGRAMME (MISE EN AVANT) -->
-  <section class="section section--spacious programme-highlight">
-    <div class="container">
-      <div class="grid-12 programme-grid">
-        <div class="programme-content">
-          <p class="eyebrow eyebrow--care" data-reveal>NOUVEAU · CC CARE</p>
-          <h2 class="section-title" data-reveal-title>
-            <span class="reveal-mask">
-              <span class="reveal-line">Autonomie &amp; Inclusion.</span>
-            </span>
-          </h2>
-          <p class="prose-measure programme-desc" data-reveal>
-            Un programme en ligne pour aider les adultes accompagnés par les structures sociales à gagner en autonomie au quotidien. Chaque atelier existe en français courant et en version FALC (Facile à lire et à comprendre), relue par des personnes concernées avant diffusion.
-          </p>
+                <dl class="solution-card__grid">
+                  <div class="solution-block">
+                    <dt class="solution-block__label">Le problème</dt>
+                    <dd class="solution-block__text">{item.problem}</dd>
+                  </div>
 
-          <dl class="stats-grid" data-reveal>
-            <div class="stat-item">
-              <dt class="stat-label">modules thématiques</dt>
-              <dd class="stat-value" data-count-to="35">35</dd>
-            </div>
-            <div class="stat-item">
-              <dt class="stat-label">ateliers</dt>
-              <dd class="stat-value" data-count-to="244">244</dd>
-            </div>
-            <div class="stat-item">
-              <dt class="stat-label">versions de chaque atelier : FALC et français courant</dt>
-              <dd class="stat-value" data-count-to="2">2</dd>
-            </div>
-          </dl>
+                  <div class="solution-block">
+                    <dt class="solution-block__label">Ce que nous apportons</dt>
+                    <dd class="solution-block__text">{item.solution}</dd>
+                  </div>
 
-          <div class="btn-group" data-reveal>
-            <a href="/cc-care/autonomie-inclusion" class="btn-primary" data-magnetic data-glow>
-              <span>Découvrir le programme</span>
-              <span class="btn-arrow" aria-hidden="true">→</span>
-            </a>
-          </div>
-        </div>
-
-        <div class="programme-media" data-reveal>
-          <div class="media-frame programme-frame">
-            <Picture
-              slug="05-accueil-programme"
-              alt="Personne adulte utilisant un ordinateur portable sur une table en bois baignée de lumière naturelle"
-              sizes="(max-width: 960px) 92vw, 520px"
-            />
-          </div>
-        </div>
+                  <div class="solution-block">
+                    <dt class="solution-block__label">Pour qui</dt>
+                    <dd class="solution-block__text">{item.audience}</dd>
+                  </div>
+                </dl>
+              </a>
+            </article>
+          ))
+        }
       </div>
     </div>
   </section>
 
-  <!-- 6. SECTION MÉTHODE (ÉPINGLÉE, 4 ÉTAPES) -->
-  <section class="section section--secondary method-section" data-method-pin id="methode">
+  <!-- SECTION 4 — « COMPRENDRE AVANT D'AGIR. » (MÉTHODE) -->
+  <section class="section method-section" data-method-pin id="methode" data-particle-tint="consulting">
     <div class="container grid-12 method-grid">
       <div class="method-header">
         <p class="eyebrow" data-reveal>NOTRE MÉTHODE</p>
         <h2 class="section-title" data-reveal-title>
           <span class="reveal-mask">
-            <span class="reveal-line">Comprendre</span>
-          </span>
-          <span class="reveal-mask">
-            <span class="reveal-line">avant d'agir.</span>
+            <span class="reveal-line">Comprendre avant d’agir.</span>
           </span>
         </h2>
       </div>
@@ -413,7 +330,7 @@ const organizationJsonLd = {
         </div>
 
         <ol class="method-steps">
-          <li class="method-step is-active">
+          <li class="method-step glass is-active">
             <span class="num-index">01</span>
             <div class="method-step-body">
               <h3 class="card-title">Écouter.</h3>
@@ -422,7 +339,7 @@ const organizationJsonLd = {
               </p>
             </div>
           </li>
-          <li class="method-step">
+          <li class="method-step glass">
             <span class="num-index">02</span>
             <div class="method-step-body">
               <h3 class="card-title">Diagnostiquer.</h3>
@@ -431,7 +348,7 @@ const organizationJsonLd = {
               </p>
             </div>
           </li>
-          <li class="method-step">
+          <li class="method-step glass">
             <span class="num-index">03</span>
             <div class="method-step-body">
               <h3 class="card-title">Agir.</h3>
@@ -440,12 +357,12 @@ const organizationJsonLd = {
               </p>
             </div>
           </li>
-          <li class="method-step">
+          <li class="method-step glass">
             <span class="num-index">04</span>
             <div class="method-step-body">
               <h3 class="card-title">Suivre.</h3>
               <p class="prose-measure">
-                Nous restons présents jusqu'au résultat, et au-delà si besoin.
+                Nous restons présents jusqu’au résultat, et au-delà si besoin.
               </p>
             </div>
           </li>
@@ -454,8 +371,8 @@ const organizationJsonLd = {
     </div>
   </section>
 
-  <!-- 7. SECTION ENGAGEMENTS (4 POINTS NUMÉROTÉS) -->
-  <section class="section section--spacious">
+  <!-- SECTION 5 — « CE QUE VOUS POUVEZ ATTENDRE DE NOUS. » (ENGAGEMENTS) -->
+  <section class="section section--spacious" id="engagements" data-particle-tint="events">
     <div class="container">
       <div class="section-header">
         <p class="eyebrow" data-reveal>NOS ENGAGEMENTS</p>
@@ -491,20 +408,62 @@ const organizationJsonLd = {
     </div>
   </section>
 
-  <!-- 8. SECTION CONTACT (FIN DE PAGE AVEC ARRIÈRE-PLAN VIVANT WEBGL) -->
-  <section class="section section--spacious cta-final">
-    <LivingMesh />
-    <div class="container grid-12">
-      <div class="cta-final-inner">
+  <!-- SECTION 6 — « QUI EST DERRIÈRE SSE SOLUTIONS » (MASQUÉ PAR SHOW_TEAM=false) -->
+  {
+    SHOW_TEAM && TEAM_MEMBERS.length > 0 && (
+      <section class="section section--spacious" id="equipe">
+        <div class="container">
+          <div class="section-header">
+            <p class="eyebrow" data-reveal>ÉQUIPE</p>
+            <h2 class="section-title" data-reveal-title>
+              <span class="reveal-mask">
+                <span class="reveal-line">Qui est derrière SSE Solutions</span>
+              </span>
+            </h2>
+          </div>
+
+          <ul class="team-grid grid-12">
+            {TEAM_MEMBERS.map((member) => (
+              <li class="team-card glass" data-glow data-reveal>
+                {member.photo && (
+                  <div class="team-photo media-frame">
+                    <img
+                      src={member.photo}
+                      alt={member.name}
+                      width="480"
+                      height="480"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </div>
+                )}
+                <div class="team-body">
+                  <h3 class="card-title">{member.name}</h3>
+                  <p class="team-role">{member.role}</p>
+                  <p class="team-meta">{member.diploma}</p>
+                  <p class="team-meta">{member.experienceYears}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    )
+  }
+
+  <!-- SECTION 7 — « PARLONS DE VOTRE PROJET. » (CONTACT, EN .GLASS) -->
+  <section class="section section--spacious cta-final" data-particle-tint="care">
+    <div class="container">
+      <div class="cta-final-card glass glass--refract" data-glow data-reveal>
         <h2 class="section-title" data-reveal-title>
           <span class="reveal-mask">
             <span class="reveal-line">Parlons de votre projet.</span>
           </span>
         </h2>
-        <p class="prose-measure cta-final-text" data-reveal>
+        <p class="prose-measure cta-final-text">
           Dites-nous en quelques lignes ce dont vous avez besoin. Nous vous répondons sous 48 heures ouvrées.
         </p>
-        <div class="btn-group" data-reveal>
+        <div class="btn-group cta-final-actions">
           <a href="/contact" class="btn-primary" data-magnetic data-glow>
             <span>Nous écrire</span>
             <span class="btn-arrow" aria-hidden="true">→</span>
@@ -516,606 +475,455 @@ const organizationJsonLd = {
 </BaseLayout>
 
 <style>
-  /* 1. HERO */
-  .hero-home {
+  /* SECTION 1 — OUVERTURE PLEIN ÉCRAN */
+  .opening-section {
     position: relative;
+    z-index: 1;
     min-height: 100vh;
     display: flex;
-    align-items: flex-end;
-    padding-top: 7.5rem;
-    padding-bottom: var(--space-40);
-    border-bottom: 1px solid var(--line);
-    overflow: hidden;
-    isolation: isolate;
+    align-items: center;
+    justify-content: center;
+    padding-top: 6.5rem;
+    padding-bottom: var(--space-64);
+    text-align: center;
   }
 
-  /* 2.2 Image d'architecture en fondu par-dessus le dégradé (mask-image linéaire 0 à 100 % sur la moitié droite) */
-  .hero-bg-media {
+  .opening-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    max-width: 58rem;
+    margin-inline: auto;
+    gap: var(--space-24);
+  }
+
+  .opening-logo {
+    margin-bottom: var(--space-8);
+  }
+
+  .opening-brand-name {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 0.9375rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .opening-title {
+    font-size: clamp(2.5rem, 1.5rem + 4.5vw, 5.25rem);
+    font-weight: 500;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    color: var(--text);
+    max-width: 19ch;
+    margin-inline: auto;
+  }
+
+  .opening-trilogy {
+    font-size: clamp(1.125rem, 1rem + 0.5vw, 1.375rem);
+    font-weight: 400;
+    color: var(--text-muted);
+    letter-spacing: -0.01em;
+  }
+
+  .opening-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-16);
+    margin-top: var(--space-8);
+  }
+
+  /* Boutons en verre (.glass) */
+  .btn-glass {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.625rem;
+    padding: 0.95rem 1.75rem;
+    border-radius: 999px;
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: var(--fs-small);
+    letter-spacing: 0.01em;
+    color: var(--text);
+    cursor: pointer;
+    min-height: 3.125rem;
+    transition: transform 250ms var(--ease-out), border-color 250ms var(--ease-out);
+  }
+
+  .btn-glass > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  .btn-glass:hover .btn-arrow {
+    transform: translateX(4px);
+  }
+
+  /* SECTION 2 — « NOTRE IDÉE » (PANNEAU QUI MONTE) */
+  .idea-section {
+    position: relative;
+    z-index: 1;
+    padding-block: var(--space-64);
+  }
+
+  @media (min-width: 1024px) {
+    .idea-section {
+      padding-block: var(--space-104);
+    }
+  }
+
+  .idea-panel {
+    border-radius: 28px;
+    padding: clamp(2rem, 5vw, 4.5rem);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--space-40);
+    overflow: hidden;
+    transform-origin: center top;
+  }
+
+  .idea-panel > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  .idea-header .eyebrow {
+    margin-bottom: 0;
+    justify-content: center;
+  }
+
+  .idea-stage {
+    position: relative;
+    width: 100%;
+    max-width: 48rem;
+    min-height: 17rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .idea-house-svg {
+    width: 100%;
+    height: auto;
+    max-height: 16rem;
+    overflow: visible;
+  }
+
+  .idea-nodes {
     position: absolute;
     inset: 0;
-    z-index: 0;
-    -webkit-mask-image: linear-gradient(90deg, transparent 0%, transparent 45%, #000 100%);
-    mask-image: linear-gradient(90deg, transparent 0%, transparent 45%, #000 100%);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    align-items: center;
+    justify-items: center;
+    gap: var(--space-16);
     pointer-events: none;
   }
 
-  .hero-bg-media :global(.picture-placeholder),
-  .hero-bg-media :global(picture),
-  .hero-bg-media :global(img) {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    opacity: 0.34;
-    filter: grayscale(35%) contrast(1.05);
+  .idea-node {
+    padding: 0.9rem 1.25rem;
+    border-radius: 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    min-width: 9.5rem;
   }
 
-  .hero-bg-overlay {
+  .idea-node > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  .idea-node strong {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 1rem;
+    color: var(--text);
+  }
+
+  .idea-node span {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-muted);
+  }
+
+  .idea-node-dot {
+    width: 0.55rem;
+    height: 0.55rem;
+    border-radius: 50%;
+    margin-bottom: 0.15rem;
+  }
+
+  .idea-node--care .idea-node-dot {
+    background-color: var(--tint-care);
+    box-shadow: 0 0 12px var(--tint-care);
+  }
+
+  .idea-node--consulting .idea-node-dot {
+    background-color: var(--tint-consulting);
+    box-shadow: 0 0 12px var(--tint-consulting);
+  }
+
+  .idea-node--events .idea-node-dot {
+    background-color: var(--tint-events);
+    box-shadow: 0 0 12px var(--tint-events);
+  }
+
+  .idea-house-badge {
     position: absolute;
-    inset: 0;
-    background: linear-gradient(180deg, var(--hero-scrim-start) 0%, var(--hero-scrim-end) 100%);
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    padding: 1rem 1.6rem;
+    border-radius: 999px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.15rem;
+    box-shadow: var(--glass-shadow);
   }
 
-  .hero-home-inner {
+  .idea-house-badge > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  .idea-house-title {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 1.125rem;
+    letter-spacing: -0.02em;
+    color: var(--text);
+  }
+
+  .idea-house-sub {
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  @media (max-width: 767px) {
+    .idea-stage {
+      min-height: auto;
+      flex-direction: column;
+      gap: var(--space-16);
+    }
+    .idea-house-svg {
+      display: none;
+    }
+    .idea-nodes {
+      position: static;
+      grid-template-columns: 1fr;
+      width: 100%;
+    }
+    .idea-house-badge {
+      position: static;
+      transform: none;
+      margin-top: var(--space-8);
+    }
+  }
+
+  .idea-video-slot {
+    width: 100%;
+    max-width: 56rem;
+    border-radius: 20px;
+    overflow: hidden;
+  }
+
+  .idea-video {
+    width: 100%;
+    display: block;
+  }
+
+  .idea-text {
+    font-size: clamp(1.25rem, 1.05rem + 1.1vw, 1.85rem);
+    font-weight: 500;
+    line-height: 1.35;
+    letter-spacing: -0.015em;
+    color: var(--text);
+    max-width: 44ch;
+    margin-inline: auto;
+  }
+
+  /* SECTION 3 — « NOS SOLUTIONS » (4 GRANDES CARTES) */
+  .solutions-section {
+    position: relative;
+    z-index: 1;
+    padding-block: var(--space-64);
+  }
+
+  @media (min-width: 1024px) {
+    .solutions-section {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding-block: var(--space-64);
+    }
+  }
+
+  .solutions-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-40);
+  }
+
+  .solutions-header {
+    max-width: 46rem;
+  }
+
+  .solutions-stack {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-24);
+  }
+
+  @media (min-width: 1024px) {
+    .solutions-stack.is-pinned-ready {
+      min-height: 29rem;
+    }
+    .solutions-stack.is-pinned-ready .solution-card {
+      position: absolute;
+      inset: 0;
+      height: 100%;
+    }
+  }
+
+  .solution-card {
+    --card-tint: var(--tint-care);
+    border-radius: 28px;
+    padding: clamp(1.75rem, 3.5vw, 3rem);
+    transition: border-color 300ms var(--ease-out), box-shadow 300ms var(--ease-out);
+    box-shadow:
+      var(--glass-shadow),
+      0 20px 60px -15px color-mix(in srgb, var(--card-tint) 22%, transparent);
+  }
+
+  .solution-card--care {
+    --card-tint: var(--tint-care);
+  }
+
+  .solution-card--autonomie {
+    --card-tint: var(--tint-autonomie);
+  }
+
+  .solution-card--consulting {
+    --card-tint: var(--tint-consulting);
+  }
+
+  .solution-card--events {
+    --card-tint: var(--tint-events);
+  }
+
+  .solution-card:hover {
+    border-color: color-mix(in srgb, var(--card-tint) 55%, var(--glass-border));
+    box-shadow:
+      var(--glass-shadow),
+      0 24px 72px -12px color-mix(in srgb, var(--card-tint) 32%, transparent);
+  }
+
+  .solution-card__link {
     position: relative;
     z-index: 1;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    gap: var(--space-64);
-    width: 100%;
+    height: 100%;
+    gap: var(--space-40);
+    color: inherit;
+    text-decoration: none;
   }
 
-  .hero-content {
-    max-width: 64rem;
-  }
-
-  .hero-title {
-    font-size: clamp(2.15rem, 1.35rem + 3.2vw, 3.85rem);
-    max-width: 24ch;
-  }
-
-  .hero-trilogy {
-    margin-top: var(--space-24);
-    font-family: var(--font-display);
-    font-weight: 400;
-    font-size: clamp(1.5rem, 1.1rem + 1.8vw, 2.5rem);
-    line-height: 1.08;
-    letter-spacing: -0.02em;
-    color: var(--text-muted);
+  .solution-card__top {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.45em;
-  }
-
-  .hero-lead {
-    margin-top: var(--space-24);
-    font-size: clamp(1.0625rem, 1.25vw, 1.25rem);
-    color: var(--text);
-  }
-
-  .hero-actions {
-    margin-top: var(--space-40);
-  }
-
-  /* 5.1 Aiguillage par besoin : trois pastilles en verre (.glass) dans la teinte de leur activité */
-  .hero-needs-nav {
-    margin-top: var(--space-24);
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-  }
-
-  .need-pill {
-    --pill-tint: var(--accent);
-    display: inline-flex;
     align-items: center;
-    gap: 0.625rem;
-    padding: 0.6rem 1.05rem;
-    border-radius: 999px;
-    font-family: var(--font-sans);
-    font-size: var(--fs-small);
-    font-weight: 500;
-    color: var(--text);
-    border: 1px solid color-mix(in srgb, var(--pill-tint) 38%, var(--glass-border));
-    transition: border-color 250ms var(--ease-out), background-color 250ms var(--ease-out),
-      transform 250ms var(--ease-out);
-  }
-
-  .need-pill--care {
-    --pill-tint: var(--tint-care);
-    --pointer-glow: color-mix(in srgb, var(--tint-care) 18%, transparent);
-  }
-
-  .need-pill--consulting {
-    --pill-tint: var(--tint-consulting);
-    --pointer-glow: color-mix(in srgb, var(--tint-consulting) 18%, transparent);
-  }
-
-  .need-pill--events {
-    --pill-tint: var(--tint-events);
-    --pointer-glow: color-mix(in srgb, var(--tint-events) 18%, transparent);
-  }
-
-  .need-pill-dot {
-    width: 0.5rem;
-    height: 0.5rem;
-    border-radius: 50%;
-    background-color: var(--pill-tint);
-    flex-shrink: 0;
-  }
-
-  .need-pill-arrow {
-    color: var(--pill-tint);
-    display: inline-block;
-    transition: transform 300ms var(--ease-out);
-  }
-
-  .need-pill:hover,
-  .need-pill:focus-visible {
-    border-color: var(--pill-tint);
-  }
-
-  .need-pill:hover .need-pill-arrow,
-  .need-pill:focus-visible .need-pill-arrow {
-    transform: translateX(4px);
-  }
-
-  .need-pill:focus-visible {
-    outline: 2px solid var(--pill-tint);
-    outline-offset: 3px;
-  }
-
-  .hero-scroll-indicator {
-    display: flex;
-    justify-content: flex-end;
-    padding-top: var(--space-24);
-    border-top: 1px solid var(--line);
-  }
-
-  .scroll-indicator-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.75rem;
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.14em;
-    color: var(--text-muted);
-    transition: color 250ms var(--ease-out);
-  }
-
-  .scroll-indicator-link:hover {
-    color: var(--accent);
-  }
-
-  .scroll-line {
-    width: 2rem;
-    height: 1px;
-    background-color: var(--accent);
-  }
-
-  /* 2. BANDEAU DÉFILANT */
-  .marquee-band {
-    background-color: var(--surface);
+    justify-content: space-between;
+    gap: var(--space-24);
+    padding-bottom: var(--space-24);
     border-bottom: 1px solid var(--line);
-    padding-block: 1.125rem;
-    overflow: hidden;
-    white-space: nowrap;
   }
 
-  .marquee-track {
-    display: inline-flex;
-    animation: marquee-scroll 38s linear infinite;
-  }
-
-  .marquee-band:hover .marquee-track,
-  .marquee-band:focus-within .marquee-track {
-    animation-play-state: paused;
-  }
-
-  .marquee-item {
-    font-family: var(--font-sans);
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.14em;
-    color: var(--text-muted);
-    padding-right: 0.5rem;
-  }
-
-  @keyframes marquee-scroll {
-    0% {
-      transform: translate3d(0, 0, 0);
-    }
-    100% {
-      transform: translate3d(-33.3333%, 0, 0);
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .marquee-band {
-      white-space: normal;
-    }
-    .marquee-track {
-      animation: none !important;
-      display: block;
-      padding-inline: var(--page-margin);
-    }
-    .marquee-item[aria-hidden="true"] {
-      display: none;
-    }
-  }
-
-  /* 3. SECTION ACTIVITÉS */
-  .section-header {
-    margin-bottom: var(--space-64);
-  }
-
-  .activities-wrapper {
-    position: relative;
-    perspective: 900px;
-  }
-
-  .activities-floating-preview {
-    display: none;
-  }
-
-  @media (hover: hover) and (min-width: 960px) {
-    .activities-floating-preview {
-      display: block;
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 22rem;
-      height: 14rem;
-      pointer-events: none;
-      z-index: 10;
-      opacity: 0;
-      transform: scale(0.96);
-      transition: opacity 350ms var(--ease-out);
-      border: 1px solid var(--line);
-      border-radius: var(--radius-sharp);
-      overflow: hidden;
-      background-color: var(--surface);
-    }
-
-    .activities-floating-preview.is-visible {
-      opacity: 1;
-    }
-
-    .preview-slide {
-      position: absolute;
-      inset: 0;
-      opacity: 0;
-      transition: opacity 350ms var(--ease-out), transform 700ms var(--ease-out);
-    }
-
-    .preview-slide.is-active {
-      opacity: 1;
-      transform: scale(1.04);
-    }
-  }
-
-  .activities-list {
-    border-top: 1px solid var(--line);
-  }
-
-  .activity-row {
-    border-bottom: 1px solid var(--line);
-    position: relative;
-    transform-style: preserve-3d;
-    transition: transform 400ms var(--ease-out), background-color 250ms var(--ease-out);
-  }
-
-  /* 2.5 Teintes d'accent par activité */
-  .activity-row--care {
-    --row-tint: var(--tint-care);
-    --pointer-glow: color-mix(in srgb, var(--tint-care) 16%, transparent);
-  }
-
-  .activity-row--consulting {
-    --row-tint: var(--tint-consulting);
-    --pointer-glow: color-mix(in srgb, var(--tint-consulting) 16%, transparent);
-  }
-
-  .activity-row--events {
-    --row-tint: var(--tint-events);
-    --pointer-glow: color-mix(in srgb, var(--tint-events) 16%, transparent);
-  }
-
-  .activity-row .activity-num {
-    color: var(--row-tint);
-  }
-
-  .activity-row::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 3px;
-    background-color: var(--row-tint);
-    transform: scaleY(0);
-    transform-origin: bottom;
-    transition: transform 350ms var(--ease-out);
-  }
-
-  .activity-row:hover::before,
-  .activity-row:focus-within::before {
-    transform: scaleY(1);
-  }
-
-  .activity-mobile-photo {
-    margin-top: var(--space-24);
-    aspect-ratio: 16 / 10;
-  }
-
-  .activity-row:hover .activity-mobile-photo :global(img) {
-    transform: scale(1.04);
-  }
-
-  @media (min-width: 960px) {
-    .activity-mobile-photo {
-      display: none;
-    }
-  }
-
-  .activity-link {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--space-16);
-    padding-block: var(--space-40);
-    align-items: baseline;
-    position: relative;
-    z-index: 2;
-  }
-
-  @media (min-width: 960px) {
-    .activity-link {
-      grid-template-columns: 2fr 9fr 1fr;
-      gap: var(--space-24);
-      padding-block: var(--space-40);
-      padding-inline: var(--space-24);
-    }
-  }
-
-  .activity-meta {
+  .solution-card__brand {
     display: flex;
     align-items: center;
-    gap: 0.875rem;
+    gap: var(--space-24);
   }
 
-  .activity-badge {
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.14em;
-    color: var(--row-tint);
-    padding: 0.25rem 0.65rem;
-    border-radius: var(--radius-sharp);
-  }
-
-  .activity-main {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--space-16);
-    align-items: baseline;
-  }
-
-  @media (min-width: 768px) {
-    .activity-main {
-      grid-template-columns: 4fr 8fr;
-      gap: var(--space-24);
-    }
-  }
-
-  .activity-name {
-    font-family: var(--font-display);
-    font-size: clamp(1.75rem, 3vw, 2.75rem);
-    color: var(--text);
-    transition: color 250ms var(--ease-out);
-  }
-
-  .activity-row:hover .activity-name {
-    color: var(--row-tint);
-  }
-
-  .activity-desc {
-    color: var(--text-muted);
-    max-width: 54ch;
-  }
-
-  .activity-arrow {
-    font-size: 1.5rem;
-    color: var(--text-muted);
-    justify-self: end;
-    transition: transform 300ms var(--ease-out), color 250ms var(--ease-out);
-  }
-
-  .activity-row:hover .activity-arrow {
-    transform: translateX(4px);
-    color: var(--row-tint);
-  }
-
-  /* 4. SECTION À PROPOS */
-  .about-grid {
-    align-items: start;
-    row-gap: var(--space-40);
-  }
-
-  .about-left {
-    grid-column: 1 / -1;
-  }
-
-  .about-right {
-    grid-column: 1 / -1;
-  }
-
-  @media (min-width: 960px) {
-    .about-left {
-      grid-column: 1 / 6;
-    }
-    .about-right {
-      grid-column: 6 / 13;
-    }
-  }
-
-  .about-text {
-    font-size: clamp(1.125rem, 1.3vw, 1.25rem);
-    color: var(--text);
-    margin-bottom: var(--space-40);
-  }
-
-  .brand-wordmark-large {
-    display: inline-flex;
-    align-items: center;
-    gap: 1.5rem;
-    padding: var(--space-24) 0;
-    border-top: 1px solid var(--line);
-    border-bottom: 1px solid var(--line);
-    font-family: var(--font-display);
-    text-transform: uppercase;
-  }
-
-  .brand-wordmark-sse {
-    font-size: clamp(2.5rem, 5vw, 4.25rem);
-    letter-spacing: 0.12em;
-    color: var(--text);
-    line-height: 1;
-  }
-
-  .brand-wordmark-rule {
-    width: 1px;
-    height: 3rem;
-    background-color: var(--accent);
-  }
-
-  .brand-wordmark-solutions {
-    font-size: clamp(1.25rem, 2.4vw, 2rem);
-    letter-spacing: 0.24em;
-    color: var(--text-muted);
-    line-height: 1;
-  }
-
-  .team-subsection {
-    margin-top: var(--space-104);
-    padding-top: var(--space-64);
-    border-top: 1px solid var(--line);
-  }
-
-  .team-grid {
-    row-gap: var(--space-24);
-  }
-
-  .team-card {
-    grid-column: 1 / -1;
-    padding: var(--space-24);
-    border-radius: var(--radius-sharp);
+  .solution-card__titles {
     display: flex;
     flex-direction: column;
-    gap: var(--space-16);
+    gap: 0.25rem;
   }
 
-  @media (min-width: 768px) {
-    .team-card {
-      grid-column: span 4;
-    }
+  .solution-card__titles .num-index {
+    color: var(--card-tint);
   }
 
-  .team-photo {
-    aspect-ratio: 1 / 1;
-  }
-
-  .team-role {
-    color: var(--accent);
+  .solution-card__name {
+    font-size: clamp(1.75rem, 1.3rem + 1.8vw, 2.5rem);
     font-weight: 500;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--text);
   }
 
-  .team-meta {
-    color: var(--text-muted);
-    font-size: var(--fs-small);
+  .solution-card__cta {
+    border-color: color-mix(in srgb, var(--card-tint) 38%, var(--glass-border));
   }
 
-  /* 5. SECTION PROGRAMME */
-  .eyebrow--care {
-    color: var(--tint-care);
-  }
-
-  .eyebrow--care::before {
-    background-color: var(--tint-care);
-  }
-
-  .programme-grid {
-    align-items: center;
-    row-gap: var(--space-40);
-  }
-
-  .programme-content {
-    grid-column: 1 / -1;
-  }
-
-  .programme-media {
-    grid-column: 1 / -1;
-  }
-
-  @media (min-width: 960px) {
-    .programme-content {
-      grid-column: 1 / 7;
-    }
-    .programme-media {
-      grid-column: 8 / 13;
-    }
-  }
-
-  .programme-desc {
-    margin-top: var(--space-24);
-    margin-bottom: var(--space-40);
-  }
-
-  .stats-grid {
+  .solution-card__grid {
     display: grid;
     grid-template-columns: 1fr;
     gap: var(--space-24);
-    padding-block: var(--space-24);
-    margin-bottom: var(--space-40);
-    border-top: 1px solid var(--line);
-    border-bottom: 1px solid var(--line);
   }
 
-  @media (min-width: 640px) {
-    .stats-grid {
-      grid-template-columns: repeat(3, 1fr);
+  @media (min-width: 768px) {
+    .solution-card__grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--space-40);
     }
   }
 
-  .stat-item {
+  .solution-block {
     display: flex;
-    flex-direction: column-reverse;
-    gap: 0.35rem;
+    flex-direction: column;
+    gap: var(--space-8);
   }
 
-  .stat-value {
-    font-family: var(--font-display);
-    font-size: clamp(2.25rem, 3.5vw, 3.25rem);
-    line-height: 1;
-    color: var(--accent);
-    font-variant-numeric: tabular-nums;
+  .solution-block__label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--card-tint);
   }
 
-  .stat-label {
-    font-size: var(--fs-small);
-    color: var(--text-muted);
-    line-height: 1.4;
+  .solution-block__text {
+    font-size: var(--fs-body);
+    line-height: 1.6;
+    color: var(--text);
   }
 
-  .programme-frame {
-    aspect-ratio: 4 / 3;
+  /* SECTION 4 — MÉTHODE */
+  .method-section {
+    position: relative;
+    z-index: 1;
   }
 
-  /* 6. SECTION MÉTHODE (ÉPINGLÉE) */
   .method-grid {
-    align-items: start;
     row-gap: var(--space-40);
+    align-items: start;
   }
 
   .method-header {
@@ -1130,7 +938,7 @@ const organizationJsonLd = {
 
   @media (min-width: 960px) {
     .method-header {
-      grid-column: 1 / 6;
+      grid-column: 1 / 5;
     }
     .method-timeline {
       grid-column: 6 / 13;
@@ -1143,31 +951,37 @@ const organizationJsonLd = {
     left: 0;
     top: 0.5rem;
     bottom: 0.5rem;
-    width: 1px;
+    width: 2px;
     background-color: var(--line);
   }
 
   .method-rail-progress {
-    width: 2px;
+    width: 100%;
     height: 100%;
     background-color: var(--accent);
-    transform: scaleY(0.25);
     transform-origin: top;
+    transform: scaleY(0.25);
   }
 
   .method-steps {
     display: flex;
     flex-direction: column;
-    gap: var(--space-40);
+    gap: var(--space-16);
   }
 
   .method-step {
     display: grid;
     grid-template-columns: 3rem 1fr;
-    gap: var(--space-16);
     align-items: baseline;
-    opacity: 0.38;
-    transition: opacity 350ms var(--ease-out);
+    padding: var(--space-24);
+    border-radius: 20px;
+    opacity: 0.5;
+    transition: opacity 400ms var(--ease-out);
+  }
+
+  .method-step > * {
+    position: relative;
+    z-index: 1;
   }
 
   .method-step.is-active {
@@ -1178,18 +992,27 @@ const organizationJsonLd = {
     margin-bottom: var(--space-8);
   }
 
-  /* 7. SECTION ENGAGEMENTS */
+  /* SECTION 5 — ENGAGEMENTS */
+  .section-header {
+    margin-bottom: var(--space-64);
+  }
+
   .commitments-grid {
     row-gap: var(--space-24);
   }
 
   .commitment-card {
     grid-column: 1 / -1;
-    border-radius: var(--radius-sharp);
+    border-radius: 24px;
     padding: var(--space-40);
     display: flex;
     flex-direction: column;
     gap: var(--space-16);
+  }
+
+  .commitment-card > * {
+    position: relative;
+    z-index: 1;
   }
 
   @media (min-width: 640px) {
@@ -1206,31 +1029,64 @@ const organizationJsonLd = {
 
   .commitment-card p {
     color: var(--text-muted);
-    font-size: 0.98rem;
+    font-size: var(--fs-body);
   }
 
-  /* 8. CONTACT FIN DE PAGE */
+  /* SECTION 6 — ÉQUIPE */
+  .team-grid {
+    row-gap: var(--space-24);
+  }
+
+  .team-card {
+    grid-column: 1 / -1;
+    border-radius: 24px;
+    padding: var(--space-24);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+  }
+
+  @media (min-width: 640px) {
+    .team-card {
+      grid-column: span 6;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .team-card {
+      grid-column: span 4;
+    }
+  }
+
+  /* SECTION 7 — CONTACT FINAL EN .GLASS */
   .cta-final {
     position: relative;
-    overflow: hidden;
-    isolation: isolate;
+    z-index: 1;
+    border-bottom: none;
   }
 
-  .cta-final-inner {
-    grid-column: 1 / -1;
+  .cta-final-card {
+    border-radius: 28px;
+    padding: clamp(2.25rem, 5vw, 4.5rem);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--space-24);
+  }
+
+  .cta-final-card > * {
     position: relative;
     z-index: 1;
   }
 
-  @media (min-width: 960px) {
-    .cta-final-inner {
-      grid-column: 1 / 9;
-    }
+  .cta-final-text {
+    font-size: clamp(1.0625rem, 1rem + 0.3vw, 1.25rem);
+    margin-inline: auto;
   }
 
-  .cta-final-text {
-    margin-top: var(--space-24);
-    margin-bottom: var(--space-40);
-    color: var(--text);
+  .cta-final-actions {
+    justify-content: center;
+    margin-top: var(--space-8);
   }
 </style>
