@@ -1,4 +1,6 @@
 ---
+const SHOW_LINKEDIN = import.meta.env.SHOW_LINKEDIN === 'true';
+const LINKEDIN_URL = import.meta.env.PUBLIC_LINKEDIN_URL || '';
 ---
 
 <footer class="site-footer">
@@ -14,57 +16,80 @@
       <div class="footer-col">
         <p class="footer-heading">Activités</p>
         <ul class="footer-links">
-          <li><a href="/cc-care">CC Care</a></li>
-          <li><a href="/cc-consulting">CC Consulting</a></li>
-          <li><a href="/cc-events">CC Events</a></li>
+          <li><a href="/cc-care" class="footer-link">CC Care</a></li>
+          <li><a href="/cc-consulting" class="footer-link">CC Consulting</a></li>
+          <li><a href="/cc-events" class="footer-link">CC Events</a></li>
         </ul>
       </div>
 
       <div class="footer-col">
         <p class="footer-heading">Programme</p>
         <ul class="footer-links">
-          <li><a href="/cc-care/autonomie-inclusion">Autonomie &amp; Inclusion</a></li>
+          <li>
+            <a href="/cc-care/autonomie-inclusion" class="footer-link">
+              Autonomie &amp; Inclusion
+            </a>
+          </li>
         </ul>
       </div>
 
       <div class="footer-col">
         <p class="footer-heading">Contact</p>
         <ul class="footer-links">
-          <li><a href="mailto:cccare@ssesolutions.fr">cccare@ssesolutions.fr</a></li>
-          <li><a href="mailto:ccconsulting@ssesolutions.fr">ccconsulting@ssesolutions.fr</a></li>
-          <li><a href="/contact">Formulaire de contact</a></li>
+          <li>
+            <a href="mailto:cccare@ssesolutions.fr" class="footer-link footer-email">
+              cccare@<wbr />ssesolutions.fr
+            </a>
+          </li>
+          <li>
+            <a href="mailto:ccconsulting@ssesolutions.fr" class="footer-link footer-email">
+              ccconsulting@<wbr />ssesolutions.fr
+            </a>
+          </li>
+          <li><a href="/contact" class="footer-link">Formulaire de contact</a></li>
         </ul>
       </div>
 
       <div class="footer-col">
         <p class="footer-heading">Légal</p>
         <ul class="footer-links">
-          <li><a href="/mentions-legales">Mentions légales</a></li>
-          <li><a href="/confidentialite">Confidentialité</a></li>
+          <li><a href="/mentions-legales" class="footer-link">Mentions légales</a></li>
+          <li><a href="/confidentialite" class="footer-link">Confidentialité</a></li>
         </ul>
       </div>
     </div>
 
     <div class="footer-bottom">
       <p class="footer-copy">© 2026 SSE Solutions · Boussy-Saint-Antoine, Essonne</p>
-      <!-- [À COMPLÉTER] Liens réseaux sociaux (LinkedIn) : ne rien afficher tant qu'ils n'existent pas. -->
+      {
+        SHOW_LINKEDIN && LINKEDIN_URL && (
+          <a
+            href={LINKEDIN_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="footer-link"
+          >
+            LinkedIn
+          </a>
+        )
+      }
     </div>
   </div>
 </footer>
 
 <style>
   .site-footer {
-    background-color: var(--bg-primary);
-    border-top: 1px solid var(--border-steel);
+    background-color: var(--bg);
+    border-top: 1px solid var(--line);
     padding-top: var(--space-64);
     padding-bottom: var(--space-40);
-    color: var(--text-secondary);
+    color: var(--text-muted);
   }
 
   .footer-top {
     row-gap: var(--space-40);
     padding-bottom: var(--space-64);
-    border-bottom: 1px solid var(--border-steel);
+    border-bottom: 1px solid var(--line);
   }
 
   .footer-brand {
@@ -80,14 +105,14 @@
 
   .footer-title {
     font-family: var(--font-display);
-    font-size: 1.25rem;
-    color: var(--text-primary);
+    font-size: var(--fs-h3);
+    color: var(--text);
     margin-bottom: var(--space-16);
   }
 
   .footer-subtitle {
-    font-size: 0.9375rem;
-    color: var(--text-secondary);
+    font-size: var(--fs-small);
+    color: var(--text-muted);
     max-width: 36ch;
   }
 
@@ -111,8 +136,8 @@
     font-size: 0.75rem;
     font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.18em;
-    color: var(--text-primary);
+    letter-spacing: 0.14em;
+    color: var(--text);
     margin-bottom: var(--space-16);
   }
 
@@ -122,16 +147,27 @@
     gap: 0.625rem;
   }
 
-  .footer-links a {
-    font-size: 0.9375rem;
-    color: var(--text-secondary);
-    transition: color 0.2s ease;
-    word-break: break-word;
+  /* 2.3 Soulignement qui se dessine de gauche à droite (background-size 0 à 100 %, 300 ms) */
+  .footer-link {
+    display: inline;
+    font-size: var(--fs-small);
+    color: var(--text-muted);
+    background: linear-gradient(var(--accent), var(--accent)) no-repeat 0 100%;
+    background-size: 0% 1px;
+    padding-bottom: 2px;
+    transition: color 250ms var(--ease-out), background-size 300ms var(--ease-out);
   }
 
-  .footer-links a:hover,
-  .footer-links a:focus-visible {
-    color: var(--accent-gold);
+  .footer-link:hover,
+  .footer-link:focus-visible {
+    color: var(--accent);
+    background-size: 100% 1px;
+  }
+
+  /* 3.4 Empêcher la coupure au milieu de l'adresse e-mail */
+  .footer-email {
+    overflow-wrap: normal;
+    word-break: keep-all;
   }
 
   .footer-bottom {
@@ -141,7 +177,6 @@
     align-items: center;
     justify-content: space-between;
     gap: var(--space-16);
-    font-size: 0.875rem;
+    font-size: var(--fs-small);
   }
 </style>
-

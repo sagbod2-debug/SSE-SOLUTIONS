@@ -11,15 +11,12 @@ const isActivityActive =
 
 <header class="site-header" id="site-header">
   <div class="container header-inner">
-    <!-- Mot-symbole typographique SSE Solutions en Marcellus (cf. 01_BRIEF_DESIGN.md) -->
-    <!-- [À COMPLÉTER] Obtenir les logos en PNG transparent ou en SVG -->
     <a href="/" class="brand-wordmark" aria-label="SSE Solutions — Accueil">
       <span class="brand-sse">SSE</span>
       <span class="brand-sep" aria-hidden="true"></span>
       <span class="brand-solutions">Solutions</span>
     </a>
 
-    <!-- Navigation ordinateur -->
     <nav class="desktop-nav" aria-label="Navigation principale">
       <ul class="nav-list">
         <li class="nav-item nav-dropdown" data-dropdown>
@@ -49,16 +46,19 @@ const isActivityActive =
             </svg>
           </button>
           <ul
-            class="dropdown-menu"
+            class="dropdown-menu glass"
             id="activities-menu"
             aria-labelledby="activities-menu-btn"
           >
             <li>
               <a
                 href="/cc-care"
-                class:list={['dropdown-link', { 'is-current': currentPath === '/cc-care' || currentPath === '/cc-care/' }]}
+                class:list={[
+                  'dropdown-link',
+                  { 'is-current': currentPath === '/cc-care' || currentPath === '/cc-care/' },
+                ]}
               >
-                <span class="dropdown-num">01</span>
+                <span class="dropdown-num dropdown-num--care">01</span>
                 <span class="dropdown-text">
                   <strong>CC Care</strong>
                   <small>Social</small>
@@ -70,7 +70,7 @@ const isActivityActive =
                 href="/cc-consulting"
                 class:list={['dropdown-link', { 'is-current': isActive('/cc-consulting') }]}
               >
-                <span class="dropdown-num">02</span>
+                <span class="dropdown-num dropdown-num--consulting">02</span>
                 <span class="dropdown-text">
                   <strong>CC Consulting</strong>
                   <small>Sécurité</small>
@@ -82,7 +82,7 @@ const isActivityActive =
                 href="/cc-events"
                 class:list={['dropdown-link', { 'is-current': isActive('/cc-events') }]}
               >
-                <span class="dropdown-num">03</span>
+                <span class="dropdown-num dropdown-num--events">03</span>
                 <span class="dropdown-text">
                   <strong>CC Events</strong>
                   <small>Événementiel</small>
@@ -113,11 +113,49 @@ const isActivityActive =
     </nav>
 
     <div class="header-actions">
-      <a href="/contact" class="btn-primary header-cta">Nous écrire</a>
+      <!-- 1.3 Sélecteur de thème à 3 choix : Système / Clair / Sombre -->
+      <div
+        class="theme-switcher glass"
+        role="group"
+        aria-label="Choix du thème d'affichage"
+      >
+        <button
+          type="button"
+          class="theme-btn"
+          data-theme-choice="system"
+          aria-label="Thème Système"
+          aria-pressed="true"
+        >
+          Système
+        </button>
+        <button
+          type="button"
+          class="theme-btn"
+          data-theme-choice="light"
+          aria-label="Thème Clair"
+          aria-pressed="false"
+        >
+          Clair
+        </button>
+        <button
+          type="button"
+          class="theme-btn"
+          data-theme-choice="dark"
+          aria-label="Thème Sombre"
+          aria-pressed="false"
+        >
+          Sombre
+        </button>
+      </div>
+
+      <a href="/contact" class="btn-primary header-cta" data-magnetic>
+        <span>Nous écrire</span>
+        <span class="btn-arrow" aria-hidden="true">→</span>
+      </a>
 
       <button
         type="button"
-        class="mobile-menu-toggle"
+        class="mobile-menu-toggle glass"
         id="mobile-menu-toggle"
         aria-expanded="false"
         aria-controls="mobile-fullscreen-menu"
@@ -129,9 +167,9 @@ const isActivityActive =
     </div>
   </div>
 
-  <!-- Menu mobile plein écran avec liens en très grand (Marcellus) -->
+  <!-- Menu mobile plein écran en verre (.glass) -->
   <div
-    class="mobile-menu"
+    class="mobile-menu glass"
     id="mobile-fullscreen-menu"
     aria-hidden="true"
     inert
@@ -180,7 +218,10 @@ const isActivityActive =
       </nav>
 
       <div class="mobile-menu-footer">
-        <a href="/contact" class="btn-primary">Nous écrire</a>
+        <a href="/contact" class="btn-primary">
+          <span>Nous écrire</span>
+          <span class="btn-arrow" aria-hidden="true">→</span>
+        </a>
       </div>
     </div>
   </div>
@@ -193,16 +234,28 @@ const isActivityActive =
     left: 0;
     right: 0;
     z-index: 100;
-    background-color: rgba(17, 20, 22, 0.25);
+    background-color: transparent;
     border-bottom: 1px solid transparent;
-    transition: background-color 0.3s ease, border-color 0.3s ease, backdrop-filter 0.3s ease;
+    transition: background-color 300ms var(--ease-out), border-color 300ms var(--ease-out);
   }
 
+  /* 2.1 Application de .glass une fois la page défilée (.is-scrolled) */
   .site-header.is-scrolled,
   .site-header.menu-open {
-    background-color: rgba(17, 20, 22, 0.96);
-    border-bottom-color: var(--border-steel);
-    backdrop-filter: blur(10px);
+    background: var(--glass-bg);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    backdrop-filter: blur(20px) saturate(160%);
+    border-bottom: 1px solid var(--glass-border);
+    box-shadow: var(--glass-highlight);
+  }
+
+  @media (prefers-reduced-transparency: reduce) {
+    .site-header.is-scrolled,
+    .site-header.menu-open {
+      background: color-mix(in srgb, var(--surface) 96%, transparent) !important;
+      -webkit-backdrop-filter: none !important;
+      backdrop-filter: none !important;
+    }
   }
 
   .header-inner {
@@ -210,7 +263,7 @@ const isActivityActive =
     align-items: center;
     justify-content: space-between;
     height: 5rem;
-    gap: var(--space-24);
+    gap: var(--space-16);
   }
 
   .brand-wordmark {
@@ -220,33 +273,34 @@ const isActivityActive =
     font-family: var(--font-display);
     text-transform: uppercase;
     letter-spacing: 0.12em;
-    color: var(--text-primary);
+    color: var(--text);
     z-index: 102;
     padding-block: 0.5rem;
+    flex-shrink: 0;
   }
 
   .brand-sse {
     font-size: 1.25rem;
-    color: var(--text-primary);
+    color: var(--text);
   }
 
   .brand-sep {
     width: 1px;
     height: 1rem;
-    background-color: var(--accent-gold);
+    background-color: var(--accent);
   }
 
   .brand-solutions {
     font-size: 0.9375rem;
     letter-spacing: 0.22em;
-    color: var(--text-secondary);
+    color: var(--text-muted);
   }
 
   .desktop-nav {
     display: none;
   }
 
-  @media (min-width: 960px) {
+  @media (min-width: 1024px) {
     .desktop-nav {
       display: block;
     }
@@ -255,55 +309,46 @@ const isActivityActive =
   .nav-list {
     display: flex;
     align-items: center;
-    gap: var(--space-40);
+    gap: var(--space-24);
+  }
+
+  @media (min-width: 1200px) {
+    .nav-list {
+      gap: var(--space-40);
+    }
   }
 
   .nav-item {
     position: relative;
   }
 
+  /* 2.3 Liens du menu : soulignement qui se dessine de gauche à droite (background-size 0 à 100%, 300ms) */
   .nav-link {
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
-    background: none;
+    background: linear-gradient(var(--accent), var(--accent)) no-repeat 0 100%;
+    background-size: 0% 1px;
     border: none;
-    color: var(--text-secondary);
-    font-size: 0.9375rem;
+    color: var(--text-muted);
+    font-size: var(--fs-small);
     font-weight: 500;
     letter-spacing: 0.03em;
-    padding: 0.5rem 0;
+    padding: 0.45rem 0;
     cursor: pointer;
     position: relative;
-    transition: color 0.2s ease;
-  }
-
-  .nav-link::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    bottom: 0.15rem;
-    width: 100%;
-    height: 1px;
-    background-color: var(--accent-gold);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.3s var(--ease-out-expo);
+    transition: color 250ms var(--ease-out), background-size 300ms var(--ease-out);
   }
 
   .nav-link:hover,
   .nav-link.is-active,
   .nav-link[aria-expanded="true"] {
-    color: var(--text-primary);
-  }
-
-  .nav-link:hover::after,
-  .nav-link.is-active::after {
-    transform: scaleX(1);
+    color: var(--text);
+    background-size: 100% 1px;
   }
 
   .chevron-icon {
-    transition: transform 0.25s ease;
+    transition: transform 250ms var(--ease-out);
   }
 
   .dropdown-toggle[aria-expanded="true"] .chevron-icon {
@@ -315,14 +360,12 @@ const isActivityActive =
     top: calc(100% + 0.5rem);
     left: -1rem;
     min-width: 16rem;
-    background-color: var(--bg-secondary);
-    border: 1px solid var(--border-steel);
     border-radius: var(--radius-sharp);
     padding: 0.5rem;
     opacity: 0;
     visibility: hidden;
     transform: translateY(6px);
-    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+    transition: opacity 200ms var(--ease-out), transform 200ms var(--ease-out), visibility 200ms;
   }
 
   .nav-dropdown.is-open .dropdown-menu,
@@ -339,22 +382,33 @@ const isActivityActive =
     padding: 0.75rem 0.875rem;
     border-radius: var(--radius-sharp);
     border-left: 2px solid transparent;
-    transition: background-color 0.2s ease, border-color 0.2s ease;
+    transition: background-color 200ms var(--ease-out), border-color 200ms var(--ease-out);
   }
 
   .dropdown-link:hover,
   .dropdown-link:focus-visible,
   .dropdown-link.is-current {
-    background-color: var(--bg-primary);
-    border-left-color: var(--accent-gold);
+    background-color: var(--surface);
+    border-left-color: var(--accent);
   }
 
   .dropdown-num {
     font-size: 0.75rem;
     font-weight: 600;
-    letter-spacing: 0.16em;
+    letter-spacing: 0.14em;
     font-variant-numeric: tabular-nums;
-    color: var(--accent-gold);
+  }
+
+  .dropdown-num--care {
+    color: var(--tint-care);
+  }
+
+  .dropdown-num--consulting {
+    color: var(--tint-consulting);
+  }
+
+  .dropdown-num--events {
+    color: var(--tint-events);
   }
 
   .dropdown-text {
@@ -367,31 +421,69 @@ const isActivityActive =
     font-family: var(--font-display);
     font-weight: 400;
     font-size: 1.0625rem;
-    color: var(--text-primary);
+    color: var(--text);
   }
 
   .dropdown-text small {
     font-size: 0.75rem;
     text-transform: uppercase;
     letter-spacing: 0.14em;
-    color: var(--text-secondary);
+    color: var(--text-muted);
   }
 
   .header-actions {
     display: flex;
     align-items: center;
-    gap: var(--space-16);
+    gap: 0.75rem;
     z-index: 102;
+  }
+
+  /* Sélecteur de thème à 3 choix */
+  .theme-switcher {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px;
+    border-radius: 999px;
+    gap: 2px;
+  }
+
+  .theme-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    padding: 0.35rem 0.6rem;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background-color 250ms var(--ease-out), color 250ms var(--ease-out);
+  }
+
+  @media (max-width: 480px) {
+    .theme-btn {
+      padding: 0.3rem 0.45rem;
+      font-size: 0.6875rem;
+    }
+  }
+
+  .theme-btn:hover {
+    color: var(--text);
+  }
+
+  .theme-btn[aria-pressed="true"] {
+    background-color: var(--accent-fill);
+    color: var(--accent-fill-text);
   }
 
   .header-cta {
     display: none;
-    padding: 0.65rem 1.25rem;
+    padding: 0.6rem 1.15rem;
     min-height: 2.5rem;
-    font-size: 0.875rem;
+    font-size: 0.8125rem;
   }
 
-  @media (min-width: 960px) {
+  @media (min-width: 1024px) {
     .header-cta {
       display: inline-flex;
     }
@@ -405,13 +497,11 @@ const isActivityActive =
     gap: 0.4rem;
     width: 2.75rem;
     height: 2.75rem;
-    background: transparent;
-    border: 1px solid var(--border-steel);
     border-radius: var(--radius-sharp);
     cursor: pointer;
   }
 
-  @media (min-width: 960px) {
+  @media (min-width: 1024px) {
     .mobile-menu-toggle {
       display: none;
     }
@@ -420,8 +510,8 @@ const isActivityActive =
   .burger-line {
     width: 1.25rem;
     height: 1.5px;
-    background-color: var(--text-primary);
-    transition: transform 0.25s ease;
+    background-color: var(--text);
+    transition: transform 250ms var(--ease-out);
   }
 
   .site-header.menu-open .burger-line:first-child {
@@ -432,17 +522,15 @@ const isActivityActive =
     transform: translateY(-3.75px) rotate(-45deg);
   }
 
-  /* Menu mobile plein écran */
   .mobile-menu {
     position: fixed;
     inset: 0;
-    background-color: var(--bg-primary);
     z-index: 101;
     padding-top: 6.5rem;
     padding-bottom: var(--space-40);
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.25s ease, visibility 0.25s ease;
+    transition: opacity 250ms var(--ease-out), visibility 250ms var(--ease-out);
     overflow-y: auto;
   }
 
@@ -462,7 +550,7 @@ const isActivityActive =
   .mobile-nav-list {
     display: flex;
     flex-direction: column;
-    border-top: 1px solid var(--border-steel);
+    border-top: 1px solid var(--line);
   }
 
   .mobile-nav-link {
@@ -470,18 +558,17 @@ const isActivityActive =
     align-items: baseline;
     gap: var(--space-16);
     padding-block: var(--space-16);
-    border-bottom: 1px solid var(--border-steel);
+    border-bottom: 1px solid var(--line);
     font-family: var(--font-display);
     font-size: clamp(1.85rem, 6vw, 2.75rem);
     line-height: 1.1;
-    color: var(--text-primary);
-    transition: color 0.2s ease, padding-left 0.2s ease;
+    color: var(--text);
+    transition: color 200ms var(--ease-out), padding-left 200ms var(--ease-out);
   }
 
   .mobile-nav-link:hover,
   .mobile-nav-link:focus-visible {
-    color: var(--accent-gold);
+    color: var(--accent);
     padding-left: 0.5rem;
   }
 </style>
-

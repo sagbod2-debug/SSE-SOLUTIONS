@@ -1,43 +1,115 @@
 @import './fonts.css';
 
+:root,
+html[data-theme="dark"] {
+  color-scheme: dark;
+
+  /* 1.3 Variables de thème — Sombre (par défaut) */
+  --bg: #111416;
+  --surface: #1A1E21;
+  --text: #EDEEEF;
+  --text-muted: #A3AAB1;
+  --accent: #C9A24B;
+  --accent-fill: #C9A24B;
+  --accent-fill-hover: #E0BE6A;
+  --accent-fill-text: #111416;
+  --line: rgba(255, 255, 255, 0.10);
+
+  /* Alias de compatibilité interne (aucune couleur en dur) */
+  --bg-primary: var(--bg);
+  --bg-secondary: var(--surface);
+  --border-steel: var(--line);
+  --text-primary: var(--text);
+  --text-secondary: var(--text-muted);
+  --accent-gold: var(--accent);
+  --accent-gold-hover: var(--accent-fill-hover);
+
+  /* 2.5 Teintes par activité — Sombre */
+  --tint-care: #8FB5A0;
+  --tint-consulting: #D98A6A;
+  --tint-events: #8FA8D9;
+
+  /* 2.1 Matériau verre — Sombre */
+  --glass-bg: rgba(17, 20, 22, 0.55);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.10);
+  --glass-glow-color: rgba(255, 255, 255, 0.06);
+  --hero-scrim-start: rgba(17, 20, 22, 0.45);
+  --hero-scrim-end: rgba(17, 20, 22, 0.92);
+  --image-light-veil: transparent;
+}
+
+@media (prefers-color-scheme: light) {
+  html:not([data-theme="dark"]) {
+    color-scheme: light;
+    --bg: #F6F4EF;
+    --surface: #FFFFFF;
+    --text: #15181A;
+    --text-muted: #545B62;
+    --accent: #7A5C17;
+    --accent-fill: #C9A24B;
+    --accent-fill-hover: #D4B05C;
+    --accent-fill-text: #15181A;
+    --line: rgba(21, 24, 26, 0.12);
+
+    --tint-care: #3F6B55;
+    --tint-consulting: #A6512F;
+    --tint-events: #3F5A94;
+
+    --glass-bg: rgba(246, 244, 239, 0.60);
+    --glass-border: rgba(21, 24, 26, 0.08);
+    --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.70);
+    --glass-glow-color: rgba(255, 255, 255, 0.35);
+    --hero-scrim-start: rgba(246, 244, 239, 0.55);
+    --hero-scrim-end: rgba(246, 244, 239, 0.94);
+    --image-light-veil: rgba(246, 244, 239, 0.08);
+  }
+}
+
+html[data-theme="light"] {
+  color-scheme: light;
+
+  /* 1.3 Variables de thème — Clair */
+  --bg: #F6F4EF;
+  --surface: #FFFFFF;
+  --text: #15181A;
+  --text-muted: #545B62;
+  --accent: #7A5C17;
+  --accent-fill: #C9A24B;
+  --accent-fill-hover: #D4B05C;
+  --accent-fill-text: #15181A;
+  --line: rgba(21, 24, 26, 0.12);
+
+  /* 2.5 Teintes par activité — Clair */
+  --tint-care: #3F6B55;
+  --tint-consulting: #A6512F;
+  --tint-events: #3F5A94;
+
+  /* 2.1 Matériau verre — Clair */
+  --glass-bg: rgba(246, 244, 239, 0.60);
+  --glass-border: rgba(21, 24, 26, 0.08);
+  --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.70);
+  --glass-glow-color: rgba(255, 255, 255, 0.35);
+  --hero-scrim-start: rgba(246, 244, 239, 0.55);
+  --hero-scrim-end: rgba(246, 244, 239, 0.94);
+  --image-light-veil: rgba(246, 244, 239, 0.08);
+}
+
 :root {
-  /* Palette principale — Maison mère SSE Solutions */
-  --bg-primary: #111416;
-  --bg-secondary: #1A1E21;
-  --border-steel: #2C3237;
-  --text-primary: #EDEEEF;
-  --text-secondary: #A3AAB1;
-  --accent-gold: #C9A24B;
-  --accent-gold-hover: #E0BE6A;
+  /* Teinte d'activité courante (par défaut : l'or de la maison) */
+  --activity-tint: var(--accent);
 
-  /* Accents par activité */
-  --cc-care-blue: #1F4E86;
-  --cc-care-blue-light: #4A80C4;
-  --cc-care-green: #5E9B3A;
-  --cc-care-green-light: #78B852;
-
-  --cc-consulting-navy: #13233F;
-  --cc-consulting-accent: #C9A24B;
-
-  --cc-events-black: #0B0B0B;
-  --cc-events-gold: #D4A62A;
-
-  /* Sections claires (CC Care & Autonomie & Inclusion) */
-  --light-bg: #F3F5F4;
-  --light-bg-secondary: #E7ECEA;
-  --light-text: #14202B;
-  --light-text-secondary: #3B4A58;
-  --light-border: #C5CECB;
-
-  /* Couleur d'accent courante (modulée par page) */
-  --page-accent: var(--accent-gold);
-  --page-accent-secondary: var(--border-steel);
-
-  /* Typographies */
+  /* 2.4 Typographie — Échelle fluide et polices */
   --font-display: 'Marcellus', Georgia, 'Times New Roman', serif;
   --font-sans: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 
-  /* Échelle d'espacement stricte : 8 / 16 / 24 / 40 / 64 / 104 / 168 px */
+  --fs-display: clamp(2.75rem, 1.6rem + 5vw, 5.75rem);
+  --fs-h2: clamp(2rem, 1.4rem + 2.6vw, 3.5rem);
+  --fs-h3: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
+  --fs-body: clamp(1rem, 0.96rem + 0.2vw, 1.125rem);
+  --fs-small: 0.875rem;
+
+  /* Échelle d'espacement : 8 / 16 / 24 / 40 / 64 / 104 / 168 px */
   --space-8: 0.5rem;
   --space-16: 1rem;
   --space-24: 1.5rem;
@@ -48,36 +120,50 @@
 
   /* Grille */
   --container-max: 1320px;
-  --grid-gutter: 1.5rem; /* 24px */
-  --page-margin: 1.25rem; /* 20px mobile */
+  --grid-gutter: 1.5rem;
+  --page-margin: 1.25rem;
   --radius-sharp: 2px;
 
-  /* Transitions */
-  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  /* 2.3 Courbes communes */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-out-expo: var(--ease-out);
 }
 
 @media (min-width: 768px) {
   :root {
-    --page-margin: 2.5rem; /* 40px tablet/desktop */
+    --page-margin: 2.5rem;
   }
 }
 
-/* Thèmes par activité */
-[data-theme="cc-care"] {
-  --page-accent: var(--cc-care-green);
-  --page-accent-secondary: var(--cc-care-blue);
+/* 2.5 Attribution de la teinte par activité */
+html[data-activity="cc-care"] {
+  --activity-tint: var(--tint-care);
 }
 
-[data-theme="cc-consulting"] {
-  --page-accent: var(--accent-gold);
-  --page-accent-secondary: var(--cc-consulting-navy);
+html[data-activity="cc-consulting"] {
+  --activity-tint: var(--tint-consulting);
 }
 
-[data-theme="cc-events"] {
-  --bg-primary: #0B0B0B;
-  --bg-secondary: #121315;
-  --page-accent: var(--cc-events-gold);
-  --accent-gold: var(--cc-events-gold);
+html[data-activity="cc-events"] {
+  --activity-tint: var(--tint-events);
+}
+
+/* 3.4 Contraste renforcé (@media (prefers-contrast: more)) */
+@media (prefers-contrast: more) {
+  :root,
+  html[data-theme="dark"] {
+    --text-muted: var(--text);
+    --line: rgba(255, 255, 255, 0.30);
+    --glass-bg: var(--surface);
+    --glass-border: rgba(255, 255, 255, 0.30);
+  }
+  html[data-theme="light"] {
+    --text-muted: var(--text);
+    --line: rgba(21, 24, 26, 0.30);
+    --glass-bg: var(--surface);
+    --glass-border: rgba(21, 24, 26, 0.30);
+  }
 }
 
 /* Reset & Base */
@@ -91,13 +177,14 @@
 
 html {
   font-size: 100%;
-  background-color: var(--bg-primary);
-  color: var(--text-primary);
+  background-color: var(--bg);
+  color: var(--text);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   scroll-padding-top: 5.5rem;
+  transition: background-color 400ms var(--ease-out), color 400ms var(--ease-out);
 }
 
 html.lenis,
@@ -118,16 +205,23 @@ html.lenis body {
 }
 
 body {
-  background-color: var(--bg-primary);
-  color: var(--text-primary);
+  background-color: var(--bg);
+  color: var(--text);
   font-family: var(--font-sans);
-  font-size: clamp(1.0625rem, 1rem + 0.2vw, 1.125rem); /* 17px -> 18px */
+  font-size: var(--fs-body);
   font-weight: 400;
   line-height: 1.6;
   overflow-x: hidden;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  transition: background-color 400ms var(--ease-out), color 400ms var(--ease-out);
+}
+
+p {
+  text-wrap: pretty;
+  line-height: 1.6;
+  max-width: 68ch;
 }
 
 main {
@@ -160,15 +254,10 @@ select {
   color: inherit;
 }
 
-/* Focus clavier très visible (Accessibilité AA non négociable) */
+/* 2.3 Focus clavier : anneau de 2 px --accent avec un décalage de 3 px dans les deux thèmes */
 :focus-visible {
-  outline: 2px solid var(--accent-gold) !important;
-  outline-offset: 4px !important;
-}
-
-.section-light :focus-visible {
-  outline: 2px solid var(--cc-care-blue) !important;
-  outline-offset: 4px !important;
+  outline: 2px solid var(--accent) !important;
+  outline-offset: 3px !important;
 }
 
 /* Lien d'évitement "Aller au contenu" */
@@ -177,21 +266,79 @@ select {
   top: 1rem;
   left: 1rem;
   z-index: 9999;
-  background-color: var(--accent-gold);
-  color: #111416;
+  background-color: var(--accent-fill);
+  color: var(--accent-fill-text);
   font-family: var(--font-sans);
   font-weight: 600;
-  font-size: 0.9375rem;
+  font-size: var(--fs-small);
   padding: 0.75rem 1.25rem;
   border-radius: var(--radius-sharp);
   transform: translateY(-200%);
-  transition: transform 0.2s ease;
+  transition: transform 0.2s var(--ease-out);
 }
 
 .skip-link:focus,
 .skip-link:focus-visible {
   transform: translateY(0);
-  outline: 2px solid #EDEEEF !important;
+  outline: 2px solid var(--text) !important;
+}
+
+/* 2.1 Classe utilitaire .glass (Liquid Glass) */
+.glass {
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  backdrop-filter: blur(20px) saturate(160%);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-highlight);
+  position: relative;
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass {
+    background: color-mix(in srgb, var(--surface) 96%, transparent);
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .glass {
+    background: color-mix(in srgb, var(--surface) 96%, transparent) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+}
+
+@media (prefers-contrast: more) {
+  .glass {
+    background: var(--surface) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    border-color: var(--line) !important;
+  }
+}
+
+/* Reflet qui suit le pointeur sur ordinateur ((hover: hover)) */
+@media (hover: hover) {
+  [data-glow] {
+    position: relative;
+    overflow: hidden;
+  }
+  [data-glow]::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 300ms var(--ease-out);
+    background: radial-gradient(
+      240px circle at var(--mx, 50%) var(--my, 50%),
+      var(--pointer-glow, var(--glass-glow-color)),
+      transparent 70%
+    );
+  }
+  [data-glow]:hover::before {
+    opacity: 1;
+  }
 }
 
 /* Conteneur & Grille 12 colonnes */
@@ -211,7 +358,7 @@ select {
 /* Sections & Rythme vertical */
 .section {
   padding-block: var(--space-64);
-  border-bottom: 1px solid var(--border-steel);
+  border-bottom: 1px solid var(--line);
   position: relative;
 }
 
@@ -225,97 +372,68 @@ select {
 }
 
 .section--secondary {
-  background-color: var(--bg-secondary);
+  background-color: var(--surface);
 }
 
-.section--consulting-tint {
-  background: linear-gradient(180deg, rgba(19, 35, 63, 0.38) 0%, var(--bg-primary) 100%);
-}
-
-/* Sections claires pour CC Care & Autonomie */
 .section-light {
-  background-color: var(--light-bg);
-  color: var(--light-text);
-  border-bottom: 1px solid var(--light-border);
+  background-color: var(--surface);
+  color: var(--text);
+  border-bottom: 1px solid var(--line);
 }
 
-.section-light--alt {
-  background-color: var(--light-bg-secondary);
-  color: var(--light-text);
-  border-bottom: 1px solid var(--light-border);
-}
-
-/* Typographie & Hiérarchie */
+/* 2.4 Typographie & Hiérarchie */
 h1,
 h2,
 h3,
 .display-title {
   font-family: var(--font-display);
   font-weight: 400;
-  line-height: 1.0;
-  letter-spacing: -0.01em;
-  color: var(--text-primary);
+  color: var(--text);
   text-wrap: balance;
 }
 
-.section-light h1,
-.section-light h2,
-.section-light h3,
-.section-light .display-title {
-  color: var(--light-text);
-}
-
-.hero-title {
-  font-size: clamp(2.65rem, 6.2vw, 7.25rem);
-  line-height: 0.98;
+h1,
+.hero-title,
+.hero-title--medium {
+  font-size: var(--fs-display);
+  line-height: 1.05;
   letter-spacing: -0.015em;
 }
 
-.hero-title--medium {
-  font-size: clamp(2.4rem, 5.2vw, 5.5rem);
-  line-height: 1.02;
-}
-
+h2,
 .section-title {
-  font-size: clamp(2rem, 4vw, 4rem);
-  line-height: 1.04;
+  font-size: var(--fs-h2);
+  line-height: 1.12;
   letter-spacing: -0.01em;
 }
 
+h3,
 .card-title {
   font-family: var(--font-display);
-  font-size: clamp(1.375rem, 2vw, 1.875rem);
-  line-height: 1.15;
+  font-size: var(--fs-h3);
+  line-height: 1.2;
 }
 
 .prose-measure {
-  max-width: 65ch;
-  color: var(--text-secondary);
+  max-width: 68ch;
+  color: var(--text-muted);
+  text-wrap: pretty;
+  line-height: 1.6;
 }
 
-.section-light .prose-measure {
-  color: var(--light-text-secondary);
-}
-
-/* Sur-titres & Numérotation tabulaire */
+/* Étiquettes en capitales (SSE SOLUTIONS · ESSONNE, NOS ACTIVITÉS) */
 .eyebrow {
   display: inline-flex;
   align-items: center;
   gap: 0.75rem;
   font-family: var(--font-sans);
   font-weight: 600;
-  font-size: 0.75rem; /* 12px */
+  font-size: 0.75rem;
   line-height: 1.4;
   text-transform: uppercase;
-  letter-spacing: 0.18em;
-  color: var(--text-secondary);
+  letter-spacing: 0.14em;
+  color: var(--activity-tint);
   margin-bottom: var(--space-24);
-}
-
-@media (min-width: 768px) {
-  .eyebrow {
-    font-size: 0.8125rem; /* 13px */
-  }
 }
 
 .eyebrow::before {
@@ -323,36 +441,23 @@ h3,
   display: inline-block;
   width: 1.5rem;
   height: 1px;
-  background-color: var(--page-accent);
-}
-
-.section-light .eyebrow {
-  color: var(--cc-care-blue);
-}
-
-.section-light .eyebrow::before {
-  background-color: var(--cc-care-green);
+  background-color: var(--activity-tint);
 }
 
 .num-index {
   font-family: var(--font-sans);
   font-weight: 600;
-  font-size: 0.8125rem;
-  letter-spacing: 0.18em;
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
   font-variant-numeric: tabular-nums;
-  color: var(--accent-gold);
+  color: var(--activity-tint);
 }
 
-.section-light .num-index {
-  color: var(--cc-care-blue);
-}
-
-/* Point final signature (or discret ou couleur courante) */
 .dot-gold {
-  color: var(--accent-gold);
+  color: var(--accent);
 }
 
-/* Boutons : Principal plein or + Secondaire à soulignement or qui se trace de gauche à droite */
+/* Boutons */
 .btn-group {
   display: flex;
   flex-wrap: wrap;
@@ -364,104 +469,88 @@ h3,
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.75rem;
-  background-color: var(--accent-gold);
-  color: #111416;
+  gap: 0.625rem;
+  background-color: var(--accent-fill);
+  color: var(--accent-fill-text);
   font-family: var(--font-sans);
   font-weight: 600;
-  font-size: 0.9375rem;
+  font-size: var(--fs-small);
   letter-spacing: 0.04em;
-  padding: 1rem 1.75rem;
+  padding: 0.95rem 1.65rem;
   border-radius: var(--radius-sharp);
-  border: 1px solid var(--accent-gold);
+  border: 1px solid var(--accent-fill);
   cursor: pointer;
   position: relative;
   overflow: hidden;
-  transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+  transition: transform 400ms var(--ease-spring), background-color 250ms var(--ease-out),
+    border-color 250ms var(--ease-out);
   min-height: 3rem;
-}
-
-.btn-primary::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background-color: #111416;
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.35s var(--ease-out-expo);
+  will-change: transform;
 }
 
 .btn-primary:hover {
-  background-color: var(--accent-gold-hover);
-  border-color: var(--accent-gold-hover);
+  background-color: var(--accent-fill-hover);
+  border-color: var(--accent-fill-hover);
 }
 
-.btn-primary:hover::after {
-  transform: scaleX(1);
+.btn-primary:active {
+  transform: scale(0.97) !important;
+  transition-duration: 120ms !important;
+}
+
+.btn-primary[disabled] {
+  opacity: 0.65;
+  cursor: wait;
+}
+
+.btn-arrow {
+  display: inline-block;
+  transition: transform 300ms var(--ease-out);
+}
+
+.btn-primary:hover .btn-arrow,
+.btn-secondary:hover .btn-arrow {
+  transform: translateX(4px);
 }
 
 .btn-secondary {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.625rem;
-  color: var(--text-primary);
+  color: var(--text);
   font-family: var(--font-sans);
   font-weight: 500;
-  font-size: 0.9375rem;
+  font-size: var(--fs-small);
   letter-spacing: 0.03em;
-  padding: 0.75rem 0.25rem;
-  position: relative;
+  padding: 0.9rem 1.4rem;
+  border-radius: var(--radius-sharp);
   cursor: pointer;
-  min-height: 2.75rem;
+  min-height: 3rem;
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  backdrop-filter: blur(20px) saturate(160%);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-highlight);
+  transition: border-color 300ms var(--ease-out), background-color 300ms var(--ease-out);
 }
 
-.section-light .btn-secondary {
-  color: var(--light-text);
+.btn-secondary:hover {
+  border-color: var(--accent);
 }
 
-.btn-secondary::before {
-  content: '';
-  position: absolute;
-  bottom: 0.35rem;
-  left: 0;
-  width: 100%;
-  height: 1px;
-  background-color: var(--border-steel);
+@media (prefers-reduced-transparency: reduce) {
+  .btn-secondary {
+    background: color-mix(in srgb, var(--surface) 96%, transparent) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
 }
 
-.section-light .btn-secondary::before {
-  background-color: var(--light-border);
-}
-
-.btn-secondary::after {
-  content: '';
-  position: absolute;
-  bottom: 0.35rem;
-  left: 0;
-  width: 100%;
-  height: 1px;
-  background-color: var(--accent-gold);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.38s var(--ease-out-expo);
-}
-
-.section-light .btn-secondary::after {
-  background-color: var(--cc-care-blue);
-}
-
-.btn-secondary:hover::after,
-.btn-secondary:focus-visible::after {
-  transform: scaleX(1);
-}
-
-/* Panneau clair architectural pour présenter les logos officiels (sur fond #F3F5F4) */
+/* Panneau de présentation pour les logos avec fond blanc */
 .logo-panel {
-  background-color: #F3F5F4;
-  border: 1px solid var(--border-steel);
+  background-color: #F6F4EF;
+  border: 1px solid var(--line);
   border-radius: var(--radius-sharp);
   padding: var(--space-24);
   display: inline-flex;
@@ -470,22 +559,27 @@ h3,
 }
 
 .logo-panel img {
-  max-height: 7.5rem;
+  max-height: 7rem;
   width: auto;
   object-fit: contain;
 }
 
-/* Cadres photos et parallaxe */
+/* Cadres photos et voile 8 % en mode clair */
 .media-frame {
   position: relative;
   overflow: hidden;
-  background-color: var(--bg-secondary);
-  border: 1px solid var(--border-steel);
+  background-color: var(--surface);
+  border: 1px solid var(--line);
   border-radius: var(--radius-sharp);
 }
 
-.section-light .media-frame {
-  border-color: var(--light-border);
+.media-frame::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: var(--image-light-veil);
+  pointer-events: none;
+  z-index: 2;
 }
 
 .media-frame picture,
@@ -493,7 +587,6 @@ h3,
   width: 100%;
   height: 100%;
   object-fit: cover;
-  will-change: transform;
 }
 
 /* Masques d'animation de lignes */
@@ -508,11 +601,11 @@ h3,
   will-change: transform, opacity;
 }
 
-/* Voile de transition entre pages (0.3s) */
+/* Transition de thème et de pages (View Transitions) */
 ::view-transition-old(root),
 ::view-transition-new(root) {
-  animation-duration: 0.3s;
-  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  animation-duration: 400ms;
+  animation-timing-function: var(--ease-out);
 }
 
 /* Respect absolu de prefers-reduced-motion */
@@ -522,15 +615,19 @@ h3,
   *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
-    transition-duration: 0.2s !important;
+    transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+
+  html,
+  body {
+    transition: none !important;
   }
 
   .reveal-line,
   [data-reveal],
-  [data-parallax] {
+  [data-parallax-img] {
     transform: none !important;
     opacity: 1 !important;
   }
 }
-

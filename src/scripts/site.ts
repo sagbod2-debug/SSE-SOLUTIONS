@@ -19,7 +19,63 @@ function cleanupAnimations() {
   }
 }
 
+function initThemeSwitcher() {
+  const buttons = document.querySelectorAll<HTMLButtonElement>('.theme-btn[data-theme-choice]');
+  if (!buttons.length) return;
+
+  const STORAGE_KEY = 'sse-theme';
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const resolveTheme = (pref: string): 'light' | 'dark' => {
+    if (pref === 'light' || pref === 'dark') return pref;
+    return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+  };
+
+  const syncButtons = (pref: string) => {
+    buttons.forEach((btn) => {
+      const choice = btn.getAttribute('data-theme-choice');
+      btn.setAttribute('aria-pressed', choice === pref ? 'true' : 'false');
+    });
+  };
+
+  const applyThemePref = (pref: string, withTransition = false) => {
+    try {
+      localStorage.setItem(STORAGE_KEY, pref);
+    } catch {}
+    const updateDom = () => {
+      const resolved = resolveTheme(pref);
+      document.documentElement.setAttribute('data-theme', resolved);
+      document.documentElement.setAttribute('data-theme-pref', pref);
+      const meta = document.getElementById('meta-theme-color');
+      if (meta) {
+        meta.setAttribute('content', resolved === 'light' ? '#F6F4EF' : '#111416');
+      }
+      syncButtons(pref);
+    };
+
+    const docAny = document as unknown as {
+      startViewTransition?: (cb: () => void) => void;
+    };
+    if (withTransition && !prefersReducedMotion && typeof docAny.startViewTransition === 'function') {
+      docAny.startViewTransition(updateDom);
+    } else {
+      updateDom();
+    }
+  };
+
+  const currentPref = document.documentElement.getAttribute('data-theme-pref') || 'system';
+  syncButtons(currentPref);
+
+  buttons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const choice = btn.getAttribute('data-theme-choice') || 'system';
+      applyThemePref(choice, true);
+    });
+  });
+}
+
 function initHeader() {
+  initThemeSwitcher();
   const header = document.getElementById('site-header');
   if (!header) return;
 
