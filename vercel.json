@@ -1,6 +1,19 @@
 {
   "cleanUrls": true,
   "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.ssesolutions.fr"
+        }
+      ],
+      "destination": "https://ssesolutions.fr/:path*",
+      "statusCode": 308
+    }
+  ],
   "headers": [
     {
       "source": "/(.*)",
@@ -18,11 +31,10 @@
       ]
     },
     {
-      "source": "/images/(.*)",
+      "source": "/_astro/(.*)",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
       ]
     }
   ]
 }
-
