@@ -318,11 +318,17 @@ select {
 
 /* Reflet qui suit le pointeur sur ordinateur ((hover: hover)) */
 @media (hover: hover) {
-  [data-glow] {
+  [data-glow],
+  .btn-primary,
+  .btn-secondary,
+  [data-activity-row] {
     position: relative;
     overflow: hidden;
   }
-  [data-glow]::before {
+  [data-glow]::before,
+  .btn-primary::before,
+  .btn-secondary::before,
+  [data-activity-row]::after {
     content: '';
     position: absolute;
     inset: 0;
@@ -336,7 +342,10 @@ select {
       transparent 70%
     );
   }
-  [data-glow]:hover::before {
+  [data-glow]:hover::before,
+  .btn-primary:hover::before,
+  .btn-secondary:hover::before,
+  [data-activity-row]:hover::after {
     opacity: 1;
   }
 }

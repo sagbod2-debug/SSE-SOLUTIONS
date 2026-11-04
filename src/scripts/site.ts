@@ -81,9 +81,9 @@ function initHeader() {
 
   const updateScroll = () => {
     if (window.scrollY > 24) {
-      header.classList.add('is-scrolled');
+      header.classList.add('is-scrolled', 'glass');
     } else {
-      header.classList.remove('is-scrolled');
+      header.classList.remove('is-scrolled', 'glass');
     }
   };
   updateScroll();
