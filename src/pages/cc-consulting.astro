@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Picture from '../components/Picture.astro';
-import { SHOW_CONSULTING_FAQ, CONSULTING_FAQ_ITEMS } from '../config/flags';
+import { SHOW_CONSULTING_FAQ, CONSULTING_FAQ_ITEMS, SHOW_REAL_PHOTOS } from '../config/flags';
 
 const checklistItems = [
   'le registre de sécurité, à jour',
@@ -254,6 +254,14 @@ const faqJsonLd =
             </div>
           ))}
         </dl>
+      </div>
+    </section>
+  )}
+
+  {SHOW_REAL_PHOTOS && (
+    <section class="section real-photos-slot" data-real-photos-slot>
+      <div class="container">
+        <div class="real-photos-grid grid-12"></div>
       </div>
     </section>
   )}
