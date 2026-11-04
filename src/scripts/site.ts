@@ -1,11 +1,13 @@
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
+import { initLivingMeshes } from './mesh-webgl';
 
 gsap.registerPlugin(ScrollTrigger);
 
 let lenisInstance: Lenis | null = null;
 let rafCallback: ((time: number) => void) | null = null;
+let cleanupMeshes: (() => void) | null = null;
 
 function cleanupAnimations() {
   ScrollTrigger.getAll().forEach((st) => st.kill());
@@ -16,6 +18,10 @@ function cleanupAnimations() {
   if (lenisInstance) {
     lenisInstance.destroy();
     lenisInstance = null;
+  }
+  if (cleanupMeshes) {
+    cleanupMeshes();
+    cleanupMeshes = null;
   }
 }
 
@@ -89,7 +95,6 @@ function initHeader() {
   updateScroll();
   window.addEventListener('scroll', updateScroll, { passive: true });
 
-  // Dropdown Activités (clavier + clic)
   const dropdown = header.querySelector('[data-dropdown]') as HTMLElement | null;
   const toggleBtn = header.querySelector('#activities-menu-btn') as HTMLButtonElement | null;
 
@@ -120,7 +125,6 @@ function initHeader() {
     });
   }
 
-  // Menu mobile plein écran
   const mobileToggle = document.getElementById('mobile-menu-toggle') as HTMLButtonElement | null;
   const mobileMenu = document.getElementById('mobile-fullscreen-menu') as HTMLElement | null;
 
@@ -163,12 +167,148 @@ function initHeader() {
   }
 }
 
+// Courbe cubic-bezier(.22, 1, .36, 1) pour les compteurs
+function easeOutCubicCustom(t: number): number {
+  return 1 - Math.pow(1 - t, 3.2);
+}
+
+function initMicroInteractions(prefersReducedMotion: boolean) {
+  const canHover = window.matchMedia('(hover: hover)').matches;
+
+  // 2.1 Reflet qui suit le pointeur via requestAnimationFrame (--mx, --my)
+  if (canHover) {
+    const glowTargets = document.querySelectorAll<HTMLElement>(
+      '[data-glow], .btn-primary, .btn-secondary, [data-activity-row]'
+    );
+    glowTargets.forEach((el) => {
+      let rafId = 0;
+      el.addEventListener(
+        'pointermove',
+        (e: PointerEvent) => {
+          if (rafId) return;
+          rafId = requestAnimationFrame(() => {
+            const rect = el.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            el.style.setProperty('--mx', `${x.toFixed(1)}px`);
+            el.style.setProperty('--my', `${y.toFixed(1)}px`);
+            rafId = 0;
+          });
+        },
+        { passive: true }
+      );
+    });
+  }
+
+  // En mouvement réduit : aucune attraction, aucune inclinaison, aucun compteur
+  if (prefersReducedMotion) {
+    document.querySelectorAll<HTMLElement>('[data-count-to]').forEach((el) => {
+      const target = el.getAttribute('data-count-to');
+      if (target) el.textContent = target;
+    });
+    return;
+  }
+
+  // 2.3 Bouton principal or : attraction magnétique dans un rayon de 80 px, déplacement 6 px max, retour 400 ms --ease-spring
+  if (canHover) {
+    const magneticBtns = document.querySelectorAll<HTMLElement>('.btn-primary, [data-magnetic]');
+    magneticBtns.forEach((btn) => {
+      let rafId = 0;
+      const onMove = (e: PointerEvent) => {
+        if (rafId) return;
+        rafId = requestAnimationFrame(() => {
+          const rect = btn.getBoundingClientRect();
+          const cx = rect.left + rect.width / 2;
+          const cy = rect.top + rect.height / 2;
+          const dx = e.clientX - cx;
+          const dy = e.clientY - cy;
+          const dist = Math.hypot(dx, dy);
+          if (dist < 80 + Math.max(rect.width, rect.height) / 2) {
+            const pull = Math.min(1, 1 - dist / (80 + Math.max(rect.width, rect.height) / 2));
+            const tx = Math.max(-6, Math.min(6, (dx / (rect.width / 2 || 1)) * 6 * pull));
+            const ty = Math.max(-6, Math.min(6, (dy / (rect.height / 2 || 1)) * 6 * pull));
+            btn.style.transform = `translate3d(${tx.toFixed(2)}px, ${ty.toFixed(2)}px, 0)`;
+          } else {
+            btn.style.transform = '';
+          }
+          rafId = 0;
+        });
+      };
+      btn.addEventListener('pointermove', onMove, { passive: true });
+      btn.addEventListener('pointerleave', () => {
+        btn.style.transform = '';
+      });
+    });
+
+    // 2.3 Cartes d'activités : légère inclinaison 3D (2° maximum, perspective: 900px)
+    const tiltCards = document.querySelectorAll<HTMLElement>('[data-tilt-card], [data-activity-row]');
+    tiltCards.forEach((card) => {
+      let rafId = 0;
+      card.addEventListener(
+        'pointermove',
+        (e: PointerEvent) => {
+          if (rafId) return;
+          rafId = requestAnimationFrame(() => {
+            const rect = card.getBoundingClientRect();
+            const nx = (e.clientX - rect.left) / Math.max(1, rect.width) - 0.5;
+            const ny = (e.clientY - rect.top) / Math.max(1, rect.height) - 0.5;
+            const rotY = Math.max(-2, Math.min(2, nx * 4));
+            const rotX = Math.max(-2, Math.min(2, -ny * 4));
+            card.style.transform = `perspective(900px) rotateX(${rotX.toFixed(2)}deg) rotateY(${rotY.toFixed(2)}deg)`;
+            rafId = 0;
+          });
+        },
+        { passive: true }
+      );
+      card.addEventListener('pointerleave', () => {
+        card.style.transform = '';
+      });
+    });
+  }
+
+  // 2.3 Chiffres 35 / 244 / 2 : compteur de 0 à la valeur en 1,2 s --ease-out une seule fois
+  const counters = document.querySelectorAll<HTMLElement>('[data-count-to]');
+  if (counters.length > 0) {
+    const io = new IntersectionObserver(
+      (entries, obs) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const el = entry.target as HTMLElement;
+          obs.unobserve(el);
+          const targetVal = parseInt(el.getAttribute('data-count-to') || '0', 10);
+          if (!targetVal) return;
+          const duration = 1200;
+          const start = performance.now();
+          const tick = (now: number) => {
+            const p = Math.min(1, (now - start) / duration);
+            const eased = easeOutCubicCustom(p);
+            el.textContent = String(Math.round(eased * targetVal));
+            if (p < 1) {
+              requestAnimationFrame(tick);
+            } else {
+              el.textContent = String(targetVal);
+            }
+          };
+          requestAnimationFrame(tick);
+        });
+      },
+      { threshold: 0.35 }
+    );
+    counters.forEach((c) => io.observe(c));
+  }
+}
+
 function initAnimations() {
   cleanupAnimations();
 
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // 2. Défilement fluide Lenis (désactivé si prefers-reduced-motion)
+  // 2.2 Arrière-plan vivant WebGL
+  cleanupMeshes = initLivingMeshes();
+
+  // 2.3 Micro-interactions
+  initMicroInteractions(prefersReducedMotion);
+
   if (!prefersReducedMotion) {
     lenisInstance = new Lenis({
       duration: 1.15,
@@ -184,7 +324,6 @@ function initAnimations() {
     gsap.ticker.lagSmoothing(0);
   }
 
-  // Ancres internes fluides
   document.querySelectorAll<HTMLAnchorElement>('a[href^="#"]').forEach((anchor) => {
     anchor.addEventListener('click', (e) => {
       const targetId = anchor.getAttribute('href');
@@ -201,7 +340,6 @@ function initAnimations() {
   });
 
   if (prefersReducedMotion) {
-    // Si mouvement réduit : seulement des fondus rapides de 0.2 s, aucune translation ni parallaxe
     gsap.set('.reveal-line, [data-reveal], [data-parallax-img]', {
       clearProps: 'all',
       opacity: 1,
@@ -210,8 +348,6 @@ function initAnimations() {
     return;
   }
 
-  // 1. Chargement de l'accueil : les trois mots du titre montent ligne par ligne derrière un masque
-  // (durée 0.9 s, décalage 0.12 s, courbe power4.out)
   const heroLines = document.querySelectorAll('[data-hero-line]');
   if (heroLines.length > 0) {
     gsap.fromTo(
@@ -243,7 +379,6 @@ function initAnimations() {
     );
   }
 
-  // 3. Apparitions au scroll : titres en révélation par ligne, paragraphes en fondu + translation de 24 px, une seule fois
   document.querySelectorAll<HTMLElement>('[data-reveal-title]').forEach((titleEl) => {
     const lines = titleEl.querySelectorAll('.reveal-line');
     const targets = lines.length > 0 ? lines : [titleEl];
@@ -282,7 +417,6 @@ function initAnimations() {
     );
   });
 
-  // 4. Liste des trois activités à l'accueil : au survol d'une ligne, la photo apparaît et suit légèrement le curseur (desktop)
   const activitiesList = document.querySelector('[data-activities-interactive]') as HTMLElement | null;
   const floatingPreview = document.getElementById('activities-floating-preview') as HTMLElement | null;
   if (
@@ -320,7 +454,6 @@ function initAnimations() {
     });
   }
 
-  // 6. Méthode en 4 étapes : section épinglée, la ligne de progression or se remplit au scroll et chaque étape s'allume à son tour
   const methodSection = document.querySelector('[data-method-pin]') as HTMLElement | null;
   const methodProgress = document.querySelector('[data-method-progress]') as HTMLElement | null;
   const methodSteps = gsap.utils.toArray<HTMLElement>('.method-step');
@@ -347,7 +480,6 @@ function initAnimations() {
         },
       });
     } else {
-      // Sur mobile/tablette : activation progressive sans bloquer le scroll
       ScrollTrigger.create({
         trigger: methodSection,
         start: 'top 70%',
@@ -367,17 +499,16 @@ function initAnimations() {
     }
   }
 
-  // 7. Images : léger zoom de 1.08 à 1.0 à l'apparition, et parallaxe très douce (10 % maximum)
   document.querySelectorAll<HTMLElement>('[data-parallax-img]').forEach((img) => {
     const frame = img.closest('.media-frame') || img.parentElement;
     if (!frame) return;
 
     gsap.fromTo(
       img,
-      { scale: 1.08 },
+      { scale: 1.06 },
       {
         scale: 1.0,
-        duration: 1.25,
+        duration: 1.2,
         ease: 'power3.out',
         scrollTrigger: {
           trigger: frame,
@@ -389,9 +520,9 @@ function initAnimations() {
 
     gsap.fromTo(
       img,
-      { yPercent: -4 },
+      { yPercent: -3 },
       {
-        yPercent: 4,
+        yPercent: 3,
         ease: 'none',
         scrollTrigger: {
           trigger: frame,
@@ -408,4 +539,3 @@ document.addEventListener('astro:page-load', () => {
   initHeader();
   initAnimations();
 });
-
