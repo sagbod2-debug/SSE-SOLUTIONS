@@ -1,15 +1,11 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import credits from '../data/credits.json';
-
-// [À COMPLÉTER] Téléphone de contact SSE Solutions (masqué tant qu'il n'est pas complété)
-// [À VÉRIFIER sur netlify.com : adresse postale actuelle de Netlify]
-// [À COMPLÉTER au fur et à mesure, voir 03_IMAGES.md : crédits photos définitifs après validation par Jean-David]
 ---
 
 <BaseLayout
   title="Mentions légales — SSE Solutions"
-  description="Mentions légales du site SSE Solutions (CC Care, CC Consulting, CC Events)."
+  description="SSE Solutions, entreprise individuelle de Carine Chali — 13 rue Marcel Pagnol, 91800 Boussy-Saint-Antoine — SIRET 999 125 131 00014."
 >
   <section class="section legal-section">
     <div class="container grid-12">
@@ -28,9 +24,10 @@ import credits from '../data/credits.json';
           <article class="legal-block">
             <h2 class="card-title">Contact</h2>
             <p class="prose-measure">
-              <a href="mailto:cccare@ssesolutions.fr" class="legal-link">cccare@ssesolutions.fr</a>
+              <a href="mailto:cccare@ssesolutions.fr" class="legal-link">
+                cccare@<wbr />ssesolutions.fr
+              </a>
             </p>
-            <!-- [À COMPLÉTER] Téléphone : masqué tant qu'il n'est pas complété -->
           </article>
 
           <article class="legal-block">
@@ -40,9 +37,8 @@ import credits from '../data/credits.json';
 
           <article class="legal-block">
             <h2 class="card-title">Hébergeur</h2>
-            <!-- [À VÉRIFIER sur netlify.com : adresse postale actuelle de Netlify] -->
             <p class="prose-measure">
-              Netlify, Inc. — 512 2nd Street, Suite 200, San Francisco, CA 94107, États-Unis (netlify.com).
+              Vercel Inc. — 440 N Barranca Ave #4133, Covina, CA 91723, États-Unis (vercel.com).
             </p>
           </article>
 
@@ -55,7 +51,6 @@ import credits from '../data/credits.json';
 
           <article class="legal-block">
             <h2 class="card-title">Crédits photographiques</h2>
-            <!-- [À COMPLÉTER au fur et à mesure, voir 03_IMAGES.md] -->
             <ul class="credits-list">
               {
                 credits.map((item) => (
@@ -109,20 +104,16 @@ import credits from '../data/credits.json';
 
   .legal-block {
     padding-top: var(--space-24);
-    border-top: 1px solid var(--border-steel);
+    border-top: 1px solid var(--line);
     display: flex;
     flex-direction: column;
     gap: var(--space-16);
   }
 
   .legal-link {
-    color: var(--accent-gold);
+    color: var(--accent);
     text-decoration: underline;
     text-underline-offset: 3px;
-  }
-
-  .legal-link:hover {
-    color: var(--accent-gold-hover);
   }
 
   .credits-list {
@@ -137,8 +128,8 @@ import credits from '../data/credits.json';
     grid-template-columns: 2.5rem 1fr;
     gap: 0.5rem 1rem;
     padding-block: 0.75rem;
-    border-bottom: 1px solid var(--border-steel);
-    font-size: 0.9375rem;
+    border-bottom: 1px solid var(--line);
+    font-size: var(--fs-small);
   }
 
   @media (min-width: 768px) {
@@ -148,11 +139,11 @@ import credits from '../data/credits.json';
   }
 
   .credit-section {
-    color: var(--text-primary);
+    color: var(--text);
   }
 
   .credit-author {
-    color: var(--text-secondary);
+    color: var(--text-muted);
     grid-column: 2 / -1;
   }
 
@@ -162,4 +153,3 @@ import credits from '../data/credits.json';
     }
   }
 </style>
-

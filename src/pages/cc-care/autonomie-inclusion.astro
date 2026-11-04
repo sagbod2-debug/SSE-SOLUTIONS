@@ -52,15 +52,14 @@ const seanceSteps = [
 
 <BaseLayout
   title="Autonomie & Inclusion · CC Care — SSE Solutions"
-  description="Un programme en ligne de 35 modules et 244 ateliers en FALC et en français courant pour aider les adultes accompagnés par les structures sociales à gagner en autonomie."
+  description="Un programme en ligne pour aider les adultes accompagnés par votre structure à gagner en autonomie dans la vie de tous les jours : démarches, santé, logement, numérique, budget, parentalité, mobilité."
   theme="cc-care"
 >
-  <!-- 1. HERO -->
   <section class="section hero-autonomie">
     <div class="container grid-12 hero-autonomie-grid">
       <div class="hero-autonomie-content">
         <p class="eyebrow" data-hero-fade>CC CARE · PROGRAMME EN LIGNE</p>
-        <h1 class="hero-title hero-title--medium">
+        <h1 class="hero-title">
           <span class="reveal-mask">
             <span class="reveal-line" data-hero-line>Autonomie &amp; Inclusion.</span>
           </span>
@@ -70,7 +69,10 @@ const seanceSteps = [
         </p>
 
         <div class="hero-cta-block" data-hero-fade>
-          <a href="/contact?sujet=autonomie" class="btn-primary">Devenir structure partenaire</a>
+          <a href="/contact?sujet=autonomie" class="btn-primary" data-magnetic data-glow>
+            <span>Devenir structure partenaire</span>
+            <span class="btn-arrow" aria-hidden="true">→</span>
+          </a>
           <p class="hero-subnote">Test gratuit en avant-première, début 2027.</p>
         </div>
       </div>
@@ -80,6 +82,7 @@ const seanceSteps = [
           <Picture
             slug="08-autonomie-hero"
             alt="Personne tenant une tablette numérique chez elle à la lumière du jour, geste calme et assuré"
+            sizes="(max-width: 960px) 92vw, 520px"
             loading="eager"
             fetchpriority="high"
           />
@@ -88,8 +91,7 @@ const seanceSteps = [
     </div>
   </section>
 
-  <!-- 2. SECTION DEUX VERSIONS (Section claire #F3F5F4 / #14202B) -->
-  <section class="section section-light section--spacious">
+  <section class="section section--secondary section--spacious">
     <div class="container">
       <h2 class="section-title" data-reveal-title>
         <span class="reveal-mask">
@@ -98,7 +100,7 @@ const seanceSteps = [
       </h2>
 
       <div class="grid-12 versions-grid">
-        <article class="version-card version-card--falc" data-reveal>
+        <article class="version-card glass" data-glow data-reveal>
           <span class="num-index">01</span>
           <h3 class="card-title">FALC</h3>
           <p>
@@ -106,7 +108,7 @@ const seanceSteps = [
           </p>
         </article>
 
-        <article class="version-card version-card--courant" data-reveal>
+        <article class="version-card glass" data-glow data-reveal>
           <span class="num-index">02</span>
           <h3 class="card-title">Français courant</h3>
           <p>
@@ -121,28 +123,26 @@ const seanceSteps = [
     </div>
   </section>
 
-  <!-- 3. SECTION CHIFFRES -->
-  <section class="section section--secondary">
+  <section class="section">
     <div class="container">
       <dl class="autonomie-stats grid-12" data-reveal>
-        <div class="autonomie-stat-card">
+        <div class="autonomie-stat-card glass" data-glow>
           <dt class="autonomie-stat-label">modules</dt>
-          <dd class="autonomie-stat-num">35</dd>
+          <dd class="autonomie-stat-num" data-count-to="35">35</dd>
         </div>
-        <div class="autonomie-stat-card">
+        <div class="autonomie-stat-card glass" data-glow>
           <dt class="autonomie-stat-label">ateliers</dt>
-          <dd class="autonomie-stat-num">244</dd>
+          <dd class="autonomie-stat-num" data-count-to="244">244</dd>
         </div>
-        <div class="autonomie-stat-card">
+        <div class="autonomie-stat-card glass" data-glow>
           <dt class="autonomie-stat-label">fiches (chaque atelier en 2 versions)</dt>
-          <dd class="autonomie-stat-num">488</dd>
+          <dd class="autonomie-stat-num" data-count-to="488">488</dd>
         </div>
       </dl>
     </div>
   </section>
 
-  <!-- 4. SECTION PARCOURS (4 ÉTAPES — Section claire) -->
-  <section class="section section-light section--spacious">
+  <section class="section section--secondary section--spacious">
     <div class="container">
       <div class="grid-12 parcours-layout">
         <div class="parcours-left">
@@ -155,6 +155,7 @@ const seanceSteps = [
             <Picture
               slug="09-autonomie-parcours"
               alt="Main tenant un trousseau de clés devant la porte d’un logement lumineux, symbole d’autonomie au quotidien"
+              sizes="(max-width: 960px) 92vw, 480px"
             />
           </div>
         </div>
@@ -193,7 +194,6 @@ const seanceSteps = [
     </div>
   </section>
 
-  <!-- 5. SECTION UNE SÉANCE (Section sombre) -->
   <section class="section section--spacious">
     <div class="container">
       <h2 class="section-title" data-reveal-title>
@@ -202,7 +202,7 @@ const seanceSteps = [
         </span>
       </h2>
 
-      <ol class="seance-flow" aria-label="Déroulement d'une séance en 6 temps" data-reveal>
+      <ol class="seance-flow glass" aria-label="Déroulement d'une séance en 6 temps" data-reveal>
         {
           seanceSteps.map((step, idx) => (
             <li class="seance-node">
@@ -224,8 +224,7 @@ const seanceSteps = [
     </div>
   </section>
 
-  <!-- 6. SECTION LES 35 MODULES (Section claire, grille compacte filtrable par thème) -->
-  <section class="section section-light section--spacious" id="modules-35">
+  <section class="section section--secondary section--spacious" id="modules-35">
     <div class="container">
       <div class="modules-header">
         <div>
@@ -237,32 +236,31 @@ const seanceSteps = [
           </h2>
         </div>
 
-        <!-- Filtres accessibles par thème -->
         <div
           class="modules-filters"
           role="group"
           aria-label="Filtrer les 35 modules par thème"
           data-reveal
         >
-          <button type="button" class="filter-chip is-active" data-filter="all" aria-pressed="true">
+          <button type="button" class="filter-chip glass is-active" data-filter="all" aria-pressed="true">
             Tous (35)
           </button>
-          <button type="button" class="filter-chip" data-filter="quotidien" aria-pressed="false">
+          <button type="button" class="filter-chip glass" data-filter="quotidien" aria-pressed="false">
             Vie quotidienne
           </button>
-          <button type="button" class="filter-chip" data-filter="sante" aria-pressed="false">
+          <button type="button" class="filter-chip glass" data-filter="sante" aria-pressed="false">
             Santé &amp; bien-être
           </button>
-          <button type="button" class="filter-chip" data-filter="citoyennete" aria-pressed="false">
+          <button type="button" class="filter-chip glass" data-filter="citoyennete" aria-pressed="false">
             Citoyenneté
           </button>
-          <button type="button" class="filter-chip" data-filter="prevention" aria-pressed="false">
+          <button type="button" class="filter-chip glass" data-filter="prevention" aria-pressed="false">
             Sécurité &amp; prévention
           </button>
-          <button type="button" class="filter-chip" data-filter="competences" aria-pressed="false">
+          <button type="button" class="filter-chip glass" data-filter="competences" aria-pressed="false">
             Apprentissages
           </button>
-          <button type="button" class="filter-chip" data-filter="culture" aria-pressed="false">
+          <button type="button" class="filter-chip glass" data-filter="culture" aria-pressed="false">
             Culture &amp; loisirs
           </button>
         </div>
@@ -273,8 +271,8 @@ const seanceSteps = [
       <ol class="modules-grid" id="modules-grid">
         {
           modules35.map((m) => (
-            <li class="module-item" data-module-cat={m.cat}>
-              <span class="module-num">{String(m.num).padStart(2, '0')}</span>
+            <li class="module-item glass" data-module-cat={m.cat}>
+              <span class="num-index">{String(m.num).padStart(2, '0')}</span>
               <span class="module-title">{m.title}</span>
             </li>
           ))
@@ -283,8 +281,7 @@ const seanceSteps = [
     </div>
   </section>
 
-  <!-- 7. SECTION PARTENAIRES -->
-  <section class="section section--secondary section--spacious">
+  <section class="section section--spacious">
     <div class="container grid-12">
       <div class="partenaires-box">
         <h2 class="section-title" data-reveal-title>
@@ -296,7 +293,10 @@ const seanceSteps = [
           Nous cherchons quelques structures de l'Essonne pour tester le programme gratuitement en avant-première, début 2027, avec un petit groupe de personnes accompagnées, et l'ajuster à leurs besoins. CCAS, centres sociaux, CHRS, missions locales, ESAT, associations : parlons-en.
         </p>
         <div class="btn-group" data-reveal>
-          <a href="/contact?sujet=autonomie" class="btn-primary">Devenir structure partenaire</a>
+          <a href="/contact?sujet=autonomie" class="btn-primary" data-magnetic data-glow>
+            <span>Devenir structure partenaire</span>
+            <span class="btn-arrow" aria-hidden="true">→</span>
+          </a>
         </div>
       </div>
     </div>
@@ -354,7 +354,7 @@ const seanceSteps = [
   .hero-autonomie {
     padding-top: 8.5rem;
     padding-bottom: var(--space-64);
-    border-top: 3px solid var(--cc-care-green);
+    border-top: 2px solid var(--activity-tint);
   }
 
   .hero-autonomie-grid {
@@ -382,7 +382,7 @@ const seanceSteps = [
   .hero-autonomie-lead {
     margin-top: var(--space-40);
     font-size: clamp(1.125rem, 1.3vw, 1.3rem);
-    color: var(--text-primary);
+    color: var(--text);
   }
 
   .hero-cta-block {
@@ -394,8 +394,8 @@ const seanceSteps = [
   }
 
   .hero-subnote {
-    font-size: 0.9375rem;
-    color: var(--text-secondary);
+    font-size: var(--fs-small);
+    color: var(--text-muted);
     letter-spacing: 0.02em;
   }
 
@@ -403,16 +403,15 @@ const seanceSteps = [
     aspect-ratio: 4 / 3;
   }
 
-  /* 2. DEUX VERSIONS */
   .versions-grid {
     margin-top: var(--space-64);
     row-gap: var(--space-24);
   }
 
   .version-card {
+    --pointer-glow: color-mix(in srgb, var(--tint-care) 16%, transparent);
     grid-column: 1 / -1;
-    background-color: #FFFFFF;
-    border: 1px solid var(--light-border);
+    border-top: 2px solid var(--activity-tint);
     border-radius: var(--radius-sharp);
     padding: var(--space-40);
     display: flex;
@@ -426,37 +425,25 @@ const seanceSteps = [
     }
   }
 
-  .version-card--falc {
-    border-top: 4px solid var(--cc-care-green);
-  }
-
-  .version-card--courant {
-    border-top: 4px solid var(--cc-care-blue);
-  }
-
   .version-card p {
-    color: var(--light-text-secondary);
-    font-size: 1.0625rem;
+    color: var(--text-muted);
   }
 
   .versions-note {
     margin-top: var(--space-40);
-    font-size: 1.125rem;
+    font-size: var(--fs-body);
     font-weight: 500;
-    color: var(--light-text);
+    color: var(--text);
     padding-left: var(--space-24);
-    border-left: 3px solid var(--cc-care-blue);
+    border-left: 2px solid var(--activity-tint);
   }
 
-  /* 3. CHIFFRES */
   .autonomie-stats {
     row-gap: var(--space-24);
   }
 
   .autonomie-stat-card {
     grid-column: 1 / -1;
-    border: 1px solid var(--border-steel);
-    background-color: var(--bg-primary);
     padding: var(--space-40);
     display: flex;
     flex-direction: column-reverse;
@@ -473,16 +460,15 @@ const seanceSteps = [
     font-family: var(--font-display);
     font-size: clamp(2.75rem, 4.5vw, 4.25rem);
     line-height: 1;
-    color: var(--accent-gold);
+    color: var(--accent);
     font-variant-numeric: tabular-nums;
   }
 
   .autonomie-stat-label {
-    font-size: 0.9375rem;
-    color: var(--text-secondary);
+    font-size: var(--fs-small);
+    color: var(--text-muted);
   }
 
-  /* 4. PARCOURS EN 4 ÉTAPES */
   .parcours-layout {
     align-items: start;
     row-gap: var(--space-40);
@@ -519,12 +505,12 @@ const seanceSteps = [
     grid-template-columns: 3rem 1fr;
     gap: var(--space-16);
     padding-block: var(--space-24);
-    border-bottom: 1px solid var(--light-border);
+    border-bottom: 1px solid var(--line);
     align-items: baseline;
   }
 
   .parcours-step:first-child {
-    border-top: 1px solid var(--light-border);
+    border-top: 1px solid var(--line);
   }
 
   .parcours-step h3 {
@@ -532,10 +518,9 @@ const seanceSteps = [
   }
 
   .parcours-step p {
-    color: var(--light-text-secondary);
+    color: var(--text-muted);
   }
 
-  /* 5. UNE SÉANCE */
   .seance-flow {
     margin-top: var(--space-64);
     margin-bottom: var(--space-40);
@@ -544,8 +529,6 @@ const seanceSteps = [
     align-items: center;
     gap: var(--space-16);
     padding: var(--space-40);
-    background-color: var(--bg-secondary);
-    border: 1px solid var(--border-steel);
   }
 
   .seance-node {
@@ -556,22 +539,21 @@ const seanceSteps = [
 
   .seance-node-name {
     font-family: var(--font-display);
-    font-size: 1.25rem;
-    color: var(--text-primary);
+    font-size: var(--fs-h3);
+    color: var(--text);
   }
 
   .seance-arrow {
-    color: var(--accent-gold);
+    color: var(--accent);
     margin-inline: 0.5rem;
     font-size: 1.25rem;
   }
 
   .seance-text {
-    font-size: 1.125rem;
-    color: var(--text-primary);
+    font-size: var(--fs-body);
+    color: var(--text);
   }
 
-  /* 6. LES 35 MODULES */
   .modules-header {
     display: flex;
     flex-direction: column;
@@ -586,26 +568,26 @@ const seanceSteps = [
   }
 
   .filter-chip {
-    background-color: #FFFFFF;
-    color: var(--light-text);
-    border: 1px solid var(--light-border);
+    color: var(--text);
     border-radius: var(--radius-sharp);
     padding: 0.55rem 1rem;
-    font-size: 0.875rem;
+    font-size: var(--fs-small);
     font-weight: 500;
     cursor: pointer;
-    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+    transition: background-color 250ms var(--ease-out), color 250ms var(--ease-out),
+      border-color 250ms var(--ease-out);
     min-height: 2.5rem;
   }
 
   .filter-chip:hover {
-    border-color: var(--cc-care-blue);
+    border-color: var(--activity-tint);
   }
 
   .filter-chip.is-active {
-    background-color: var(--cc-care-blue);
-    color: #FFFFFF;
-    border-color: var(--cc-care-blue);
+    background-color: var(--accent-fill);
+    color: var(--accent-fill-text);
+    border-color: var(--accent-fill);
+    font-weight: 600;
   }
 
   .modules-grid {
@@ -630,8 +612,6 @@ const seanceSteps = [
     display: flex;
     align-items: baseline;
     gap: 0.875rem;
-    background-color: #FFFFFF;
-    border: 1px solid var(--light-border);
     border-radius: var(--radius-sharp);
     padding: 1rem 1.25rem;
   }
@@ -640,23 +620,12 @@ const seanceSteps = [
     display: none !important;
   }
 
-  .module-num {
-    font-family: var(--font-sans);
-    font-weight: 600;
-    font-size: 0.75rem;
-    letter-spacing: 0.14em;
-    font-variant-numeric: tabular-nums;
-    color: var(--cc-care-blue);
-    flex-shrink: 0;
-  }
-
   .module-title {
     font-weight: 500;
-    color: var(--light-text);
+    color: var(--text);
     line-height: 1.4;
   }
 
-  /* 7. PARTENAIRES */
   .partenaires-box {
     grid-column: 1 / -1;
   }
@@ -670,8 +639,7 @@ const seanceSteps = [
   .partenaires-text {
     margin-top: var(--space-24);
     margin-bottom: var(--space-40);
-    font-size: 1.125rem;
-    color: var(--text-primary);
+    font-size: var(--fs-body);
+    color: var(--text);
   }
 </style>
-

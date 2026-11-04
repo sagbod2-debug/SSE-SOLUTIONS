@@ -1,9 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Picture from '../components/Picture.astro';
-
-// [À COMPLÉTER] Logo CC Consulting (encore absent du dossier assets/logos/)
-// [À VÉRIFIER] Numéro de déclaration d'activité avant toute évolution terminologique sur le point 06 (Sensibilisation des équipes)
 ---
 
 <BaseLayout
@@ -11,12 +8,11 @@ import Picture from '../components/Picture.astro';
   description="CC Consulting accompagne les établissements recevant du public, en priorité les établissements de soins, dans leur mise en conformité incendie et la préparation de leurs commissions de sécurité."
   theme="cc-consulting"
 >
-  <!-- HERO -->
-  <section class="section hero-consulting section--consulting-tint">
+  <section class="section hero-consulting">
     <div class="container grid-12 hero-consulting-grid">
       <div class="hero-consulting-content">
         <p class="eyebrow" data-hero-fade>CC CONSULTING · SÉCURITÉ</p>
-        <h1 class="hero-title hero-title--medium">
+        <h1 class="hero-title">
           <span class="reveal-mask">
             <span class="reveal-line" data-hero-line>Conformer.</span>
           </span>
@@ -32,7 +28,10 @@ import Picture from '../components/Picture.astro';
         </p>
 
         <div class="btn-group hero-consulting-actions" data-hero-fade>
-          <a href="/contact?sujet=cc-consulting" class="btn-primary">Nous écrire</a>
+          <a href="/contact?sujet=cc-consulting" class="btn-primary" data-magnetic data-glow>
+            <span>Nous écrire</span>
+            <span class="btn-arrow" aria-hidden="true">→</span>
+          </a>
         </div>
       </div>
 
@@ -41,15 +40,16 @@ import Picture from '../components/Picture.astro';
           <Picture
             slug="10-cc-consulting-hero"
             alt="Façade géométrique en verre et acier d’un bâtiment contemporain photographié au crépuscule"
+            sizes="(max-width: 960px) 92vw, 520px"
             loading="eager"
             fetchpriority="high"
+            transitionName="activity-hero-consulting"
           />
         </div>
       </div>
     </div>
   </section>
 
-  <!-- SECTION SERVICES (NUMÉROTÉS 01 -> 06) -->
   <section class="section section--spacious">
     <div class="container">
       <div class="grid-12 services-intro">
@@ -66,48 +66,49 @@ import Picture from '../components/Picture.astro';
             <Picture
               slug="11-cc-consulting-services"
               alt="Plans d’architecture et documents techniques posés sur une table de travail pour un audit de conformité"
+              sizes="(max-width: 960px) 92vw, 520px"
             />
           </div>
         </div>
       </div>
 
       <ol class="consulting-services-grid grid-12">
-        <li class="consulting-card" data-reveal>
+        <li class="consulting-card glass" data-glow data-reveal>
           <span class="num-index">01</span>
           <h3 class="card-title">Audit de conformité.</h3>
           <p>
             Un état des lieux précis de votre établissement face à la réglementation incendie.
           </p>
         </li>
-        <li class="consulting-card" data-reveal>
+        <li class="consulting-card glass" data-glow data-reveal>
           <span class="num-index">02</span>
           <h3 class="card-title">Mise en conformité.</h3>
           <p>
             Un plan d'actions clair et l'accompagnement jusqu'à la levée des observations.
           </p>
         </li>
-        <li class="consulting-card" data-reveal>
+        <li class="consulting-card glass" data-glow data-reveal>
           <span class="num-index">03</span>
           <h3 class="card-title">Commissions de sécurité.</h3>
           <p>
             La préparation des registres, des documents et des visites.
           </p>
         </li>
-        <li class="consulting-card" data-reveal>
+        <li class="consulting-card glass" data-glow data-reveal>
           <span class="num-index">04</span>
           <h3 class="card-title">Suivi des prestataires.</h3>
           <p>
             Le suivi des vérifications, des contrats et des rapports de vos prestataires.
           </p>
         </li>
-        <li class="consulting-card" data-reveal>
+        <li class="consulting-card glass" data-glow data-reveal>
           <span class="num-index">05</span>
           <h3 class="card-title">Assistance sécurité.</h3>
           <p>
             Un appui à la gestion de la sécurité de votre bâtiment au quotidien.
           </p>
         </li>
-        <li class="consulting-card" data-reveal>
+        <li class="consulting-card glass" data-glow data-reveal>
           <span class="num-index">06</span>
           <h3 class="card-title">Sensibilisation des équipes.</h3>
           <p>
@@ -118,20 +119,19 @@ import Picture from '../components/Picture.astro';
     </div>
   </section>
 
-  <!-- SECTION POUR QUI -->
   <section class="section section--secondary section--spacious">
     <div class="container">
       <p class="eyebrow" data-reveal>POUR QUI</p>
       <ul class="consulting-audiences grid-12" data-reveal>
-        <li class="consulting-audience-card">
+        <li class="consulting-audience-card glass" data-glow>
           <span class="num-index">01</span>
           <span class="consulting-audience-title">Établissements de soins (type U)</span>
         </li>
-        <li class="consulting-audience-card">
+        <li class="consulting-audience-card glass" data-glow>
           <span class="num-index">02</span>
           <span class="consulting-audience-title">Autres établissements recevant du public</span>
         </li>
-        <li class="consulting-audience-card">
+        <li class="consulting-audience-card glass" data-glow>
           <span class="num-index">03</span>
           <span class="consulting-audience-title">Entreprises</span>
         </li>
@@ -139,7 +139,6 @@ import Picture from '../components/Picture.astro';
     </div>
   </section>
 
-  <!-- CONTACT -->
   <section class="section section--spacious">
     <div class="container grid-12">
       <div class="consulting-contact-box">
@@ -150,9 +149,12 @@ import Picture from '../components/Picture.astro';
         </h2>
         <div class="consulting-contact-actions" data-reveal>
           <a href="mailto:ccconsulting@ssesolutions.fr" class="consulting-email">
-            ccconsulting@ssesolutions.fr
+            ccconsulting@<wbr />ssesolutions.fr
           </a>
-          <a href="/contact?sujet=cc-consulting" class="btn-primary">Nous écrire</a>
+          <a href="/contact?sujet=cc-consulting" class="btn-primary" data-magnetic data-glow>
+            <span>Nous écrire</span>
+            <span class="btn-arrow" aria-hidden="true">→</span>
+          </a>
         </div>
       </div>
     </div>
@@ -163,7 +165,7 @@ import Picture from '../components/Picture.astro';
   .hero-consulting {
     padding-top: 8.5rem;
     padding-bottom: var(--space-64);
-    border-top: 3px solid var(--cc-consulting-navy);
+    border-top: 2px solid var(--activity-tint);
   }
 
   .hero-consulting-grid {
@@ -191,7 +193,7 @@ import Picture from '../components/Picture.astro';
   .hero-consulting-lead {
     margin-top: var(--space-40);
     font-size: clamp(1.125rem, 1.3vw, 1.3rem);
-    color: var(--text-primary);
+    color: var(--text);
   }
 
   .hero-consulting-actions {
@@ -200,7 +202,7 @@ import Picture from '../components/Picture.astro';
 
   .hero-consulting-frame {
     aspect-ratio: 4 / 3;
-    border-color: var(--cc-consulting-navy);
+    border-color: var(--activity-tint);
   }
 
   .services-intro {
@@ -235,20 +237,15 @@ import Picture from '../components/Picture.astro';
   }
 
   .consulting-card {
+    --pointer-glow: color-mix(in srgb, var(--tint-consulting) 16%, transparent);
     grid-column: 1 / -1;
-    background-color: var(--bg-secondary);
-    border: 1px solid var(--border-steel);
-    border-top: 2px solid var(--cc-consulting-navy);
+    border-top: 2px solid var(--activity-tint);
     border-radius: var(--radius-sharp);
     padding: var(--space-40);
     display: flex;
     flex-direction: column;
     gap: var(--space-16);
-    transition: border-color 0.25s ease;
-  }
-
-  .consulting-card:hover {
-    border-top-color: var(--accent-gold);
+    transition: border-color 250ms var(--ease-out);
   }
 
   @media (min-width: 640px) {
@@ -264,7 +261,7 @@ import Picture from '../components/Picture.astro';
   }
 
   .consulting-card p {
-    color: var(--text-secondary);
+    color: var(--text-muted);
   }
 
   .consulting-audiences {
@@ -273,10 +270,9 @@ import Picture from '../components/Picture.astro';
   }
 
   .consulting-audience-card {
+    --pointer-glow: color-mix(in srgb, var(--tint-consulting) 16%, transparent);
     grid-column: 1 / -1;
-    border: 1px solid var(--border-steel);
-    border-left: 3px solid var(--accent-gold);
-    background-color: var(--bg-primary);
+    border-left: 2px solid var(--activity-tint);
     padding: var(--space-40);
     display: flex;
     flex-direction: column;
@@ -291,8 +287,8 @@ import Picture from '../components/Picture.astro';
 
   .consulting-audience-title {
     font-family: var(--font-display);
-    font-size: 1.4rem;
-    color: var(--text-primary);
+    font-size: var(--fs-h3);
+    color: var(--text);
   }
 
   .consulting-contact-box {
@@ -312,15 +308,14 @@ import Picture from '../components/Picture.astro';
   .consulting-email {
     font-family: var(--font-display);
     font-size: clamp(1.35rem, 2.5vw, 2rem);
-    color: var(--accent-gold);
-    border-bottom: 1px solid var(--border-steel);
+    color: var(--accent);
+    border-bottom: 1px solid var(--line);
     padding-bottom: 0.25rem;
-    transition: border-color 0.2s ease, color 0.2s ease;
+    overflow-wrap: normal;
+    transition: border-color 250ms var(--ease-out);
   }
 
   .consulting-email:hover {
-    border-color: var(--accent-gold);
-    color: var(--accent-gold-hover);
+    border-color: var(--accent);
   }
 </style>
-

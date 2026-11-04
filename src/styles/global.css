@@ -617,6 +617,22 @@ h3,
   animation-timing-function: var(--ease-out);
 }
 
+/* 2.6 Morphing 500 ms --ease-out sur les images partagées d'activités */
+::view-transition-group(activity-hero-care),
+::view-transition-group(activity-hero-consulting),
+::view-transition-group(activity-hero-events) {
+  animation-duration: 500ms;
+  animation-timing-function: var(--ease-out);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(activity-hero-care),
+  ::view-transition-group(activity-hero-consulting),
+  ::view-transition-group(activity-hero-events) {
+    animation-duration: 0.01ms !important;
+  }
+}
+
 /* Respect absolu de prefers-reduced-motion */
 @media (prefers-reduced-motion: reduce) {
   *,

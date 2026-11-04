@@ -4,7 +4,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
 <BaseLayout
   title="Confidentialité — SSE Solutions"
-  description="Politique de confidentialité et protection des données personnelles de SSE Solutions."
+  description="Données collectées : celles du formulaire de contact (nom, structure, e-mail, téléphone, message)."
 >
   <section class="section legal-section">
     <div class="container grid-12">
@@ -35,7 +35,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           <article class="legal-block">
             <h2 class="card-title">Destinataires</h2>
             <p class="prose-measure">
-              SSE Solutions uniquement ; hébergement des formulaires par Netlify.
+              SSE Solutions uniquement ; acheminement sécurisé des messages de contact.
             </p>
           </article>
 
@@ -44,7 +44,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
             <p class="prose-measure">
               Accès, rectification, effacement, opposition, en écrivant à{' '}
               <a href="mailto:cccare@ssesolutions.fr" class="legal-link">
-                cccare@ssesolutions.fr
+                cccare@<wbr />ssesolutions.fr
               </a>{' '}
               ; réclamation possible auprès de la CNIL (
               <a
@@ -96,20 +96,15 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
   .legal-block {
     padding-top: var(--space-24);
-    border-top: 1px solid var(--border-steel);
+    border-top: 1px solid var(--line);
     display: flex;
     flex-direction: column;
     gap: var(--space-16);
   }
 
   .legal-link {
-    color: var(--accent-gold);
+    color: var(--accent);
     text-decoration: underline;
     text-underline-offset: 3px;
   }
-
-  .legal-link:hover {
-    color: var(--accent-gold-hover);
-  }
 </style>
-
