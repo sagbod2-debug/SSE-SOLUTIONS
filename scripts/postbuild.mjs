@@ -151,4 +151,42 @@ export default async function handler(req, res) {
   fs.writeFileSync(vcConfigPath, JSON.stringify(cfg, null, 2), 'utf8');
 }
 
-console.log('[postbuild] .vercel/output finalized (sitemap, French typography, clean HTML, standalone nodejs22.x function).');
+// 4. Ensure 404.html is served with HTTP 404 status on Vercel for any unknown route
+const vercelConfigPath = path.resolve('.vercel/output/config.json');
+if (fs.existsSync(vercelConfigPath)) {
+  const fourOhFourHtml = path.join(staticDir, '404.html');
+  const fourOhFourDir = path.join(staticDir, '404');
+  if (fs.existsSync(fourOhFourHtml)) {
+    fs.mkdirSync(fourOhFourDir, { recursive: true });
+    fs.copyFileSync(fourOhFourHtml, path.join(fourOhFourDir, 'index.html'));
+  }
+
+  const vConfig = JSON.parse(fs.readFileSync(vercelConfigPath, 'utf8'));
+  vConfig.routes = [
+    {
+      src: '^/_astro/(.*)$',
+      headers: {
+        'cache-control': 'public, max-age=31536000, immutable',
+      },
+      continue: true,
+    },
+    {
+      handle: 'filesystem',
+    },
+    {
+      src: '^\\/api\\/contact\\/?$',
+      dest: '_render',
+    },
+    {
+      handle: 'error',
+    },
+    {
+      src: '/.*',
+      dest: '/404.html',
+      status: 404,
+    },
+  ];
+  fs.writeFileSync(vercelConfigPath, JSON.stringify(vConfig, null, 2), 'utf8');
+}
+
+console.log('[postbuild] .vercel/output finalized (sitemap, French typography, clean HTML, 404 routing, standalone nodejs22.x function).');
