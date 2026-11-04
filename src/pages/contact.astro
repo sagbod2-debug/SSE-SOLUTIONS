@@ -1,12 +1,23 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import {
+  SHOW_CONTACT_PHONE,
+  SHOW_CONTACT_BOOKING,
+  CONTACT_PHONE_DISPLAY,
+  CONTACT_PHONE_HREF,
+  CONTACT_BOOKING_URL,
+} from '../config/flags';
 
 const subjects = [
-  { key: 'cc-care', label: 'CC Care' },
-  { key: 'autonomie', label: 'Autonomie & Inclusion' },
-  { key: 'cc-consulting', label: 'CC Consulting' },
-  { key: 'cc-events', label: 'CC Events' },
-  { key: 'autre', label: 'Autre' },
+  { key: 'cc-care', aliases: ['cc-care', 'care'], label: 'CC Care' },
+  {
+    key: 'autonomie-inclusion',
+    aliases: ['autonomie-inclusion', 'autonomie'],
+    label: 'Autonomie & Inclusion',
+  },
+  { key: 'cc-consulting', aliases: ['cc-consulting', 'consulting'], label: 'CC Consulting' },
+  { key: 'cc-events', aliases: ['cc-events', 'events'], label: 'CC Events' },
+  { key: 'autre', aliases: ['autre'], label: 'Autre' },
 ];
 ---
 
@@ -51,6 +62,7 @@ const subjects = [
                     aria-checked={idx === 0 ? 'true' : 'false'}
                     class:list={['subject-pill', 'glass', { 'is-selected': idx === 0 }]}
                     data-subject-key={item.key}
+                    data-subject-aliases={item.aliases.join(',')}
                     data-subject-label={item.label}
                   >
                     {item.label}
@@ -199,6 +211,30 @@ const subjects = [
               ccconsulting@<wbr />ssesolutions.fr
             </a>
           </div>
+
+          {SHOW_CONTACT_PHONE && CONTACT_PHONE_DISPLAY && (
+            <div class="sidebar-block">
+              <h2 class="sidebar-heading">Téléphone</h2>
+              <a href={`tel:${CONTACT_PHONE_HREF || CONTACT_PHONE_DISPLAY}`} class="sidebar-email">
+                {CONTACT_PHONE_DISPLAY}
+              </a>
+            </div>
+          )}
+
+          {SHOW_CONTACT_BOOKING && CONTACT_BOOKING_URL && (
+            <div class="sidebar-block">
+              <a
+                href={CONTACT_BOOKING_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn-secondary glass"
+                data-glow
+              >
+                <span>Prendre rendez-vous</span>
+                <span class="btn-arrow" aria-hidden="true">→</span>
+              </a>
+            </div>
+          )}
         </div>
       </aside>
     </div>
@@ -243,9 +279,16 @@ const subjects = [
     const params = new URLSearchParams(window.location.search);
     const sujetParam = params.get('sujet');
     if (sujetParam) {
-      const matched = Array.from(pills).find(
-        (btn) => btn.getAttribute('data-subject-key') === sujetParam.toLowerCase()
-      );
+      const normalized = sujetParam.trim().toLowerCase();
+      const matched = Array.from(pills).find((btn) => {
+        const key = (btn.getAttribute('data-subject-key') || '').toLowerCase();
+        const label = (btn.getAttribute('data-subject-label') || '').toLowerCase();
+        const aliases = (btn.getAttribute('data-subject-aliases') || '')
+          .toLowerCase()
+          .split(',')
+          .map((s) => s.trim());
+        return key === normalized || label === normalized || aliases.includes(normalized);
+      });
       if (matched) selectSubject(matched);
     }
 
