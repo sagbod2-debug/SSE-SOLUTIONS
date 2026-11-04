@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Picture from '../components/Picture.astro';
 import LivingMesh from '../components/LivingMesh.astro';
+import { SHOW_TEAM, TEAM_MEMBERS } from '../config/flags';
 
 // TODO logo officiel : remplacer la composition typographique de la section « Trois lettres. Une seule maison. » par le SVG ou PNG transparent officiel (< 40 Ko) dès réception.
 
@@ -288,7 +289,7 @@ const organizationJsonLd = {
 
       <div class="about-right" data-reveal>
         <p class="about-text prose-measure">
-          SSE Solutions porte les initiales de ses trois métiers : Social, Security and Events. Chaque activité a son équipe, son savoir-faire et sa marque. Toutes partagent la même façon de travailler : comprendre avant d'agir, écrire clairement, suivre jusqu'au bout.
+          SSE Solutions porte les initiales de ses trois métiers : Social, Security and Events. Chaque activité a son savoir-faire, son interlocuteur et sa marque. Toutes partagent la même façon de travailler : comprendre avant d'agir, écrire clairement, suivre jusqu'au bout.
         </p>
 
         <div class="about-logo-box">
@@ -300,6 +301,44 @@ const organizationJsonLd = {
         </div>
       </div>
     </div>
+
+    {SHOW_TEAM && TEAM_MEMBERS.length > 0 && (
+      <div class="container team-subsection">
+        <div class="section-header">
+          <p class="eyebrow" data-reveal>ÉQUIPE</p>
+          <h3 class="section-title" data-reveal-title>
+            <span class="reveal-mask">
+              <span class="reveal-line">Qui est derrière SSE Solutions</span>
+            </span>
+          </h3>
+        </div>
+
+        <ul class="team-grid grid-12">
+          {TEAM_MEMBERS.map((member) => (
+            <li class="team-card glass" data-glow data-reveal>
+              {member.photo && (
+                <div class="team-photo media-frame">
+                  <img
+                    src={member.photo}
+                    alt={member.name}
+                    width="480"
+                    height="480"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </div>
+              )}
+              <div class="team-body">
+                <h4 class="card-title">{member.name}</h4>
+                <p class="team-role">{member.role}</p>
+                <p class="team-meta">{member.diploma}</p>
+                <p class="team-meta">{member.experienceYears}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )}
   </section>
 
   <!-- 5. SECTION PROGRAMME (MISE EN AVANT) -->
@@ -956,6 +995,45 @@ const organizationJsonLd = {
     letter-spacing: 0.24em;
     color: var(--text-muted);
     line-height: 1;
+  }
+
+  .team-subsection {
+    margin-top: var(--space-104);
+    padding-top: var(--space-64);
+    border-top: 1px solid var(--line);
+  }
+
+  .team-grid {
+    row-gap: var(--space-24);
+  }
+
+  .team-card {
+    grid-column: 1 / -1;
+    padding: var(--space-24);
+    border-radius: var(--radius-sharp);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+  }
+
+  @media (min-width: 768px) {
+    .team-card {
+      grid-column: span 4;
+    }
+  }
+
+  .team-photo {
+    aspect-ratio: 1 / 1;
+  }
+
+  .team-role {
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  .team-meta {
+    color: var(--text-muted);
+    font-size: var(--fs-small);
   }
 
   /* 5. SECTION PROGRAMME */
