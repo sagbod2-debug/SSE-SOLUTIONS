@@ -105,8 +105,8 @@ html[data-theme="dark"] {
   /* Teinte d'activité courante (par défaut : l'or de la maison) */
   --activity-tint: var(--accent);
 
-  /* 2.4 Typographie — Échelle fluide et polices */
-  --font-display: 'Marcellus', Georgia, 'Times New Roman', serif;
+  /* 7.2 Typographie — Une seule famille : Hanken Grotesk */
+  --font-display: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-sans: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 
   --fs-display: clamp(2.75rem, 1.6rem + 5vw, 5.75rem);
@@ -404,13 +404,13 @@ select {
   border-bottom: 1px solid var(--line);
 }
 
-/* 2.4 Typographie & Hiérarchie */
+/* 7.2 Typographie & Hiérarchie : Hanken Grotesk graisse 500, approche resserrée, interligne 1.05 */
 h1,
 h2,
 h3,
 .display-title {
   font-family: var(--font-display);
-  font-weight: 400;
+  font-weight: 500;
   color: var(--text);
   text-wrap: balance;
 }
@@ -419,22 +419,26 @@ h1,
 .hero-title,
 .hero-title--medium {
   font-size: var(--fs-display);
+  font-weight: 500;
   line-height: 1.05;
-  letter-spacing: -0.015em;
+  letter-spacing: -0.03em;
 }
 
 h2,
 .section-title {
   font-size: var(--fs-h2);
-  line-height: 1.12;
-  letter-spacing: -0.01em;
+  font-weight: 500;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
 }
 
 h3,
 .card-title {
   font-family: var(--font-display);
   font-size: var(--fs-h3);
-  line-height: 1.2;
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: -0.015em;
 }
 
 .prose-measure {
