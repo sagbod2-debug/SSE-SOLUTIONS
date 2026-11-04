@@ -1,0 +1,11 @@
+Logos SSE Solutions sur fond transparent (PNG) - 4 novembre 2026
+A placer dans public/logos/ du projet, puis servir via astro:assets (<Image>/<Picture>) pour l'optimisation.
+
+Pour chaque logo :
+  <nom>.png                        couleurs d'origine, pour le mode clair
+  <nom>-sans-dore.png              dore remplace par de l'argent, pour le mode clair
+  <nom>-mode-sombre.png            parties noires/gris fonce eclaircies, pour le mode sombre
+  <nom>-sans-dore-mode-sombre.png  sans dore, pour le mode sombre
+
+Logos : sse-solutions, cc-care, cc-consulting, cc-events
+(cc-care n'a pas de version mode sombre : ses couleurs restent lisibles sur fond sombre.)

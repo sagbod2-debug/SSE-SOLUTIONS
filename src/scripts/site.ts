@@ -427,6 +427,51 @@ function initAnimations() {
           });
         });
 
+        // 3b) 7.4 Inclinaison 3D des logos au survol (4° max, gsap.quickTo)
+        const brandLogos = document.querySelectorAll<HTMLElement>('[data-brand-logo]');
+        brandLogos.forEach((logo) => {
+          const tiltTarget = logo.querySelector<HTMLElement>('[data-brand-logo-tilt]') || logo;
+          gsap.set(tiltTarget, { transformPerspective: 700 });
+          const rotXTo = gsap.quickTo(tiltTarget, 'rotationX', {
+            duration: 0.35,
+            ease: 'power3.out',
+          });
+          const rotYTo = gsap.quickTo(tiltTarget, 'rotationY', {
+            duration: 0.35,
+            ease: 'power3.out',
+          });
+
+          logo.addEventListener(
+            'pointerenter',
+            () => {
+              tiltTarget.style.willChange = 'transform';
+            },
+            { passive: true }
+          );
+
+          logo.addEventListener(
+            'pointermove',
+            (e: PointerEvent) => {
+              const rect = logo.getBoundingClientRect();
+              const nx = (e.clientX - rect.left) / Math.max(1, rect.width) - 0.5;
+              const ny = (e.clientY - rect.top) / Math.max(1, rect.height) - 0.5;
+              const rotY = Math.max(-4, Math.min(4, nx * 8));
+              const rotX = Math.max(-4, Math.min(4, -ny * 8));
+              rotXTo(rotX);
+              rotYTo(rotY);
+            },
+            { passive: true }
+          );
+
+          logo.addEventListener('pointerleave', () => {
+            rotXTo(0);
+            rotYTo(0);
+            window.setTimeout(() => {
+              tiltTarget.style.willChange = 'auto';
+            }, 380);
+          });
+        });
+
         // 4) Halo / aperçu flottant des activités sur l'accueil via gsap.quickTo()
         const activitiesList = document.querySelector(
           '[data-activities-interactive]'
@@ -470,6 +515,49 @@ function initAnimations() {
           });
         }
       }
+
+      // 7.4 Révélation des logos de gauche à droite par masque (1 s) + reflet lumineux unique (0,9 s)
+      document.querySelectorAll<HTMLElement>('[data-brand-logo]').forEach((logo) => {
+        const mask = logo.querySelector<HTMLElement>('[data-brand-logo-mask]');
+        const sheen = logo.querySelector<HTMLElement>('[data-brand-logo-sheen]');
+        if (!mask) return;
+
+        gsap.set(mask, { clipPath: 'inset(0 100% 0 0)' });
+        if (sheen) {
+          gsap.set(sheen, { xPercent: -140, opacity: 1 });
+        }
+
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: logo,
+            start: 'top 92%',
+            once: true,
+          },
+          onStart: () => applyWillChange(mask, 'transform, opacity'),
+          onComplete: () => {
+            clearWillChange(mask);
+            if (sheen) clearWillChange(sheen);
+          },
+        });
+
+        tl.to(mask, {
+          clipPath: 'inset(0 0% 0 0)',
+          duration: 1.0,
+          ease: 'power3.out',
+        });
+
+        if (sheen) {
+          tl.to(
+            sheen,
+            {
+              xPercent: 140,
+              duration: 0.9,
+              ease: 'power2.inOut',
+            },
+            '-=0.15'
+          ).set(sheen, { opacity: 0 });
+        }
+      });
 
       // Animations d'entrée du hero (transform + opacity uniquement)
       const heroLines = document.querySelectorAll('[data-hero-line]');

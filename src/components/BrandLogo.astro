@@ -1,0 +1,251 @@
+---
+import { Picture } from 'astro:assets';
+
+import sseLight from '../assets/logos/sse-solutions-sans-dore.png';
+import sseDark from '../assets/logos/sse-solutions-sans-dore-mode-sombre.png';
+import careBoth from '../assets/logos/cc-care-sans-dore.png';
+import consultingLight from '../assets/logos/cc-consulting-sans-dore.png';
+import consultingDark from '../assets/logos/cc-consulting-sans-dore-mode-sombre.png';
+import eventsLight from '../assets/logos/cc-events-sans-dore.png';
+import eventsDark from '../assets/logos/cc-events-sans-dore-mode-sombre.png';
+
+export type BrandKey = 'sse-solutions' | 'cc-care' | 'cc-consulting' | 'cc-events';
+
+interface Props {
+  brand: BrandKey;
+  size?: 'sm' | 'md' | 'lg' | 'xl';
+  loading?: 'eager' | 'lazy';
+  class?: string;
+  alt?: string;
+}
+
+const {
+  brand,
+  size = 'md',
+  loading = 'lazy',
+  class: className = '',
+  alt,
+} = Astro.props;
+
+const brandConfig: Record<
+  BrandKey,
+  {
+    label: string;
+    light: ImageMetadata;
+    dark: ImageMetadata;
+    sameForBoth?: boolean;
+  }
+> = {
+  'sse-solutions': {
+    label: 'SSE Solutions',
+    light: sseLight,
+    dark: sseDark,
+  },
+  'cc-care': {
+    label: 'CC Care',
+    light: careBoth,
+    dark: careBoth,
+    sameForBoth: true,
+  },
+  'cc-consulting': {
+    label: 'CC Consulting',
+    light: consultingLight,
+    dark: consultingDark,
+  },
+  'cc-events': {
+    label: 'CC Events',
+    light: eventsLight,
+    dark: eventsDark,
+  },
+};
+
+const cfg = brandConfig[brand];
+const altText = alt ?? `Logo ${cfg.label}`;
+const widths = size === 'sm' ? [160, 320] : size === 'md' ? [240, 480] : [360, 720];
+const sizesAttr =
+  size === 'sm' ? '140px' : size === 'md' ? '200px' : size === 'lg' ? '260px' : '320px';
+---
+
+<div
+  class:list={['brand-logo', `brand-logo--${size}`, `brand-logo--${brand}`, className]}
+  data-brand-logo
+>
+  <div class="brand-logo__inner" data-brand-logo-tilt>
+    <div class="brand-logo__mask" data-brand-logo-mask>
+      {
+        cfg.sameForBoth ? (
+          <Picture
+            src={cfg.light}
+            alt={altText}
+            formats={['avif', 'webp']}
+            widths={widths}
+            sizes={sizesAttr}
+            loading={loading}
+            decoding={loading === 'eager' ? 'sync' : 'async'}
+            class="brand-logo__img brand-logo__img--both"
+            onerror="this.closest('[data-brand-logo]')?.classList.add('is-fallback')"
+          />
+        ) : (
+          <>
+            <Picture
+              src={cfg.light}
+              alt={altText}
+              formats={['avif', 'webp']}
+              widths={widths}
+              sizes={sizesAttr}
+              loading={loading}
+              decoding={loading === 'eager' ? 'sync' : 'async'}
+              class="brand-logo__img brand-logo__img--light"
+              onerror="this.closest('[data-brand-logo]')?.classList.add('is-fallback')"
+            />
+            <Picture
+              src={cfg.dark}
+              alt={altText}
+              formats={['avif', 'webp']}
+              widths={widths}
+              sizes={sizesAttr}
+              loading={loading}
+              decoding={loading === 'eager' ? 'sync' : 'async'}
+              class="brand-logo__img brand-logo__img--dark"
+              onerror="this.closest('[data-brand-logo]')?.classList.add('is-fallback')"
+            />
+          </>
+        )
+      }
+      <span class="brand-logo__sheen" data-brand-logo-sheen aria-hidden="true"></span>
+    </div>
+    <span class="brand-logo__fallback">{cfg.label}</span>
+  </div>
+</div>
+
+<style>
+  .brand-logo {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    perspective: 700px;
+    background: transparent;
+    user-select: none;
+  }
+
+  .brand-logo__inner {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transform-style: preserve-3d;
+  }
+
+  .brand-logo__mask {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  /* Tailles */
+  .brand-logo--sm .brand-logo__img {
+    height: 2.5rem;
+    width: auto;
+  }
+
+  .brand-logo--md .brand-logo__img {
+    height: 4.25rem;
+    width: auto;
+  }
+
+  .brand-logo--lg .brand-logo__img {
+    height: 5.5rem;
+    width: auto;
+  }
+
+  .brand-logo--xl .brand-logo__img {
+    height: clamp(6rem, 11vw, 8.25rem);
+    width: auto;
+  }
+
+  .brand-logo :global(picture) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .brand-logo :global(img.brand-logo__img) {
+    object-fit: contain;
+    background: transparent;
+    display: block;
+  }
+
+  /* Bascule automatique clair / sombre sans fond carré coloré */
+  :global(html[data-theme="light"]) .brand-logo :global(picture:has(.brand-logo__img--dark)) {
+    display: none;
+  }
+
+  :global(html[data-theme="dark"]) .brand-logo :global(picture:has(.brand-logo__img--light)) {
+    display: none;
+  }
+
+  /* Secours pour navigateurs anciens sans :has() */
+  :global(html[data-theme="light"]) .brand-logo :global(.brand-logo__img--dark) {
+    display: none;
+  }
+
+  :global(html[data-theme="dark"]) .brand-logo :global(.brand-logo__img--light) {
+    display: none;
+  }
+
+  /* Reflet lumineux unique qui traverse le logo (0,9 s) après la révélation (1 s) */
+  .brand-logo__sheen {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(
+      110deg,
+      transparent 20%,
+      rgba(255, 255, 255, 0.65) 50%,
+      transparent 80%
+    );
+    transform: translateX(-140%);
+    opacity: 0;
+  }
+
+  :global(html[data-theme="dark"]) .brand-logo__sheen {
+    background: linear-gradient(
+      110deg,
+      transparent 20%,
+      rgba(255, 255, 255, 0.28) 50%,
+      transparent 80%
+    );
+  }
+
+  /* Secours texte si un fichier image manque */
+  .brand-logo__fallback {
+    display: none;
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 1.125rem;
+    letter-spacing: -0.02em;
+    color: var(--text);
+  }
+
+  .brand-logo.is-fallback .brand-logo__mask {
+    display: none;
+  }
+
+  .brand-logo.is-fallback .brand-logo__fallback {
+    display: inline-block;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .brand-logo__mask {
+      clip-path: none !important;
+    }
+    .brand-logo__sheen {
+      display: none !important;
+    }
+    .brand-logo__inner {
+      transform: none !important;
+    }
+  }
+</style>
