@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Picture from '../../components/Picture.astro';
+import BrandLogo from '../../components/BrandLogo.astro';
 import { SHOW_CARE_FAQ, CARE_FAQ_ITEMS, SHOW_REAL_PHOTOS } from '../../config/flags';
 
 const activeFaqItems = CARE_FAQ_ITEMS.filter((item) => item.answer.trim().length > 0);
@@ -27,10 +28,16 @@ const faqJsonLd =
   theme="cc-care"
   jsonLd={faqJsonLd}
 >
-  <section class="section hero-activity">
+  <section class="section hero-activity" transition:name="solution-card-care">
     <div class="container grid-12 hero-activity-grid">
       <div class="hero-activity-content">
-        <p class="eyebrow" data-hero-fade>CC CARE · SOCIAL</p>
+        <div class="hero-activity-brand" data-hero-fade>
+          <BrandLogo brand="cc-care" size="lg" loading="eager" alt="Logo officiel CC Care" />
+          <div class="hero-activity-brand-meta">
+            <p class="eyebrow">CC CARE · SOCIAL</p>
+            <p class="hero-activity-brand-name">CC Care</p>
+          </div>
+        </div>
         <h1 class="hero-title" data-hero-fade>
           Une assistante sociale pour vos patients, vos usagers et vos salariés.
         </h1>
@@ -62,15 +69,6 @@ const faqJsonLd =
       </div>
 
       <div class="hero-activity-aside" data-hero-fade>
-        <div class="logo-panel logo-panel--care">
-          <img
-            src="/logos/logo_CC_Care.png"
-            alt="Logo officiel CC Care"
-            width="280"
-            height="270"
-            loading="eager"
-          />
-        </div>
         <div class="media-frame hero-activity-photo">
           <Picture
             slug="06-cc-care-hero"
@@ -259,7 +257,7 @@ const faqJsonLd =
 
   <section class="section section--spacious">
     <div class="container grid-12">
-      <div class="activity-contact-box">
+      <div class="activity-contact-box glass">
         <h2 class="section-title" data-reveal-title>
           <span class="reveal-mask">
             <span class="reveal-line">Une situation à accompagner ?</span>
@@ -284,6 +282,33 @@ const faqJsonLd =
     padding-top: 8.5rem;
     padding-bottom: var(--space-64);
     border-top: 2px solid var(--activity-tint);
+    position: relative;
+  }
+
+  .hero-activity-brand {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-24);
+    margin-bottom: var(--space-24);
+  }
+
+  .hero-activity-brand-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .hero-activity-brand-meta .eyebrow {
+    margin-bottom: 0;
+  }
+
+  .hero-activity-brand-name {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 1.5rem;
+    letter-spacing: -0.02em;
+    color: var(--text);
   }
 
   .hero-activity-grid {

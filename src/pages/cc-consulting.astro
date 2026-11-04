@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Picture from '../components/Picture.astro';
+import BrandLogo from '../components/BrandLogo.astro';
 import { SHOW_CONSULTING_FAQ, CONSULTING_FAQ_ITEMS, SHOW_REAL_PHOTOS } from '../config/flags';
 
 const checklistItems = [
@@ -36,10 +37,16 @@ const faqJsonLd =
   theme="cc-consulting"
   jsonLd={faqJsonLd}
 >
-  <section class="section hero-consulting">
+  <section class="section hero-consulting" transition:name="solution-card-consulting">
     <div class="container grid-12 hero-consulting-grid">
       <div class="hero-consulting-content">
-        <p class="eyebrow" data-hero-fade>CC CONSULTING · SÉCURITÉ</p>
+        <div class="hero-activity-brand" data-hero-fade>
+          <BrandLogo brand="cc-consulting" size="lg" loading="eager" alt="Logo officiel CC Consulting" />
+          <div class="hero-activity-brand-meta">
+            <p class="eyebrow">CC CONSULTING · SÉCURITÉ</p>
+            <p class="hero-activity-brand-name">CC Consulting</p>
+          </div>
+        </div>
         <h1 class="hero-title" data-hero-fade>
           Préparez votre commission de sécurité sans mauvaise surprise.
         </h1>
@@ -268,7 +275,7 @@ const faqJsonLd =
 
   <section class="section section--spacious">
     <div class="container grid-12">
-      <div class="consulting-contact-box">
+      <div class="consulting-contact-box glass">
         <h2 class="section-title" data-reveal-title>
           <span class="reveal-mask">
             <span class="reveal-line">Une commission de sécurité approche ?</span>
@@ -293,6 +300,32 @@ const faqJsonLd =
     padding-top: 8.5rem;
     padding-bottom: var(--space-64);
     border-top: 2px solid var(--activity-tint);
+  }
+
+  .hero-activity-brand {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-24);
+    margin-bottom: var(--space-24);
+  }
+
+  .hero-activity-brand-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .hero-activity-brand-meta .eyebrow {
+    margin-bottom: 0;
+  }
+
+  .hero-activity-brand-name {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 1.5rem;
+    letter-spacing: -0.02em;
+    color: var(--text);
   }
 
   .hero-consulting-grid {
