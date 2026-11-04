@@ -2,6 +2,22 @@ import type { APIRoute } from 'astro';
 
 export const prerender = false;
 
+export const GET: APIRoute = async () => {
+  return new Response(
+    JSON.stringify({
+      ok: false,
+      message: 'Méthode non autorisée. Cet endpoint accepte uniquement les requêtes POST.',
+    }),
+    {
+      status: 405,
+      headers: {
+        Allow: 'POST',
+        'Content-Type': 'application/json; charset=utf-8',
+      },
+    }
+  );
+};
+
 const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000; // 1 heure
 const MAX_REQUESTS_PER_HOUR = 5;
 const ipHits = new Map<string, number[]>();

@@ -66,3 +66,4 @@ export const CONSULTING_FAQ_ITEMS: FaqItem[] = [
     answer: '',
   },
 ];
+
