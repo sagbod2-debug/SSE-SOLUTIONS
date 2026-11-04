@@ -5,3 +5,7 @@ dist/
 .netlify/
 .env
 .env.*
+
+
+.vercel
+.env*

@@ -1,0 +1,131 @@
+{
+  "$schema": "https://tr.designtokens.org/format/",
+  "meta": {
+    "name": "SSE Solutions — Design DNA Tokens",
+    "version": "2.0.0",
+    "description": "Jetons de design (couleurs, typographie fluide, espacements, matériau verre et mouvement) conformes WCAG 2.2 AA en mode sombre et en mode clair."
+  },
+  "color": {
+    "theme": {
+      "dark": {
+        "bg": { "$value": "#111416", "$type": "color" },
+        "surface": { "$value": "#1A1E21", "$type": "color" },
+        "text": { "$value": "#EDEEEF", "$type": "color", "contrastOnBg": "15.8:1" },
+        "text-muted": { "$value": "#A3AAB1", "$type": "color", "contrastOnBg": "7.4:1" },
+        "accent": { "$value": "#C9A24B", "$type": "color", "contrastOnBg": "7.4:1" },
+        "accent-fill": { "$value": "#C9A24B", "$type": "color" },
+        "accent-fill-text": { "$value": "#111416", "$type": "color", "contrastOnFill": "7.4:1" },
+        "line": { "$value": "rgba(255, 255, 255, 0.10)", "$type": "color" }
+      },
+      "light": {
+        "bg": { "$value": "#F6F4EF", "$type": "color" },
+        "surface": { "$value": "#FFFFFF", "$type": "color" },
+        "text": { "$value": "#15181A", "$type": "color", "contrastOnBg": "16.2:1" },
+        "text-muted": { "$value": "#545B62", "$type": "color", "contrastOnBg": "6.3:1" },
+        "accent": { "$value": "#7A5C17", "$type": "color", "contrastOnBg": "5.7:1" },
+        "accent-fill": { "$value": "#C9A24B", "$type": "color" },
+        "accent-fill-text": { "$value": "#15181A", "$type": "color", "contrastOnFill": "7.4:1" },
+        "line": { "$value": "rgba(21, 24, 26, 0.12)", "$type": "color" }
+      }
+    },
+    "activityTint": {
+      "cc-care": {
+        "dark": { "$value": "#8FB5A0", "$type": "color" },
+        "light": { "$value": "#3F6B55", "$type": "color" }
+      },
+      "cc-consulting": {
+        "dark": { "$value": "#D98A6A", "$type": "color" },
+        "light": { "$value": "#A6512F", "$type": "color" }
+      },
+      "cc-events": {
+        "dark": { "$value": "#8FA8D9", "$type": "color" },
+        "light": { "$value": "#3F5A94", "$type": "color" }
+      }
+    },
+    "mesh": {
+      "dark": {
+        "base": "#1A1E21",
+        "gold": "rgba(201, 162, 75, 0.18)",
+        "nightBlue": "#1D2A3A",
+        "bronze": "#3A2E1A"
+      },
+      "light": {
+        "base": "#F6F4EF",
+        "gold": "rgba(201, 162, 75, 0.14)",
+        "sand": "#E9E4D8",
+        "warmIvory": "#EFE7D6"
+      }
+    }
+  },
+  "material": {
+    "glass": {
+      "blur": "20px",
+      "saturate": "160%",
+      "pointerGlowRadius": "240px",
+      "dark": {
+        "background": "rgba(17, 20, 22, 0.55)",
+        "border": "rgba(255, 255, 255, 0.08)",
+        "insetHighlight": "inset 0 1px 0 rgba(255, 255, 255, 0.10)",
+        "pointerGlow": "rgba(255, 255, 255, 0.06)"
+      },
+      "light": {
+        "background": "rgba(246, 244, 239, 0.60)",
+        "border": "rgba(21, 24, 26, 0.08)",
+        "insetHighlight": "inset 0 1px 0 rgba(255, 255, 255, 0.70)",
+        "pointerGlow": "rgba(255, 255, 255, 0.35)"
+      }
+    }
+  },
+  "typography": {
+    "fontFamily": {
+      "display": { "$value": ["Marcellus", "Georgia", "Times New Roman", "serif"], "$type": "fontFamily" },
+      "sans": { "$value": ["Hanken Grotesk", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "sans-serif"], "$type": "fontFamily" }
+    },
+    "fontSize": {
+      "fs-display": { "$value": "clamp(2.75rem, 1.6rem + 5vw, 5.75rem)", "$type": "dimension" },
+      "fs-h2": { "$value": "clamp(2rem, 1.4rem + 2.6vw, 3.5rem)", "$type": "dimension" },
+      "fs-h3": { "$value": "clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem)", "$type": "dimension" },
+      "fs-body": { "$value": "clamp(1rem, 0.96rem + 0.2vw, 1.125rem)", "$type": "dimension" },
+      "fs-small": { "$value": "0.875rem", "$type": "dimension" },
+      "fs-eyebrow": { "$value": "0.75rem", "$type": "dimension" }
+    },
+    "lineHeight": {
+      "display": 1.06,
+      "body": 1.6
+    },
+    "letterSpacing": {
+      "display": "-0.02em",
+      "eyebrow": "0.14em"
+    },
+    "measure": {
+      "paragraphMax": "68ch"
+    }
+  },
+  "spacing": {
+    "space-8": { "$value": "0.5rem", "px": 8, "$type": "dimension" },
+    "space-16": { "$value": "1rem", "px": 16, "$type": "dimension" },
+    "space-24": { "$value": "1.5rem", "px": 24, "$type": "dimension" },
+    "space-40": { "$value": "2.5rem", "px": 40, "$type": "dimension" },
+    "space-64": { "$value": "4rem", "px": 64, "$type": "dimension" },
+    "space-104": { "$value": "6.5rem", "px": 104, "$type": "dimension" },
+    "space-168": { "$value": "10.5rem", "px": 168, "$type": "dimension" }
+  },
+  "motion": {
+    "easing": {
+      "ease-out": { "$value": "cubic-bezier(0.22, 1, 0.36, 1)", "$type": "cubicBezier" },
+      "ease-spring": { "$value": "cubic-bezier(0.34, 1.56, 0.64, 1)", "$type": "cubicBezier" }
+    },
+    "duration": {
+      "clickActive": "120ms",
+      "checklistStagger": "120ms",
+      "linkUnderline": "300ms",
+      "themeTransition": "400ms",
+      "imageFadeIn": "400ms",
+      "magneticReturn": "400ms",
+      "viewTransitionMorph": "500ms",
+      "cardImageScale": "700ms",
+      "counterScroll": "1200ms",
+      "meshCycle": "14000ms"
+    }
+  }
+}

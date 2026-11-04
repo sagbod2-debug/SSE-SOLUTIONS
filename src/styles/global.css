@@ -491,9 +491,12 @@ h3,
   cursor: pointer;
   position: relative;
   overflow: hidden;
-  transition: transform 400ms var(--ease-spring), background-color 250ms var(--ease-out),
-    border-color 250ms var(--ease-out);
+  transition: background-color 250ms var(--ease-out), border-color 250ms var(--ease-out);
   min-height: 3rem;
+}
+
+.btn-primary:hover,
+.btn-primary:focus-visible {
   will-change: transform;
 }
 
@@ -607,7 +610,6 @@ h3,
 
 .reveal-line {
   display: block;
-  will-change: transform, opacity;
 }
 
 /* Transition de thÃ¨me et de pages (View Transitions) */
@@ -657,5 +659,5 @@ h3,
   }
 }
 
-/* 2.5 Teintes d'activité validées AA */
+/* 2.5 Teintes d'activitï¿½ validï¿½es AA */
 /* 2.6 Morphing View Transitions 500 ms */

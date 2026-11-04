@@ -20,3 +20,4 @@ Ce fichier regroupe l'ensemble des éléments provisoires ou à confirmer (retir
 
 ## 3. Photographies (`src/data/credits.json`)
 - [ ] Validation ou remplacement par Jean-David des 13 photographies Unsplash sélectionnées.
+
