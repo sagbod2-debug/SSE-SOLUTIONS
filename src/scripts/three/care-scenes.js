@@ -49,20 +49,20 @@ export function mountCareHero(canvas, { dark = false } = {}) {
 
   // galets
   const R = rng(5);
-  const N = 46;
+  const N = 30;
   const geo = new THREE.SphereGeometry(1, 40, 28);
   const pebbles = [];
   for (let i = 0; i < N; i++) {
     const m = new THREE.Mesh(geo, tints[i % tints.length]);
-    const s = 0.22 + R() * 0.38;
+    const s = 0.18 + R() * 0.3;
     m.scale.set(s, s * (0.72 + R() * 0.2), s * 0.85);
     // position éparse (départ) et place dans le groupe (arrivée : anneau souple autour du logo)
     const a = R() * Math.PI * 2;
     const far = 8 + R() * 9;
     const start = new THREE.Vector3(Math.cos(a) * far * 1.4, Math.sin(a) * far * 0.8, -2 + R() * 4);
     const ga = (i / N) * Math.PI * 2 + R() * 0.2;
-    const gr = 3.6 + (i % 3) * 0.75 + R() * 0.3;
-    const goal = new THREE.Vector3(Math.cos(ga) * gr, Math.sin(ga) * gr * 0.82, -0.6 + R() * 1.2);
+    const gr = 4.2 + (i % 3) * 0.8 + R() * 0.3;
+    const goal = new THREE.Vector3(Math.cos(ga) * gr * 1.45, Math.sin(ga) * gr * 0.5, -1.2 + R() * 1.2);
     m.userData = { start, goal, ph: R() * 6.28, cur: start.clone(), rot: new THREE.Euler(R() * 3, R() * 3, R() * 3) };
     m.position.copy(start);
     scene.add(m);

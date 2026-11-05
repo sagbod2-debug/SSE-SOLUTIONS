@@ -256,8 +256,8 @@ export function mountAutonomieTown(canvas, { dark = false, labels = [] } = {}) {
       });
 
       // caméra : vue d'ensemble → suit le personnage
-      const zoom = 1 + follow * 0.9;
-      const half = (aspect > 1 ? 11 : 7.5) / zoom;
+      const zoom = 1 + follow * (aspect > 1 ? 0.9 : 0.45);
+      const half = (aspect > 1 ? 11 : 9.5) / zoom;
       // vue d'ensemble : la ville est décalée à droite du texte (grand écran)
       const shift = aspect > 1.1 ? half * aspect * 0.32 * (1 - follow) : 0;
       focus.set(p.x * follow - shift * 0.7071, 0, p.z * follow + shift * 0.7071);
