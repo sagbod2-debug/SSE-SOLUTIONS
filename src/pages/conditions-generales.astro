@@ -1,0 +1,141 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Conditions générales d'utilisation — SSE Solutions"
+  description="Conditions générales d'utilisation du site ssesolutions.fr : accès, contenus, responsabilité, données personnelles et droit applicable."
+>
+  <section class="section legal-section">
+    <div class="container grid-12">
+      <div class="legal-content">
+        <p class="eyebrow">CONDITIONS GÉNÉRALES</p>
+        <h1 class="section-title">Conditions générales d'utilisation.</h1>
+
+        <div class="legal-blocks">
+          <article class="legal-block">
+            <h2 class="card-title">Objet</h2>
+            <p class="prose-measure">
+              Les présentes conditions encadrent l'utilisation du site ssesolutions.fr, édité par SSE Solutions
+              (voir les <a href="/mentions-legales" class="legal-link">mentions légales</a>). Naviguer sur le site
+              vaut acceptation de ces conditions.
+            </p>
+          </article>
+
+          <article class="legal-block">
+            <h2 class="card-title">Accès au site</h2>
+            <p class="prose-measure">
+              Le site est accessible gratuitement, sans création de compte. SSE Solutions s'efforce de le maintenir
+              disponible, mais peut l'interrompre pour maintenance ou en cas de panne, sans que sa responsabilité
+              puisse être engagée.
+            </p>
+          </article>
+
+          <article class="legal-block">
+            <h2 class="card-title">Contenus et informations</h2>
+            <p class="prose-measure">
+              Les informations publiées présentent les activités de SSE Solutions (CC Consulting, CC Care, CC Events)
+              à titre indicatif. Elles ne constituent pas une offre contractuelle : chaque prestation fait l'objet
+              d'un devis et d'un accord écrit propres.
+            </p>
+          </article>
+
+          <article class="legal-block">
+            <h2 class="card-title">Propriété intellectuelle</h2>
+            <p class="prose-measure">
+              Textes, logos, visuels, animations et éléments graphiques du site sont protégés. Toute reproduction ou
+              réutilisation, totale ou partielle, sans autorisation écrite de SSE Solutions est interdite.
+            </p>
+          </article>
+
+          <article class="legal-block">
+            <h2 class="card-title">Formulaire de contact</h2>
+            <p class="prose-measure">
+              L'utilisateur s'engage à fournir des informations exactes et à ne pas utiliser le formulaire à des fins
+              abusives (envois automatisés, contenus illicites). Les messages reçus servent uniquement à répondre à la
+              demande.
+            </p>
+          </article>
+
+          <article class="legal-block">
+            <h2 class="card-title">Liens externes</h2>
+            <p class="prose-measure">
+              Le site peut renvoyer vers des sites tiers. SSE Solutions n'exerce aucun contrôle sur leur contenu et
+              décline toute responsabilité à leur égard.
+            </p>
+          </article>
+
+          <article class="legal-block">
+            <h2 class="card-title">Données personnelles</h2>
+            <p class="prose-measure">
+              Le traitement des données transmises via le site est décrit dans la page{' '}
+              <a href="/confidentialite" class="legal-link">Confidentialité</a>.
+            </p>
+          </article>
+
+          <article class="legal-block">
+            <h2 class="card-title">Modification des conditions</h2>
+            <p class="prose-measure">
+              SSE Solutions peut modifier ces conditions à tout moment ; la version en ligne est celle qui s'applique.
+              Dernière mise à jour : novembre 2026.
+            </p>
+          </article>
+
+          <article class="legal-block">
+            <h2 class="card-title">Droit applicable</h2>
+            <p class="prose-measure">
+              Les présentes conditions sont soumises au droit français. En cas de litige, une solution amiable sera
+              recherchée en priorité ; à défaut, les tribunaux français seront compétents.
+            </p>
+          </article>
+
+          <article class="legal-block">
+            <h2 class="card-title">Contact</h2>
+            <p class="prose-measure">
+              Pour toute question :{' '}
+              <a href="mailto:cccare@ssesolutions.fr" class="legal-link">cccare@<wbr />ssesolutions.fr</a>.
+            </p>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .legal-section {
+    padding-top: 8.5rem;
+    padding-bottom: var(--space-104);
+  }
+
+  .legal-content {
+    grid-column: 1 / -1;
+  }
+
+  @media (min-width: 960px) {
+    .legal-content {
+      grid-column: 1 / 10;
+    }
+  }
+
+  .legal-blocks {
+    margin-top: var(--space-64);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-40);
+  }
+
+  .legal-block {
+    padding-top: var(--space-24);
+    border-top: 1px solid var(--line);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+  }
+
+  .legal-link {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+</style>

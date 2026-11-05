@@ -55,14 +55,14 @@ export function glassSet(timeU, { light = false } = {}) {
 
 const EXTRUDE = { depth: 0.5, bevelEnabled: true, bevelThickness: 0.14, bevelSize: 0.08, bevelSegments: 10, curveSegments: 64 };
 
-function glyph(ch, size, mat, depth = 0.5) {
+export function glyph(ch, size, mat, depth = 0.5) {
   const geo = new THREE.ExtrudeGeometry(cinzel.generateShapes(ch, size), { ...EXTRUDE, depth, curveSegments: 48 });
   geo.center();
   return new THREE.Mesh(geo, mat);
 }
 
 /** Croissant fin (trait de pinceau) entre deux points, courbé vers le haut. */
-function swooshShape(x0, y0, x1, y1, bend, thick) {
+export function swooshShape(x0, y0, x1, y1, bend, thick) {
   const mx = (x0 + x1) / 2, my = (y0 + y1) / 2 + bend;
   const s = new THREE.Shape();
   s.moveTo(x0, y0);
@@ -72,7 +72,7 @@ function swooshShape(x0, y0, x1, y1, bend, thick) {
 }
 
 /** Arc de cercle effilé aux deux bouts. */
-function taperedArc(r, a0, a1, thick) {
+export function taperedArc(r, a0, a1, thick) {
   const s = new THREE.Shape();
   const N = 64;
   for (let i = 0; i <= N; i++) {
@@ -88,13 +88,13 @@ function taperedArc(r, a0, a1, thick) {
   return s;
 }
 
-function flat(shape, mat, depth = 0.18) {
+export function flat(shape, mat, depth = 0.18) {
   const geo = new THREE.ExtrudeGeometry(shape, { depth, bevelEnabled: true, bevelThickness: 0.05, bevelSize: 0.03, bevelSegments: 6, curveSegments: 64 });
   geo.translate(0, 0, -depth / 2);
   return new THREE.Mesh(geo, mat);
 }
 
-function star4(r, inner) {
+export function star4(r, inner) {
   const s = new THREE.Shape();
   for (let i = 0; i < 8; i++) {
     const a = (i / 8) * Math.PI * 2 + Math.PI / 2;

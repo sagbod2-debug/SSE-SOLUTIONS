@@ -1,6 +1,14 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import BrandLogo, { type BrandKey } from '../components/BrandLogo.astro';
+import { Image } from 'astro:assets';
+import ideaSseLight from '../assets/logos/sse-solutions-sans-dore.png';
+import ideaSseDark from '../assets/logos/sse-solutions-sans-dore-mode-sombre.png';
+import ideaCare from '../assets/logos/cc-care-sans-dore.png';
+import ideaConsultingLight from '../assets/logos/cc-consulting-sans-dore.png';
+import ideaConsultingDark from '../assets/logos/cc-consulting-sans-dore-mode-sombre.png';
+import ideaEventsLight from '../assets/logos/cc-events-sans-dore.png';
+import ideaEventsDark from '../assets/logos/cc-events-sans-dore-mode-sombre.png';
 import {
   SHOW_TEAM,
   TEAM_MEMBERS,
@@ -35,6 +43,64 @@ interface SolutionCard {
   audience: string;
   ctaLabel: string;
 }
+
+// ---------- « Notre idée » : schéma de nœuds (bureau et mobile) ----------
+const ideaActivities = [
+  { light: ideaCare, dark: ideaCare, name: 'CC Care', role: 'Social', href: '/cc-care', tint: 'care', tags: ['Permanence sociale', 'Accès aux droits', 'Sur site & à distance'] },
+  { light: ideaConsultingLight, dark: ideaConsultingDark, name: 'CC Consulting', role: 'Sécurité Incendie', href: '/cc-consulting', tint: 'consulting', tags: ['Conformité ERP', 'Commissions de sécurité', 'Levée de prescriptions'] },
+  { light: ideaEventsLight, dark: ideaEventsDark, name: 'CC Events', role: 'Événementiel', href: '/cc-events', tint: 'events', tags: ['Régie générale', 'Rétroplanning 360°', 'Présence terrain J-J'] },
+];
+
+type IBox = { x: number; y: number; w: number; h: number };
+type IWire = { d: string; t: number[]; tint: string; pulse: boolean };
+type ILayout = { W: number; H: number; hub: IBox; acts: IBox[]; tags: IBox[][]; wires: IWire[] };
+
+// Calendrier d'apparition (identique à src/scripts/home/idea.js)
+const IDEA_T = {
+  hub: [0, 0.05],
+  wireAct: (i: number) => [0.06 + i * 0.1, 0.08],
+  act: (i: number) => [0.12 + i * 0.1, 0.05],
+  wireTag: (i: number, k: number) => [0.42 + i * 0.15 + k * 0.035, 0.06],
+  tag: (i: number, k: number) => [0.46 + i * 0.15 + k * 0.035, 0.05],
+};
+const icy = (b: IBox) => b.y + b.h / 2;
+const icurve = (x1: number, y1: number, x2: number, y2: number) => {
+  const dx = Math.max(40, (x2 - x1) * 0.5);
+  return `M${x1} ${y1} C${x1 + dx} ${y1}, ${x2 - dx} ${y2}, ${x2} ${y2}`;
+};
+
+function ideaDesktop(): ILayout {
+  const W = 1280, H = 600;
+  const hub = { x: 0, y: 225, w: 250, h: 150 };
+  const acts = [0, 1, 2].map((i) => ({ x: 400, y: 40 + i * 200, w: 300, h: 120 }));
+  const tags = acts.map((a) => [-1, 0, 1].map((k) => ({ x: 900, y: icy(a) - 24 + k * 58, w: 380, h: 48 })));
+  const wires: IWire[] = [];
+  acts.forEach((a, i) => {
+    wires.push({ d: icurve(hub.x + hub.w, icy(hub), a.x, icy(a)), t: IDEA_T.wireAct(i), tint: ideaActivities[i].tint, pulse: true });
+    tags[i].forEach((t, k) => wires.push({ d: icurve(a.x + a.w, icy(a), t.x, icy(t)), t: IDEA_T.wireTag(i, k), tint: ideaActivities[i].tint, pulse: k === 1 }));
+  });
+  return { W, H, hub, acts, tags, wires };
+}
+
+function ideaMobile(): ILayout {
+  const W = 360, H = 1060;
+  const hub = { x: 60, y: 0, w: 240, h: 110 };
+  const acts = [0, 1, 2].map((i) => ({ x: 20, y: 170 + i * 300, w: 320, h: 96 }));
+  const tags = acts.map((a) => [0, 1, 2].map((k) => ({ x: 60 + (k % 2) * 0, y: a.y + a.h + 18 + k * 52, w: 280, h: 42 })));
+  const wires: IWire[] = [];
+  acts.forEach((a, i) => {
+    wires.push({ d: `M180 ${hub.y + hub.h} C180 ${hub.y + hub.h + 40}, 6 ${hub.y + hub.h + 40}, 6 ${icy(a)} L${a.x} ${icy(a)}`, t: IDEA_T.wireAct(i), tint: ideaActivities[i].tint, pulse: true });
+    tags[i].forEach((t, k) => wires.push({ d: `M${a.x + 20} ${a.y + a.h} C${a.x + 20} ${icy(t)}, ${t.x - 20} ${icy(t)}, ${t.x} ${icy(t)}`, t: IDEA_T.wireTag(i, k), tint: ideaActivities[i].tint, pulse: false }));
+  });
+  return { W, H, hub, acts, tags, wires };
+}
+
+const ideaLayouts = [
+  { key: 'desktop', L: ideaDesktop() },
+  { key: 'mobile', L: ideaMobile() },
+];
+const ideaPos = (L: ILayout, b: IBox, t: number[]) =>
+  `left:${(b.x / L.W) * 100}%;top:${(b.y / L.H) * 100}%;width:${(b.w / L.W) * 100}%;height:${(b.h / L.H) * 100}%;--s:${t[0]};--l:${t[1]};`;
 
 const solutions: SolutionCard[] = [
   {
@@ -143,94 +209,76 @@ const solutions: SolutionCard[] = [
     </div>
   </section>
 
-  <!-- SECTION 2 — « NOTRE IDÉE » (BULLE LIQUIDE GLACE SIRI & ATTRACTEURS) -->
-  <section class="idea-section" id="notre-idee" data-particle-tint="autonomie">
-    <div class="container">
-      <div class="idea-panel glass" data-idea-panel>
-        <div class="idea-header">
-          <p class="eyebrow">NOTRE IDÉE</p>
+  <!-- SECTION 2 — « NOTRE IDÉE » : une maison, trois métiers, reliés en nœuds au défilement -->
+  <section class="idea-nodes" id="notre-idee" data-idea-flow aria-labelledby="idea-title">
+    <div class="idea-nodes__stage">
+      <div class="container idea-nodes__inner">
+        <div class="idea-nodes__head">
+          <div class="idea-nodes__intro">
+            <h2 class="idea-nodes__title" id="idea-title">Une seule maison.</h2>
+            <p class="idea-nodes__lead">Un interlocuteur unique pour coordonner le social, la sécurité et l'événementiel.</p>
+          </div>
+          <p class="idea-nodes__text">
+            SSE Solutions réunit trois activités qui partagent une même méthode : écouter, comprendre, agir et accompagner.
+          </p>
         </div>
 
-        <!-- Scène Organique Siri : Bulle liquide centrale SSE Solutions et 3 bulles attirées -->
-        <div
-          class="siri-stage"
-          data-siri-stage
-          role="img"
-          aria-label="Trois expertises — CC Care, CC Consulting et CC Events — attirées en gravitation au sein d'une seule maison : SSE Solutions"
-        >
-          <!-- Orbite d'attraction : les 3 bulles satellites Siri liquides sont attirées derrière SSE Solutions -->
-          <div class="siri-bubble siri-bubble--satellite siri-bubble--care glass" data-siri-node="care">
-            <div class="siri-bubble-sheen" aria-hidden="true"></div>
-            <div class="siri-satellite-inner">
-              <div class="siri-satellite-logo">
-                <BrandLogo brand="cc-care" size="sm" loading="lazy" alt="Logo officiel CC Care" />
-              </div>
-              <strong class="siri-bubble-name">CC Care</strong>
-              <span class="siri-bubble-role">Social</span>
-            </div>
-          </div>
+        {ideaLayouts.map(({ key, L }) => (
+          <div class={`idea-graph idea-graph--${key}`} style={`aspect-ratio:${L.W} / ${L.H};`} aria-hidden={key === 'mobile' ? 'true' : undefined} data-idea-graph>
+            <div class="idea-graph__plane" data-idea-plane>
+              <svg class="idea-graph__wires" viewBox={`0 0 ${L.W} ${L.H}`} aria-hidden="true">
+                {L.wires.map((w) => (
+                  <path class={`idea-wire idea-wire--${w.tint}`} d={w.d} pathLength="1" style={`--s:${w.t[0]};--l:${w.t[1]};`} />
+                ))}
+                {L.wires.filter((w) => w.pulse).map((w, i) => (
+                  <circle class={`idea-pulse idea-pulse--${w.tint}`} r="3.5" style={`--s:${w.t[0]};--l:${w.t[1]};`}>
+                    <animateMotion dur={`${2.3 + (i % 4) * 0.25}s`} repeatCount="indefinite" path={w.d} />
+                  </circle>
+                ))}
+              </svg>
 
-          <div class="siri-bubble siri-bubble--satellite siri-bubble--consulting glass" data-siri-node="consulting">
-            <div class="siri-bubble-sheen" aria-hidden="true"></div>
-            <div class="siri-satellite-inner">
-              <div class="siri-satellite-logo">
-                <BrandLogo brand="cc-consulting" size="sm" loading="lazy" alt="Logo officiel CC Consulting" />
+              <div class="idea-node idea-node--hub" style={ideaPos(L, L.hub, IDEA_T.hub)}>
+                <Image src={ideaSseLight} alt="SSE Solutions" widths={[240, 480]} sizes="160px" class="idea-logo idea-logo--hub idea-logo--light" />
+                <Image src={ideaSseDark} alt="" widths={[240, 480]} sizes="160px" class="idea-logo idea-logo--hub idea-logo--dark" />
               </div>
-              <strong class="siri-bubble-name">CC Consulting</strong>
-              <span class="siri-bubble-role">Sécurité Incendie</span>
-            </div>
-          </div>
 
-          <div class="siri-bubble siri-bubble--satellite siri-bubble--events glass" data-siri-node="events">
-            <div class="siri-bubble-sheen" aria-hidden="true"></div>
-            <div class="siri-satellite-inner">
-              <div class="siri-satellite-logo">
-                <BrandLogo brand="cc-events" size="sm" loading="lazy" alt="Logo officiel CC Events" />
-              </div>
-              <strong class="siri-bubble-name">CC Events</strong>
-              <span class="siri-bubble-role">Événementiel</span>
-            </div>
-          </div>
+              {ideaActivities.map((act, i) => (
+                <a href={act.href} class={`idea-node idea-node--act idea-node--${act.tint}`} style={ideaPos(L, L.acts[i], IDEA_T.act(i))} tabindex={key === 'mobile' ? '-1' : undefined}>
+                  <span class="idea-node__logo">
+                    <Image src={act.light} alt="" widths={[160, 320]} sizes="96px" class="idea-logo idea-logo--light" />
+                    <Image src={act.dark} alt="" widths={[160, 320]} sizes="96px" class="idea-logo idea-logo--dark" />
+                  </span>
+                  <span class="idea-node__text">
+                    <span class="idea-node__name">{act.name}</span>
+                    <span class="idea-node__role">{act.role}</span>
+                  </span>
+                </a>
+              ))}
 
-          <!-- Bulle Centrale Principale : SSE Solutions (effet Siri liquide et verre spéculaire) -->
-          <div class="siri-bubble siri-bubble--main glass" data-siri-core>
-            <div class="siri-bubble-sheen" aria-hidden="true"></div>
-            <div class="siri-bubble-content">
-              <div class="siri-bubble-logo">
-                <BrandLogo brand="sse-solutions" size="lg" loading="lazy" alt="Logo SSE Solutions" />
-              </div>
-              <h3 class="siri-bubble-title">SSE Solutions</h3>
-              <span class="siri-bubble-badge">Une seule maison</span>
-              <p class="siri-bubble-desc">
-                Un interlocuteur unique pour coordonner le social, la sécurité et l'événementiel.
-              </p>
+              {ideaActivities.map((act, i) =>
+                act.tags.map((tag, k) => (
+                  <div class={`idea-node idea-node--tag idea-node--${act.tint}`} style={ideaPos(L, L.tags[i][k], IDEA_T.tag(i, k))}>
+                    <span class="idea-node__tag">{tag}</span>
+                  </div>
+                ))
+              )}
             </div>
           </div>
-        </div>
+        ))}
 
         {
           SHOW_HERO_VIDEO && HERO_VIDEO_URL && (
             <div class="idea-video-slot">
-              <video
-                src={HERO_VIDEO_URL}
-                controls
-                playsinline
-                preload="metadata"
-                class="idea-video"
-              />
+              <video src={HERO_VIDEO_URL} controls playsinline preload="metadata" class="idea-video" />
             </div>
           )
         }
-
-        <p class="idea-text">
-          SSE Solutions réunit trois activités qui partagent une même méthode : écouter, comprendre, agir et accompagner.
-        </p>
       </div>
     </div>
   </section>
 
   <!-- SECTION 3 — « NOS SOLUTIONS » (4 GRANDES CARTES QUI ARRIVENT L'UNE APRÈS L'AUTRE) -->
-  <section class="solutions-section" id="solutions" data-solutions-pin>
+  <section class="solutions-section" id="solutions" data-solutions-deck>
     <div class="container solutions-container">
       <div class="solutions-header">
         <p class="eyebrow">NOS SOLUTIONS</p>
@@ -467,6 +515,30 @@ const solutions: SolutionCard[] = [
   </section>
 </BaseLayout>
 
+<script>
+  import { initIdeaFlow, initSolutionsTilt, initSolutionsDeck } from '../scripts/home/idea.js';
+
+  let ideaCleanup: (() => void) | null = null;
+  let tiltCleanup: (() => void) | null = null;
+  let deckCleanup: (() => void) | null = null;
+  document.addEventListener('astro:page-load', () => {
+    ideaCleanup?.();
+    tiltCleanup?.();
+    deckCleanup?.();
+    deckCleanup = document.querySelector('[data-solutions-deck]') ? initSolutionsDeck() : null;
+    ideaCleanup = document.querySelector('[data-idea-flow]') ? initIdeaFlow() : null;
+    tiltCleanup = document.querySelector('[data-solution-card]') ? initSolutionsTilt() : null;
+  });
+  document.addEventListener('astro:before-swap', () => {
+    ideaCleanup?.();
+    tiltCleanup?.();
+    deckCleanup?.();
+    deckCleanup = null;
+    ideaCleanup = null;
+    tiltCleanup = null;
+  });
+</script>
+
 <style>
   /* SECTION 1 — OUVERTURE PLEIN ÉCRAN */
   .opening-section {
@@ -557,334 +629,317 @@ const solutions: SolutionCard[] = [
     transform: translateX(4px);
   }
 
-  /* SECTION 2 — « NOTRE IDÉE » (PANNEAU QUI MONTE) */
-  .idea-section {
+  /* SECTION 2 — « NOTRE IDÉE » : nœuds reliés au défilement, plan incliné en 3D qui suit la souris */
+  .idea-nodes {
+    --p: 0;
+    --rx: 0deg;
+    --ry: 0deg;
     position: relative;
     z-index: 1;
-    padding-block: var(--space-64);
+    padding-block: 5rem 4rem;
+    border-bottom: 1px solid var(--line);
   }
 
   @media (min-width: 1024px) {
-    .idea-section {
-      padding-block: var(--space-104);
+    .idea-nodes {
+      height: 300vh;
+      padding-block: 0;
+    }
+    .idea-nodes__stage {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      min-height: 44rem;
+      display: flex;
+      align-items: center;
+      padding-top: 5.5rem;
+      padding-bottom: 1.5rem;
     }
   }
 
-  .idea-panel {
-    border-radius: 28px;
-    padding: clamp(2rem, 5vw, 4.5rem);
+  .idea-nodes__inner {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: var(--space-40);
-    overflow: hidden;
-    transform-origin: center top;
-  }
-
-  .idea-panel > * {
-    position: relative;
-    z-index: 1;
-  }
-
-  .idea-header .eyebrow {
-    margin-bottom: 0;
-    justify-content: center;
-  }
-
-  .idea-stage {
-    position: relative;
+    gap: 2rem;
     width: 100%;
-    max-width: 52rem;
-    min-height: 25rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
   }
 
-  .siri-stage {
-    position: relative;
-    width: 100%;
-    max-width: 62rem;
-    min-height: clamp(42rem, 64vh, 48rem);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-inline: auto;
-  }
-
-  /* Bulle Centrale Siri : forme sphérique liquide fluide à 120 FPS sur GPU */
-  @keyframes siriLiquidBlob {
-    0%, 100% {
-      transform: translate(-50%, -50%) scale(1) rotate(0deg);
-    }
-    33% {
-      transform: translate(-50%, -50%) scale(1.02) rotate(1.5deg);
-    }
-    66% {
-      transform: translate(-50%, -50%) scale(0.985) rotate(-1.5deg);
-    }
-  }
-
-  .siri-bubble--main {
-    position: absolute;
-    left: 50%;
-    top: 62%;
-    transform: translate(-50%, -50%);
-    width: clamp(16.5rem, 28vw, 20.5rem);
-    height: clamp(16.5rem, 28vw, 20.5rem);
-    border-radius: 50%;
-    z-index: 5;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: clamp(1.25rem, 2.5vw, 2rem);
-    animation: siriLiquidBlob 8.5s ease-in-out infinite;
-    background: var(--glass-bg);
-    -webkit-backdrop-filter: blur(14px) saturate(160%);
-    backdrop-filter: blur(14px) saturate(160%);
-    border: 1.5px solid rgba(255, 255, 255, 0.55);
-    box-shadow:
-      0 0 35px -5px rgba(79, 209, 165, 0.35),
-      0 0 55px -10px rgba(169, 155, 255, 0.3),
-      0 18px 40px rgba(0, 0, 0, 0.3),
-      inset 0 0 25px rgba(255, 255, 255, 0.2),
-      inset 0 2px 4px rgba(255, 255, 255, 0.5);
-    will-change: transform;
-  }
-
-  html[data-theme="light"] .siri-bubble--main {
-    border-color: rgba(255, 255, 255, 0.9);
-    box-shadow:
-      0 0 30px -5px rgba(11, 122, 90, 0.2),
-      0 0 50px -10px rgba(91, 75, 196, 0.16),
-      0 12px 30px rgba(11, 13, 18, 0.06),
-      inset 0 0 25px rgba(255, 255, 255, 0.7),
-      inset 0 2px 4px rgba(255, 255, 255, 0.9);
-  }
-
-  .siri-bubble-content {
-    position: relative;
-    z-index: 2;
+  .idea-nodes__head {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 0.35rem;
+    gap: 1rem;
   }
 
-  .siri-bubble-logo {
+  @media (min-width: 1024px) {
+    .idea-nodes__head {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 3rem;
+    }
+  }
+
+  .idea-nodes__intro {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 0.25rem;
+    flex-direction: column;
+    gap: 0.75rem;
   }
 
-  .siri-bubble-title {
-    font-family: var(--font-display);
-    font-weight: 600;
-    font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
+  .idea-nodes__title {
+    font-size: clamp(2rem, 1.3rem + 2.8vw, 3.5rem);
+    line-height: 1.06;
     letter-spacing: -0.02em;
+    font-weight: 450;
+  }
+
+  .idea-nodes__lead {
+    font-size: 1.125rem;
+    line-height: 1.5;
+    color: var(--text-muted);
+    max-width: 34rem;
+  }
+
+  .idea-nodes__text {
+    font-size: 1.0625rem;
+    line-height: 1.55;
     color: var(--text);
+    max-width: 30rem;
   }
 
-  .siri-bubble-badge {
-    display: inline-block;
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    color: var(--text-muted);
-    padding: 0.2rem 0.75rem;
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid var(--line);
-    margin-bottom: 0.25rem;
-  }
-
-  .siri-bubble-desc {
-    font-size: 0.85rem;
-    line-height: 1.45;
-    color: var(--text-muted);
-    max-width: 28ch;
-    margin-inline: auto;
-  }
-
-  /* Bulles satellites : sphères liquides Siri circulaires sur GPU */
-  @keyframes siriSatelliteFloat1 {
-    0%, 100% { transform: translateY(-50%) scale(1); }
-    50% { transform: translateY(-54%) scale(1.02); }
-  }
-  @keyframes siriSatelliteFloat2 {
-    0%, 100% { transform: translateX(-50%) scale(1); }
-    50% { transform: translateX(-50%) translateY(-6px) scale(1.02); }
-  }
-  @keyframes siriSatelliteFloat3 {
-    0%, 100% { transform: translateY(-50%) scale(1); }
-    50% { transform: translateY(-46%) scale(1.02); }
-  }
-
-  .siri-bubble--satellite {
-    position: absolute;
-    width: clamp(9.25rem, 14vw, 11rem);
-    height: clamp(9.25rem, 14vw, 11rem);
-    border-radius: 50%;
-    aspect-ratio: 1;
-    padding: 1rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    z-index: 2;
-    -webkit-backdrop-filter: blur(14px) saturate(160%);
-    backdrop-filter: blur(14px) saturate(160%);
-    background: var(--glass-bg);
-    border: 1.5px solid rgba(255, 255, 255, 0.5);
-    box-shadow: var(--glass-shadow);
-    transition: transform 300ms var(--ease-out), box-shadow 300ms var(--ease-out);
-    will-change: transform;
-    overflow: hidden;
-  }
-
-  .siri-satellite-inner {
+  .idea-graph {
     position: relative;
-    z-index: 2;
+    width: 100%;
+    margin-inline: auto;
+    perspective: 1600px;
+    container-type: inline-size;
+  }
+
+  .idea-graph--desktop {
+    display: none;
+  }
+
+  @media (min-width: 1024px) {
+    .idea-graph--desktop {
+      display: block;
+      width: min(100%, calc((100vh - 15rem) * 1280 / 600));
+    }
+    .idea-graph--mobile {
+      display: none;
+    }
+  }
+
+  .idea-graph__plane {
+    position: absolute;
+    inset: 0;
+    transform-style: preserve-3d;
+    transform: rotateX(calc(var(--rx) + (1 - var(--p)) * 14deg)) rotateY(var(--ry));
+    transition: transform 600ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .idea-graph__wires {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+
+  .idea-wire {
+    --o: clamp(0, (var(--p) - var(--s)) / var(--l), 1);
+    fill: none;
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-dasharray: 1;
+    stroke-dashoffset: calc(1 - var(--o));
+    stroke: color-mix(in srgb, var(--wire-tint) 55%, var(--text) 10%);
+  }
+
+  .idea-wire--care, .idea-pulse--care, .idea-node--care { --wire-tint: var(--tint-care); }
+  .idea-wire--consulting, .idea-pulse--consulting, .idea-node--consulting { --wire-tint: var(--tint-consulting); }
+  .idea-wire--events, .idea-pulse--events, .idea-node--events { --wire-tint: var(--tint-events); }
+
+  .idea-pulse {
+    fill: var(--wire-tint);
+    opacity: clamp(0, (var(--p) - var(--s) - var(--l)) * 1000, 1);
+  }
+
+  .idea-node {
+    --o: clamp(0, (var(--p) - var(--s)) / var(--l), 1);
+    position: absolute;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    border-radius: 16px;
+    background: var(--surface);
+    border: 1px solid color-mix(in srgb, var(--text) 14%, transparent);
+    color: var(--text);
+    text-decoration: none;
+    opacity: var(--o);
+    transform: translateY(calc((1 - var(--o)) * 16px)) translateZ(calc(var(--z, 0px) * var(--o)));
+    transition: opacity 400ms var(--ease-out), transform 500ms var(--ease-out), border-color 200ms var(--ease-out);
+  }
+
+  .idea-node--hub {
+    --z: 70px;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem;
+    border-radius: 22px;
+    box-shadow: 0 18px 40px -24px rgba(11, 13, 18, 0.35);
+  }
+
+  .idea-node--act {
+    --z: 40px;
+    padding: 0 1.1rem;
+    box-shadow: 0 14px 30px -22px rgba(11, 13, 18, 0.3);
+  }
+
+  .idea-node--act:hover,
+  .idea-node--act:focus-visible {
+    border-color: var(--wire-tint);
+  }
+
+  .idea-node--act:focus-visible {
+    outline: 2px solid var(--text);
+    outline-offset: 3px;
+  }
+
+  .idea-node--tag {
+    --z: 10px;
+    padding: 0 1rem;
+    border-radius: 999px;
+    border-color: color-mix(in srgb, var(--wire-tint) 35%, var(--line));
+  }
+
+  .idea-node__logo {
+    flex: none;
+    display: flex;
+    align-items: center;
+    width: 30%;
+    max-width: 5.5rem;
+  }
+
+  .idea-logo {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 100%;
+    object-fit: contain;
+  }
+
+  .idea-logo--hub {
+    width: 78%;
+  }
+
+  .idea-logo--dark {
+    display: none;
+  }
+
+  :global(html[data-theme='dark']) .idea-logo--light {
+    display: none;
+  }
+
+  :global(html[data-theme='dark']) .idea-logo--dark {
+    display: block;
+  }
+
+  .idea-node__text {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 0.25rem;
+    min-width: 0;
   }
 
-  .siri-satellite-logo {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 0.2rem;
-  }
-
-  .siri-bubble--care {
-    left: clamp(1rem, 3.5vw, 2.5rem);
-    top: 58%;
-    transform: translateY(-50%);
-    animation: siriSatelliteFloat1 7.2s ease-in-out infinite;
-    --sat-tint: var(--tint-care);
-  }
-
-  .siri-bubble--consulting {
-    left: 50%;
-    top: 1.5rem;
-    transform: translateX(-50%);
-    animation: siriSatelliteFloat2 8.4s ease-in-out infinite;
-    --sat-tint: var(--tint-consulting);
-  }
-
-  .siri-bubble--events {
-    right: clamp(1rem, 3.5vw, 2.5rem);
-    top: 58%;
-    transform: translateY(-50%);
-    animation: siriSatelliteFloat3 7.8s ease-in-out infinite;
-    --sat-tint: var(--tint-events);
-  }
-
-  .siri-bubble--satellite {
-    border-color: color-mix(in srgb, var(--sat-tint) 55%, var(--glass-border));
-    box-shadow:
-      var(--glass-shadow),
-      0 0 35px -6px color-mix(in srgb, var(--sat-tint) 45%, transparent),
-      inset 0 0 20px color-mix(in srgb, var(--sat-tint) 25%, transparent),
-      inset 0 2px 4px rgba(255, 255, 255, 0.4);
-  }
-
-  html[data-theme="light"] .siri-bubble--satellite {
-    border-color: color-mix(in srgb, var(--sat-tint) 45%, rgba(0, 0, 0, 0.12));
-    box-shadow:
-      var(--glass-shadow),
-      0 0 28px -6px color-mix(in srgb, var(--sat-tint) 35%, transparent),
-      inset 0 0 16px rgba(255, 255, 255, 0.8),
-      inset 0 2px 4px rgba(255, 255, 255, 0.9);
-  }
-
-  .siri-bubble-dot {
-    width: 0.55rem;
-    height: 0.55rem;
-    border-radius: 50%;
-    background-color: var(--sat-tint);
-    box-shadow: 0 0 12px var(--sat-tint);
-    margin-bottom: 0.15rem;
-  }
-
-  .siri-bubble-name {
-    font-family: var(--font-display);
-    font-weight: 600;
-    font-size: 1.05rem;
-    letter-spacing: -0.01em;
-    color: var(--text);
-  }
-
-  .siri-bubble-role {
-    font-size: 0.75rem;
+  .idea-node__name {
+    font-size: clamp(0.875rem, 1.45cqi, 1.125rem);
     font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    color: var(--text-muted);
+    line-height: 1.25;
   }
 
-  @media (max-width: 767px) {
-    .siri-stage {
-      min-height: auto;
-      flex-direction: column;
-      gap: var(--space-20);
-      padding-block: var(--space-16);
-    }
-    .siri-bubble--main {
-      position: static;
-      transform: none;
-      width: 100%;
-      max-width: 20rem;
-      height: auto;
-      min-height: 18rem;
-      border-radius: 28px;
-      animation: none;
-      order: 1;
-    }
-    .siri-bubble--satellite {
-      position: static;
-      transform: none !important;
-      width: 100%;
-      max-width: 18rem;
-      height: auto;
-      min-height: 8rem;
-      border-radius: 24px;
-      animation: none;
-      order: 2;
-    }
+  .idea-node__role {
+    font-size: clamp(0.75rem, 1.1cqi, 0.875rem);
+    color: var(--wire-tint);
+  }
+
+  .idea-node__tag {
+    font-size: clamp(0.75rem, 1.15cqi, 0.9375rem);
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .idea-video-slot {
-    width: 100%;
-    max-width: 56rem;
     border-radius: 20px;
     overflow: hidden;
   }
 
   .idea-video {
-    width: 100%;
     display: block;
+    width: 100%;
   }
 
-  .idea-text {
-    font-size: clamp(1.25rem, 1.05rem + 1.1vw, 1.85rem);
-    font-weight: 500;
-    line-height: 1.35;
-    letter-spacing: -0.015em;
-    color: var(--text);
-    max-width: 44ch;
-    margin-inline: auto;
+  @media (prefers-reduced-motion: reduce) {
+    .idea-graph__plane,
+    .idea-node {
+      transition: none;
+    }
   }
 
   /* SECTION 3 — « NOS SOLUTIONS » (4 GRANDES CARTES) */
+  /* Paquet de cartes en 3D piloté par le défilement (src/scripts/home/idea.js) */
+  .solution-typewriter .solution-typewriter__cursor {
+    display: none !important;
+  }
+
+  @media (min-width: 1024px) {
+    .solutions-section[data-solutions-deck] {
+      height: calc(100vh + 210vh);
+      display: block;
+      min-height: 0;
+      padding-block: 0;
+    }
+    .solutions-section[data-solutions-deck] .solutions-container {
+      position: sticky;
+      top: 72px;
+      height: calc(100vh - 72px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .solutions-stack.is-deck {
+      min-height: clamp(30rem, 58vh, 35.5rem);
+      perspective: 1400px;
+    }
+    .solutions-stack.is-deck .solution-card {
+      position: absolute;
+      inset: 0;
+      height: 100%;
+      transform-origin: 50% 100%;
+      will-change: transform, opacity;
+    }
+  }
+
+  /* Inclinaison 3D de la carte survolée */
+  .solution-card {
+    --tilt-x: 0deg;
+    --tilt-y: 0deg;
+  }
+
+  .solution-card__link {
+    transform: perspective(1200px) rotateX(var(--tilt-y)) rotateY(var(--tilt-x));
+    transform-style: preserve-3d;
+    transition: transform 450ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .solution-card__link {
+      transform: none;
+      transition: none;
+    }
+  }
+
   .solutions-section {
     position: relative;
     z-index: 1;
