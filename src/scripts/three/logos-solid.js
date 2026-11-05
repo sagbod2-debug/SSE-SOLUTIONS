@@ -69,9 +69,9 @@ export function buildSSESolid(m) {
   return g;
 }
 
-// ---------- CC Events : C noir laqué, C doré, orbite, silhouette et étoile dorées ----------
-export function buildEventsSolid(m) {
-  return buildEventsLogo({ smoke: m.black, gold: m.gold, clear: m.gold });
+// ---------- CC Events : C noir laqué (argent sur fond sombre, comme le logo officiel), C doré, orbite, silhouette et étoile dorées ----------
+export function buildEventsSolid(m, { dark = false } = {}) {
+  return buildEventsLogo({ smoke: dark ? m.silver : m.black, gold: m.gold, clear: m.gold });
 }
 
 // ---------- CC Care : adulte bleu, enfant et feuilles verts, cercle doré ----------

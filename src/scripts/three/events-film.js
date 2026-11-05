@@ -2,7 +2,7 @@
 // Une seule scène pour toute la page ; le défilement avance une ligne de temps (J-30 → Jour J),
 // puis déplace la caméra pour chaque offre et change l'ambiance lumineuse pour chaque règle.
 import { THREE, createStage, runLoop, addOutlines } from './common.js';
-import { glassSet, buildEventsLogo } from './logos.js';
+import { brandMaterials, buildEventsSolid } from './logos-solid.js';
 
 const sm = (a, b, x) => {
   const t = Math.max(0, Math.min(1, (x - a) / (b - a)));
@@ -242,8 +242,8 @@ export function mountEventsFilm(canvas, { dark = false } = {}) {
   artist.scale.setScalar(0.001);
   scene.add(artist);
 
-  // ---------- Logo en verre suspendu au-dessus de la scène ----------
-  const logo = buildEventsLogo(glassSet(timeU, { light: !dark }));
+  // ---------- Logo en relief (laque noire et or) suspendu au-dessus de la scène ----------
+  const logo = buildEventsSolid(brandMaterials(), { dark });
   const logoPivot = new THREE.Group();
   logoPivot.add(logo);
   logoPivot.position.set(0, 9.7, -7.5);
@@ -375,6 +375,10 @@ export function mountEventsFilm(canvas, { dark = false } = {}) {
     // logo suspendu
     logoPivot.rotation.y = reduce ? 0 : Math.sin(t * 0.35) * 0.6;
     logoPivot.position.y = 9.7 + Math.sin(t * 0.8) * 0.12;
+    // sur téléphone, le générique remonte par-dessus le logo à la fin du montage : le logo s'efface le temps du passage
+    const narrowView = camera.aspect < 0.9;
+    const pass = narrowView ? sm(0.29, 0.318, prog) * (1 - sm(0.36, 0.42, prog)) : 0;
+    logoPivot.scale.setScalar(Math.max(0.001, 1.1 * (1 - pass)));
 
     // caméra
     const [ca, cb, ct] = sample(CAM, prog);
@@ -382,6 +386,8 @@ export function mountEventsFilm(canvas, { dark = false } = {}) {
     camTgt.set(lerp(ca[2][0], cb[2][0], ct), lerp(ca[2][1], cb[2][1], ct), lerp(ca[2][2], cb[2][2], ct));
     const narrow = camera.aspect < 0.9 ? 1.35 : 1;
     camera.position.set(camPos.x * narrow + px * 1.2, camPos.y * (narrow > 1 ? 1.1 : 1) - py * 0.8, camPos.z * narrow);
+    // sur téléphone, le texte prend toute la largeur : on recentre la scène (et le logo) au lieu de la décaler
+    if (narrow > 1) camTgt.x *= 0.25;
     camera.lookAt(camTgt);
   });
 

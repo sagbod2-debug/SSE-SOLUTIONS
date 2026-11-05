@@ -278,6 +278,8 @@ const seanceSteps = [
     position: absolute;
     inset: 0;
     pointer-events: none;
+    /* les étiquettes des lieux arrivent une fois le titre parti : rien ne se superpose au texte d'accueil */
+    opacity: clamp(0, (var(--ap) - 0.1) / 0.06, 1);
   }
 
   .at.is-3d-fallback .at__labels {

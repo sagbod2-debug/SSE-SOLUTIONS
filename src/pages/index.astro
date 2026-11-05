@@ -71,7 +71,7 @@ const icurve = (x1: number, y1: number, x2: number, y2: number) => {
 
 function ideaDesktop(): ILayout {
   const W = 1280, H = 600;
-  const hub = { x: 0, y: 225, w: 250, h: 150 };
+  const hub = { x: 0, y: 200, w: 260, h: 200 };
   const acts = [0, 1, 2].map((i) => ({ x: 400, y: 40 + i * 200, w: 300, h: 120 }));
   const tags = acts.map((a) => [-1, 0, 1].map((k) => ({ x: 900, y: icy(a) - 24 + k * 58, w: 380, h: 48 })));
   const wires: IWire[] = [];
@@ -83,9 +83,9 @@ function ideaDesktop(): ILayout {
 }
 
 function ideaMobile(): ILayout {
-  const W = 360, H = 1060;
-  const hub = { x: 60, y: 0, w: 240, h: 110 };
-  const acts = [0, 1, 2].map((i) => ({ x: 20, y: 170 + i * 300, w: 320, h: 96 }));
+  const W = 360, H = 1110;
+  const hub = { x: 50, y: 0, w: 260, h: 160 };
+  const acts = [0, 1, 2].map((i) => ({ x: 20, y: 220 + i * 300, w: 320, h: 96 }));
   const tags = acts.map((a) => [0, 1, 2].map((k) => ({ x: 60 + (k % 2) * 0, y: a.y + a.h + 18 + k * 52, w: 280, h: 42 })));
   const wires: IWire[] = [];
   acts.forEach((a, i) => {
@@ -238,6 +238,8 @@ const solutions: SolutionCard[] = [
               </svg>
 
               <div class="idea-node idea-node--hub" style={ideaPos(L, L.hub, IDEA_T.hub)}>
+                <canvas class="idea-hub__canvas" data-idea-logo3d aria-hidden="true"></canvas>
+                <span class="idea-hub__word" aria-hidden="true">Solutions</span>
                 <Image src={ideaSseLight} alt="SSE Solutions" widths={[240, 480]} sizes="160px" class="idea-logo idea-logo--hub idea-logo--light" />
                 <Image src={ideaSseDark} alt="" widths={[240, 480]} sizes="160px" class="idea-logo idea-logo--hub idea-logo--dark" />
               </div>
@@ -831,6 +833,33 @@ const solutions: SolutionCard[] = [
 
   .idea-logo--hub {
     width: 78%;
+  }
+
+  .idea-hub__canvas,
+  .idea-hub__word {
+    display: none;
+  }
+
+  .idea-nodes.is-logo3d .idea-hub__canvas {
+    display: block;
+    width: 100%;
+    flex: 1 1 auto;
+    min-height: 0;
+  }
+
+  .idea-nodes.is-logo3d .idea-hub__word {
+    display: block;
+    flex: none;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.42em;
+    text-transform: uppercase;
+    padding-left: 0.42em;
+    color: color-mix(in srgb, var(--text) 78%, transparent);
+  }
+
+  .idea-nodes.is-logo3d .idea-logo--hub {
+    display: none !important;
   }
 
   .idea-logo--dark {

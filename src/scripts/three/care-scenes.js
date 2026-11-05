@@ -3,7 +3,8 @@
 // et autour de la souris) pour former un groupe autour du logo.
 // Missions : une personne seule, puis des arcs de verre viennent l'entourer, un par mission.
 import { THREE, createStage, runLoop, viewSize } from './common.js';
-import { glassSet, buildCareLogo, liquidGlass } from './logos.js';
+import { glassSet, liquidGlass } from './logos.js';
+import { brandMaterials, buildCareSolid } from './logos-solid.js';
 
 const sm = (a, b, x) => {
   const t = Math.max(0, Math.min(1, (x - a) / (b - a)));
@@ -67,10 +68,11 @@ export function mountCareHero(canvas, { dark = false } = {}) {
     pebbles.push(m);
   }
 
-  // sur fond blanc : le logo reprend ses couleurs (bleu, vert, or) dans un verre teinté
-  const logo = dark
-    ? buildCareLogo(glass)
-    : buildCareLogo(glass, { bleu: liquidGlass(timeU, '#2f5f9e', 0.8), vert: liquidGlass(timeU, '#3f8f3a', 0.8), or: glass.gold, default: glass.clear });
+  // le logo en relief, opaque, dans ses couleurs (émail bleu et vert, or)
+  const logo = buildCareSolid(brandMaterials());
+  const key = new THREE.DirectionalLight('#ffffff', dark ? 1.1 : 1.5);
+  key.position.set(3, 9, 8);
+  scene.add(key);
   const pivot = new THREE.Group();
   pivot.add(logo);
   scene.add(pivot);
@@ -108,7 +110,8 @@ export function mountCareHero(canvas, { dark = false } = {}) {
       });
 
       const logoIn = sm(0.0, 0.5, gather);
-      const sc = (wide ? Math.min(1.2, (vh * 0.5) / 5) : Math.min(1, (vw * 0.62) / 5)) * (0.6 + 0.4 * logoIn);
+      // sur téléphone, le logo reste dans l'espace libre entre le titre et le texte
+      const sc = (wide ? Math.min(1.2, (vh * 0.5) / 5) * (0.6 + 0.4 * logoIn) : Math.min((vw * 0.62) / 5, (vh * 0.27) / 4.4) * (0.85 + 0.15 * logoIn));
       pivot.scale.setScalar(Math.max(0.001, sc));
       pivot.position.set(0, cy + Math.sin(t * 0.7) * 0.06, 0.4);
       pivot.rotation.y = Math.sin(t * 0.4) * 0.35 + px * 0.25;

@@ -208,7 +208,8 @@
 .act-block {
   position: relative;
   z-index: 2;
-  padding-block: 6rem;
+  /* sur téléphone, des marges plus courtes : pas de grands aplats vides entre deux sections */
+  padding-block: clamp(3.25rem, 2rem + 6vw, 6rem);
 }
 
 @media (min-width: 960px) {

@@ -34,6 +34,32 @@ export function initIdeaFlow() {
     section.style.setProperty('--rx', `${(-y * 4).toFixed(2)}deg`);
   }
 
+  // logo SSE en relief au centre (opaque, sans effet de lumière), sur le graphe visible seulement
+  let logo = null, logoMod = null, logoCanvas = null, disposed = false;
+  const dark = () => document.documentElement.getAttribute('data-theme') === 'dark';
+  async function mountLogo() {
+    const canvas = Array.from(section.querySelectorAll('[data-idea-logo3d]')).find((c) => c.closest('[data-idea-graph]')?.offsetParent !== null);
+    if (!canvas) return;
+    try {
+      if (!logoMod) logoMod = await import('../three/logo-showcase.js');
+    } catch {
+      return;
+    }
+    if (disposed) return;
+    logo?.dispose();
+    section.classList.add('is-logo3d');
+    logoCanvas = canvas;
+    logo = logoMod.mountLogoShowcase(canvas, { logo: 'sse-solutions', dark: dark(), transparent: true, interactive: !reduce, fill: 0.92 });
+    if (!logo) section.classList.remove('is-logo3d');
+  }
+  const themeObs = new MutationObserver(() => { if (logoMod) mountLogo(); });
+  themeObs.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+  const mq = window.matchMedia('(min-width: 1024px)');
+  const onMq = () => { if (logoMod) mountLogo(); };
+  mq.addEventListener('change', onMq);
+  const idle = window.requestIdleCallback || ((cb) => setTimeout(cb, 120));
+  idle(() => { if (!disposed) mountLogo(); });
+
   let ticking = false;
   const onScroll = () => {
     if (ticking) return;
@@ -46,6 +72,10 @@ export function initIdeaFlow() {
   measure();
 
   return () => {
+    disposed = true;
+    logo?.dispose();
+    themeObs.disconnect();
+    mq.removeEventListener('change', onMq);
     window.removeEventListener('scroll', onScroll);
     window.removeEventListener('resize', onScroll);
     window.removeEventListener('pointermove', onPointer);
