@@ -41,8 +41,13 @@ function resolveRecipient(sujet: string): string {
   if (normalized.includes('consulting')) {
     return 'ccconsulting@ssesolutions.fr';
   }
-  // CC Care, Autonomie & Inclusion, CC Events et tout autre sujet
-  return 'cccare@ssesolutions.fr';
+  if (normalized.includes('event')) {
+    return 'ccevents@ssesolutions.fr';
+  }
+  if (normalized.includes('care') || normalized.includes('autonomie')) {
+    return 'cccare@ssesolutions.fr';
+  }
+  return 'contact@ssesolutions.fr';
 }
 
 function escapeHtml(input: string): string {

@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Picture from '../components/Picture.astro';
 import BrandLogo from '../components/BrandLogo.astro';
+import Blueprint3D from '../components/Blueprint3D.astro';
 import { SHOW_CONSULTING_FAQ, CONSULTING_FAQ_ITEMS, SHOW_REAL_PHOTOS } from '../config/flags';
 
 const checklistItems = [
@@ -10,7 +11,7 @@ const checklistItems = [
   'les contrats et attestations de maintenance de vos prestataires',
   'la preuve que les observations des rapports ont été levées',
   'les suites données aux prescriptions du dernier procès-verbal',
-  "la trace des exercices d'évacuation et de l'information de votre personnel",
+  "la trace des exercices d'évacuation et de l'information ou de la formation de votre personnel",
 ];
 
 const activeFaqItems = CONSULTING_FAQ_ITEMS.filter((item) => item.answer.trim().length > 0);
@@ -33,13 +34,23 @@ const faqJsonLd =
 
 <BaseLayout
   title="Préparation commission de sécurité et conformité incendie ERP en Essonne · CC Consulting"
-  description="CC Consulting accompagne les ERP, en priorité les établissements de soins, de l'audit de conformité incendie jusqu'à la levée des observations."
+  description="CC Consulting accompagne les établissements recevant du public (ERP) et les entreprises, de l'audit de conformité incendie jusqu'à la levée des observations."
   theme="cc-consulting"
   jsonLd={faqJsonLd}
 >
   <section class="section hero-consulting" transition:name="solution-card-consulting">
+    <Blueprint3D />
     <div class="container grid-12 hero-consulting-grid">
       <div class="hero-consulting-content">
+        <nav class="activity-breadcrumb" aria-label="Fil d'Ariane" data-hero-fade>
+          <a href="/" class="activity-breadcrumb-link">
+            <span aria-hidden="true">←</span>
+            <span>Retour à l'accueil</span>
+          </a>
+          <span class="activity-breadcrumb-sep" aria-hidden="true">/</span>
+          <span class="activity-breadcrumb-current">CC Consulting</span>
+        </nav>
+
         <div class="hero-activity-brand" data-hero-fade>
           <BrandLogo brand="cc-consulting" size="lg" loading="eager" alt="Logo officiel CC Consulting" />
           <div class="hero-activity-brand-meta">
@@ -62,7 +73,7 @@ const faqJsonLd =
           </span>
         </p>
         <p class="prose-measure hero-consulting-lead" data-hero-fade>
-          CC Consulting accompagne les établissements recevant du public, en priorité les établissements de soins, de l'audit de conformité incendie jusqu'à la levée des observations.
+          CC Consulting accompagne les établissements recevant du public (ERP) et les entreprises, de l'audit de conformité incendie jusqu'à la levée des observations.
         </p>
 
         <div class="btn-group hero-consulting-actions" data-hero-fade>
@@ -77,7 +88,7 @@ const faqJsonLd =
         <div class="media-frame hero-consulting-frame">
           <Picture
             slug="10-cc-consulting-hero"
-            alt="Façade géométrique en verre et acier d’un bâtiment contemporain photographié au crépuscule"
+            alt="Équipement de sécurité incendie vérifié et consignes réglementaires dans un établissement recevant du public"
             sizes="(max-width: 960px) 92vw, 520px"
             loading="eager"
             fetchpriority="high"
@@ -210,14 +221,17 @@ const faqJsonLd =
   <section class="section section--spacious healthcare-safety-section">
     <div class="container grid-12">
       <div class="healthcare-safety-box glass" data-glow data-reveal>
-        <p class="eyebrow">TYPE U · HÔPITAUX ET CLINIQUES</p>
+        <p class="eyebrow">TOUS TYPES D'ERP · 1ÈRE À 5ÈME CATÉGORIE</p>
         <h2 class="section-title" data-reveal-title>
           <span class="reveal-mask">
-            <span class="reveal-line">Établissements de soins : une sécurité à part</span>
+            <span class="reveal-line">Une maîtrise réglementaire pour chaque type d'établissement</span>
           </span>
         </h2>
         <p class="healthcare-safety-text prose-measure">
-          Dans un hôpital, on n'évacue pas tout le monde dehors. La sécurité incendie repose d'abord sur le transfert horizontal : déplacer les patients vers une zone protégée du même étage. Cela suppose des portes et des compartiments qui jouent leur rôle, un désenfumage et une détection qui fonctionnent, et un personnel qui connaît les gestes, de jour comme de nuit.
+          CC Consulting intervient sur l'ensemble des établissements recevant du public : <strong>types J, U, O, L, M, N, R, W, X, de la 1ère à la 5ème catégorie</strong>, ainsi que les établissements recevant des travailleurs (ERT).
+        </p>
+        <p class="healthcare-safety-text prose-measure" style="margin-top: 1rem;">
+          Pour les établissements de soins et médico-sociaux (types U et J), la sécurité incendie requiert une sensibilité humaine et technique accrue : on n'évacue pas vers l'extérieur sans préparation. Elle repose sur le transfert horizontal vers une zone protégée du même niveau, des portes coupe-feu asservies, un désenfumage éprouvé et un personnel aux réflexes automatisés.
         </p>
       </div>
     </div>
@@ -229,15 +243,18 @@ const faqJsonLd =
       <ul class="consulting-audiences grid-12" data-reveal>
         <li class="consulting-audience-card glass" data-glow>
           <span class="num-index">01</span>
-          <span class="consulting-audience-title">Établissements de soins (type U)</span>
+          <span class="consulting-audience-title">Santé & Médico-social (Types U & J)</span>
+          <p class="consulting-audience-desc">Hôpitaux, cliniques, EHPAD, foyers d'accueil médicalisés nécessitant un transfert horizontal compartimenté.</p>
         </li>
         <li class="consulting-audience-card glass" data-glow>
           <span class="num-index">02</span>
-          <span class="consulting-audience-title">Autres établissements recevant du public</span>
+          <span class="consulting-audience-title">Tous types d'ERP (1ère à 5ème catégorie)</span>
+          <p class="consulting-audience-desc">Hôtels (O), salles polyvalentes (L), commerces (M), restaurants (N), enseignement (R), bureaux (W), sport (X).</p>
         </li>
         <li class="consulting-audience-card glass" data-glow>
           <span class="num-index">03</span>
-          <span class="consulting-audience-title">Entreprises</span>
+          <span class="consulting-audience-title">Bâtiments tertiaires & Entreprises</span>
+          <p class="consulting-audience-desc">Établissements recevant des travailleurs (ERT), sièges sociaux, copropriétés et parcs d'activités tertiaires.</p>
         </li>
       </ul>
     </div>
@@ -282,8 +299,12 @@ const faqJsonLd =
           </span>
         </h2>
         <div class="consulting-contact-actions" data-reveal>
-          <a href="mailto:ccconsulting@ssesolutions.fr" class="consulting-email">
-            ccconsulting@<wbr />ssesolutions.fr
+          <a href="mailto:ccconsulting@ssesolutions.fr" class="contact-email-pill glass" aria-label="Écrire à CC Consulting : ccconsulting@ssesolutions.fr">
+            <svg class="email-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect width="20" height="16" x="2" y="4" rx="2" />
+              <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+            </svg>
+            <span class="email-address">ccconsulting@ssesolutions.fr</span>
           </a>
           <a href="/contact?sujet=cc-consulting" class="btn-primary" data-magnetic data-glow>
             <span>Faire le point sur mon établissement</span>
@@ -296,10 +317,44 @@ const faqJsonLd =
 </BaseLayout>
 
 <style>
+  .activity-breadcrumb {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    margin-bottom: var(--space-20);
+  }
+
+  .activity-breadcrumb-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 200ms var(--ease-out);
+  }
+
+  .activity-breadcrumb-link:hover {
+    color: var(--text);
+  }
+
+  .activity-breadcrumb-sep {
+    opacity: 0.5;
+  }
+
+  .activity-breadcrumb-current {
+    color: var(--activity-tint);
+    font-weight: 600;
+  }
+
   .hero-consulting {
+    position: relative;
     padding-top: 8.5rem;
     padding-bottom: var(--space-64);
     border-top: 2px solid var(--activity-tint);
+    overflow: hidden;
   }
 
   .hero-activity-brand {
@@ -575,6 +630,12 @@ const faqJsonLd =
     color: var(--text);
   }
 
+  .consulting-audience-desc {
+    font-size: 0.9375rem;
+    line-height: 1.5;
+    color: var(--text-muted);
+  }
+
   .consulting-contact-box {
     grid-column: 1 / -1;
     display: flex;
@@ -586,20 +647,39 @@ const faqJsonLd =
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: var(--space-40);
+    gap: var(--space-24);
   }
 
-  .consulting-email {
-    font-family: var(--font-display);
-    font-size: clamp(1.35rem, 2.5vw, 2rem);
-    color: var(--accent);
-    border-bottom: 1px solid var(--line);
-    padding-bottom: 0.25rem;
-    overflow-wrap: normal;
-    transition: border-color 250ms var(--ease-out);
+  .contact-email-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.9rem 1.6rem;
+    border-radius: 999px;
+    font-family: var(--font-sans);
+    font-size: clamp(0.9375rem, 1vw, 1.0625rem);
+    font-weight: 500;
+    color: var(--text);
+    text-decoration: none;
+    border: 1px solid var(--glass-border);
+    background: var(--glass-bg);
+    box-shadow: var(--glass-shadow);
+    white-space: nowrap;
+    transition: transform 250ms var(--ease-out), border-color 250ms var(--ease-out), box-shadow 250ms var(--ease-out);
   }
 
-  .consulting-email:hover {
-    border-color: var(--accent);
+  .contact-email-pill:hover {
+    transform: translateY(-2px);
+    border-color: color-mix(in srgb, var(--tint-consulting) 55%, var(--glass-border));
+    box-shadow: var(--glass-shadow), 0 8px 24px -4px color-mix(in srgb, var(--tint-consulting) 28%, transparent);
+  }
+
+  .contact-email-pill .email-icon {
+    flex-shrink: 0;
+    color: var(--tint-consulting);
+  }
+
+  .contact-email-pill .email-address {
+    white-space: nowrap;
   }
 </style>

@@ -38,20 +38,46 @@ const LINKEDIN_URL = import.meta.env.PUBLIC_LINKEDIN_URL || '';
         </ul>
       </div>
 
-      <div class="footer-col">
-        <p class="footer-heading">Contact</p>
+      <div class="footer-col footer-col--contact">
+        <p class="footer-heading">Contacts directs</p>
         <ul class="footer-links">
           <li>
-            <a href="mailto:cccare@ssesolutions.fr" class="footer-link footer-email">
-              cccare@<wbr />ssesolutions.fr
+            <a href="/contact" class="footer-link footer-link--highlight">
+              Formulaire de contact →
             </a>
           </li>
           <li>
-            <a href="mailto:ccconsulting@ssesolutions.fr" class="footer-link footer-email">
-              ccconsulting@<wbr />ssesolutions.fr
-            </a>
+            <span class="footer-contact-item">
+              <span class="footer-contact-tag">Général</span>
+              <a href="mailto:contact@ssesolutions.fr" class="footer-link footer-email">
+                contact@ssesolutions.fr
+              </a>
+            </span>
           </li>
-          <li><a href="/contact" class="footer-link">Formulaire de contact</a></li>
+          <li>
+            <span class="footer-contact-item">
+              <span class="footer-contact-tag">CC Care</span>
+              <a href="mailto:cccare@ssesolutions.fr" class="footer-link footer-email">
+                cccare@ssesolutions.fr
+              </a>
+            </span>
+          </li>
+          <li>
+            <span class="footer-contact-item">
+              <span class="footer-contact-tag">CC Consulting</span>
+              <a href="mailto:ccconsulting@ssesolutions.fr" class="footer-link footer-email">
+                ccconsulting@ssesolutions.fr
+              </a>
+            </span>
+          </li>
+          <li>
+            <span class="footer-contact-item">
+              <span class="footer-contact-tag">CC Events</span>
+              <a href="mailto:ccevents@ssesolutions.fr" class="footer-link footer-email">
+                ccevents@ssesolutions.fr
+              </a>
+            </span>
+          </li>
         </ul>
       </div>
 
@@ -140,6 +166,9 @@ const LINKEDIN_URL = import.meta.env.PUBLIC_LINKEDIN_URL || '';
     .footer-col {
       grid-column: span 2;
     }
+    .footer-col--contact {
+      grid-column: span 3;
+    }
   }
 
   .footer-heading {
@@ -155,6 +184,26 @@ const LINKEDIN_URL = import.meta.env.PUBLIC_LINKEDIN_URL || '';
     display: flex;
     flex-direction: column;
     gap: 0.625rem;
+  }
+
+  .footer-contact-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .footer-contact-tag {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    opacity: 0.8;
+  }
+
+  .footer-link--highlight {
+    font-weight: 600;
+    color: var(--text);
   }
 
   /* 2.3 Soulignement qui se dessine de gauche à droite (background-size 0 à 100 %, 300 ms) */

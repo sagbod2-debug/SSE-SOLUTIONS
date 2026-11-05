@@ -30,69 +30,12 @@ function cleanupAnimations() {
   }
 }
 
-let systemColorSchemeMql: MediaQueryList | null = null;
-let systemColorSchemeListener: ((e: MediaQueryListEvent) => void) | null = null;
-
-function initThemeSwitcher() {
-  const buttons = document.querySelectorAll<HTMLButtonElement>('.theme-btn[data-theme-choice]');
-  if (!buttons.length) return;
-
-  const STORAGE_KEY = 'sse-theme';
-  const darkMql = window.matchMedia('(prefers-color-scheme: dark)');
-
-  const resolveTheme = (pref: string): 'light' | 'dark' => {
-    if (pref === 'light' || pref === 'dark') return pref;
-    return darkMql.matches ? 'dark' : 'light';
-  };
-
-  const syncButtons = (pref: string) => {
-    buttons.forEach((btn) => {
-      const choice = btn.getAttribute('data-theme-choice');
-      btn.setAttribute('aria-pressed', choice === pref ? 'true' : 'false');
-    });
-  };
-
-  const applyThemePref = (pref: string) => {
-    try {
-      localStorage.setItem(STORAGE_KEY, pref);
-    } catch {}
-    const resolved = resolveTheme(pref);
-    document.documentElement.setAttribute('data-theme', resolved);
-    document.documentElement.setAttribute('data-theme-pref', pref);
-    const meta = document.getElementById('meta-theme-color');
-    if (meta) {
-      meta.setAttribute('content', resolved === 'light' ? '#FFFFFF' : '#0A0B0F');
-    }
-    syncButtons(pref);
-  };
-
-  const currentPref =
-    localStorage.getItem(STORAGE_KEY) ||
-    document.documentElement.getAttribute('data-theme-pref') ||
-    'system';
-  applyThemePref(currentPref);
-
-  if (systemColorSchemeMql && systemColorSchemeListener) {
-    systemColorSchemeMql.removeEventListener('change', systemColorSchemeListener);
-  }
-  systemColorSchemeMql = darkMql;
-  systemColorSchemeListener = () => {
-    const activePref =
-      localStorage.getItem(STORAGE_KEY) ||
-      document.documentElement.getAttribute('data-theme-pref') ||
-      'system';
-    if (activePref === 'system') {
-      applyThemePref('system');
-    }
-  };
-  darkMql.addEventListener('change', systemColorSchemeListener);
-
-  buttons.forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const choice = btn.getAttribute('data-theme-choice') || 'system';
-      applyThemePref(choice);
-    });
-  });
+function enforceLightTheme() {
+  try {
+    localStorage.removeItem('sse-theme');
+  } catch {}
+  document.documentElement.setAttribute('data-theme', 'light');
+  document.documentElement.removeAttribute('data-theme-pref');
 }
 
 function detectSvgRefractionSupport() {
@@ -112,7 +55,7 @@ function detectSvgRefractionSupport() {
 
 function initHeader() {
   detectSvgRefractionSupport();
-  initThemeSwitcher();
+  enforceLightTheme();
   const header = document.getElementById('site-header');
   if (!header) return;
 
@@ -243,7 +186,7 @@ function initAnimations() {
   // 2.2 Arrière-plan vivant WebGL
   cleanupMeshes = initLivingMeshes();
 
-  // Ancres fluides
+  // Ancres fluides et retour haut de page
   document.querySelectorAll<HTMLAnchorElement>('a[href^="#"]').forEach((anchor) => {
     anchor.addEventListener('click', (e) => {
       const targetId = anchor.getAttribute('href');
@@ -256,6 +199,21 @@ function initAnimations() {
         lenisInstance.scrollTo(targetEl, { offset: -80 });
       } else {
         targetEl.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' });
+      }
+    });
+  });
+
+  // Clic sur "Accueil" quand on est déjà sur la page d'accueil : retour fluide en haut
+  document.querySelectorAll<HTMLAnchorElement>('a[href="/"]').forEach((link) => {
+    link.addEventListener('click', (e) => {
+      if (window.location.pathname === '/' || window.location.pathname === '') {
+        e.preventDefault();
+        const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (lenisInstance && !reduce) {
+          lenisInstance.scrollTo(0);
+        } else {
+          window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
+        }
       }
     });
   });
@@ -290,20 +248,27 @@ function initAnimations() {
           const target = el.getAttribute('data-count-to');
           if (target) el.textContent = target;
         });
-        // 5.4 Cases de la liste « Ce que la commission regarde en premier » cochées d'office en mouvement réduit
         document.querySelectorAll<HTMLElement>('[data-checklist-item]').forEach((item) => {
           item.classList.add('is-checked');
           item.setAttribute('aria-checked', 'true');
         });
         gsap.set('[data-check-icon]', { opacity: 1, scale: 1 });
+        // Affichage direct du texte complet des solutions sans délai
+        document.querySelectorAll<HTMLElement>('[data-typewriter-text]').forEach((container) => {
+          const txt = container.getAttribute('data-typewriter-text');
+          const target = container.querySelector<HTMLElement>('.solution-typewriter__text');
+          if (txt && target) target.textContent = txt;
+          container.closest('.solution-card')?.classList.add('is-typing-done');
+        });
         return;
       }
 
-      // Lenis smooth scroll synchronisé avec GSAP ticker & ScrollTrigger
+      // Défilement réactif et fluide : molette native 120 FPS sur GPU, zéro inertie lente
       lenisInstance = new Lenis({
-        duration: 1.15,
+        duration: 0.2,
         easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-        smoothWheel: true,
+        smoothWheel: false,
+        touchMultiplier: 1.0,
       });
 
       lenisInstance.on('scroll', ScrollTrigger.update);
@@ -311,31 +276,38 @@ function initAnimations() {
         lenisInstance?.raf(time * 1000);
       };
       gsap.ticker.add(rafCallback);
-      gsap.ticker.lagSmoothing(0);
 
       // Interactions pointeur avec gsap.quickTo() uniquement (aucun nouveau tween par pointermove)
       if (canHover) {
-        // 1) Reflet verre qui suit le pointeur via gsap.quickTo() (280 px radial sur .glass et boutons)
+        // 1) Reflet verre discret sur les éléments ciblés
         const glowTargets = document.querySelectorAll<HTMLElement>(
-          '.glass, [data-glow], .btn-primary, .btn-secondary, [data-activity-row], [data-activity-pill]'
+          '[data-glow], .btn-primary, .btn-secondary'
         );
         glowTargets.forEach((el) => {
+          let rect = el.getBoundingClientRect();
           const pos = { x: 0, y: 0 };
           const xTo = gsap.quickTo(pos, 'x', {
-            duration: 0.18,
+            duration: 0.15,
             ease: 'power2.out',
             onUpdate: () => el.style.setProperty('--mx', `${pos.x.toFixed(1)}px`),
           });
           const yTo = gsap.quickTo(pos, 'y', {
-            duration: 0.18,
+            duration: 0.15,
             ease: 'power2.out',
             onUpdate: () => el.style.setProperty('--my', `${pos.y.toFixed(1)}px`),
           });
 
           el.addEventListener(
+            'pointerenter',
+            () => {
+              rect = el.getBoundingClientRect();
+            },
+            { passive: true }
+          );
+
+          el.addEventListener(
             'pointermove',
             (e: PointerEvent) => {
-              const rect = el.getBoundingClientRect();
               xTo(e.clientX - rect.left);
               yTo(e.clientY - rect.top);
             },
@@ -581,68 +553,182 @@ function initAnimations() {
         );
       }
 
-      // 7.6 Section 2 — « Notre idée » : panneau qui monte (scale 0.86 -> 1, border-radius 40px -> 24px, scrub: 1)
-      // + séquence HTML/SVG des 3 activités qui s'assemblent en une seule maison puis se séparent
+      // Section 2 — « Notre idée » : Bulles liquides Siri et gravitation magnétique vers SSE Solutions
       const ideaPanel = document.querySelector<HTMLElement>('[data-idea-panel]');
       if (ideaPanel) {
-        gsap.set(ideaPanel, { scale: 0.86, borderRadius: '40px' });
+        gsap.set(ideaPanel, { scale: 0.92, borderRadius: '36px' });
         gsap.to(ideaPanel, {
           scale: 1,
           borderRadius: '24px',
           ease: 'none',
           scrollTrigger: {
             trigger: ideaPanel,
-            start: 'top 90%',
-            end: 'top 25%',
-            scrub: 1,
+            start: 'top 92%',
+            end: 'top 30%',
+            scrub: 0.2,
           },
         });
 
-        const nodeLeft = ideaPanel.querySelector<HTMLElement>('[data-idea-node="left"]');
-        const nodeCenter = ideaPanel.querySelector<HTMLElement>('[data-idea-node="center"]');
-        const nodeRight = ideaPanel.querySelector<HTMLElement>('[data-idea-node="right"]');
-        const houseCore = ideaPanel.querySelector<HTMLElement>('[data-idea-core]');
-        const houseSvgGroup = ideaPanel.querySelector<HTMLElement>('[data-idea-house]');
+        const nodeCare = ideaPanel.querySelector<HTMLElement>('[data-siri-node="care"]');
+        const nodeConsulting = ideaPanel.querySelector<HTMLElement>('[data-siri-node="consulting"]');
+        const nodeEvents = ideaPanel.querySelector<HTMLElement>('[data-siri-node="events"]');
+        const siriCore = ideaPanel.querySelector<HTMLElement>('[data-siri-core]');
 
-        if (isDesktop && nodeLeft && nodeCenter && nodeRight && houseCore) {
-          gsap.set(houseCore, { scale: 0.84, opacity: 0.25 });
-          if (houseSvgGroup) gsap.set(houseSvgGroup, { opacity: 0.35, scale: 0.94, transformOrigin: '50% 50%' });
+        if (isDesktop && nodeCare && nodeConsulting && nodeEvents && siriCore) {
+          gsap.set(siriCore, { scale: 1, opacity: 1 });
+          gsap.set([nodeCare, nodeConsulting, nodeEvents], { zIndex: 2, opacity: 1 });
 
           const ideaTl = gsap.timeline({
             scrollTrigger: {
               trigger: ideaPanel,
-              start: 'top 75%',
-              end: 'bottom 20%',
-              scrub: 1,
+              start: 'top 32%',
+              end: 'bottom 15%',
+              scrub: 0.4,
             },
           });
 
-          // Phase 1 : les 3 activités convergent et s'assemblent en une seule maison
+          // Gravitation orbitale : les 3 bulles satellites tournent, convergent derrière SSE Solutions et disparaissent
           ideaTl
-            .to(nodeLeft, { x: 110, y: 8, scale: 0.92, duration: 1, ease: 'power2.inOut' }, 0)
-            .to(nodeRight, { x: -110, y: 8, scale: 0.92, duration: 1, ease: 'power2.inOut' }, 0)
-            .to(nodeCenter, { y: -26, scale: 0.92, duration: 1, ease: 'power2.inOut' }, 0)
-            .to(houseCore, { scale: 1.06, opacity: 1, duration: 1, ease: 'power2.out' }, 0)
-            // Phase 2 : elles se séparent à nouveau chacune dans son métier tout en gardant la maison commune
-            .to(nodeLeft, { x: 0, y: 0, scale: 1, duration: 1, ease: 'power2.inOut' }, 1.1)
-            .to(nodeRight, { x: 0, y: 0, scale: 1, duration: 1, ease: 'power2.inOut' }, 1.1)
-            .to(nodeCenter, { y: 0, scale: 1, duration: 1, ease: 'power2.inOut' }, 1.1)
-            .to(houseCore, { scale: 1, opacity: 0.95, duration: 1, ease: 'power2.inOut' }, 1.1);
-
-          if (houseSvgGroup) {
-            ideaTl
-              .to(houseSvgGroup, { opacity: 1, scale: 1, duration: 1, ease: 'power2.out' }, 0)
-              .to(houseSvgGroup, { opacity: 0.75, scale: 0.98, duration: 1, ease: 'power2.inOut' }, 1.1);
-          }
+            // Phase 1 : Rotation orbitale fluide et amorce de trajectoire
+            .to(
+              nodeCare,
+              {
+                x: 150,
+                y: -15,
+                rotation: -16,
+                scale: 0.8,
+                duration: 0.45,
+                ease: 'power1.inOut',
+              },
+              0.1
+            )
+            .to(
+              nodeEvents,
+              {
+                x: -150,
+                y: 15,
+                rotation: 16,
+                scale: 0.8,
+                duration: 0.45,
+                ease: 'power1.inOut',
+              },
+              0.1
+            )
+            .to(
+              nodeConsulting,
+              {
+                x: 30,
+                y: 130,
+                rotation: 10,
+                scale: 0.8,
+                duration: 0.45,
+                ease: 'power1.inOut',
+              },
+              0.1
+            )
+            .to(siriCore, { scale: 1.02, opacity: 1, duration: 0.45, ease: 'power1.out' }, 0.1)
+            // Phase 2 : Convergence complète derrière le cœur SSE Solutions et fusion
+            .to(
+              nodeCare,
+              {
+                x: 250,
+                y: 20,
+                rotation: -35,
+                scale: 0.22,
+                autoAlpha: 0,
+                duration: 0.45,
+                ease: 'power2.in',
+              },
+              0.55
+            )
+            .to(
+              nodeEvents,
+              {
+                x: -250,
+                y: 20,
+                rotation: 35,
+                scale: 0.22,
+                autoAlpha: 0,
+                duration: 0.45,
+                ease: 'power2.in',
+              },
+              0.55
+            )
+            .to(
+              nodeConsulting,
+              {
+                x: 0,
+                y: 250,
+                rotation: 22,
+                scale: 0.22,
+                autoAlpha: 0,
+                duration: 0.45,
+                ease: 'power2.in',
+              },
+              0.55
+            )
+            .to(
+              siriCore,
+              {
+                scale: 1.06,
+                opacity: 1,
+                boxShadow:
+                  '0 0 55px -2px rgba(79, 209, 165, 0.45), 0 0 75px -5px rgba(169, 155, 255, 0.4), 0 20px 45px rgba(0,0,0,0.35)',
+                duration: 0.45,
+                ease: 'power2.out',
+              },
+              0.55
+            );
         }
       }
 
-      // 7.6 Section 3 — « Nos solutions » : section épinglée, 4 grandes cartes qui arrivent l'une après l'autre
+      // Section 3 — « Nos solutions » : cartes ultra-fluides avec effet d'écriture rapide en direct
       const solutionsSection = document.querySelector<HTMLElement>('[data-solutions-pin]');
       const solutionsStack = document.querySelector<HTMLElement>('[data-solutions-stack]');
       const solutionCards = gsap.utils.toArray<HTMLElement>('[data-solution-card]');
 
       if (solutionsSection && solutionsStack && solutionCards.length > 1) {
+        // Moteur de dactylographie rapide pour les cartes commerciales
+        interface TypewriterControl {
+          card: HTMLElement;
+          start: () => void;
+          instant: () => void;
+        }
+
+        const typewriterControls: TypewriterControl[] = solutionCards.map((card) => {
+          const textContainer = card.querySelector<HTMLElement>('[data-typewriter-text]');
+          const textTarget = card.querySelector<HTMLElement>('.solution-typewriter__text');
+          const fullText = textContainer?.getAttribute('data-typewriter-text') || '';
+          let timer = 0;
+          let started = false;
+
+          const start = () => {
+            if (started || !textTarget) return;
+            started = true;
+            textTarget.textContent = '';
+            let charIndex = 0;
+            // Écriture éclair à 6 ms/caractère
+            timer = window.setInterval(() => {
+              if (charIndex < fullText.length) {
+                textTarget.textContent = fullText.slice(0, charIndex + 1);
+                charIndex++;
+              } else {
+                window.clearInterval(timer);
+                card.classList.add('is-typing-done');
+              }
+            }, 6);
+          };
+
+          const instant = () => {
+            window.clearInterval(timer);
+            if (textTarget) textTarget.textContent = fullText;
+            started = true;
+            card.classList.add('is-typing-done');
+          };
+
+          return { card, start, instant };
+        });
+
         if (isDesktop) {
           solutionsStack.classList.add('is-pinned-ready');
 
@@ -657,7 +743,7 @@ function initAnimations() {
               });
             } else {
               gsap.set(card, {
-                y: 80,
+                y: 60,
                 scale: 0.98,
                 opacity: 0,
                 zIndex: 10 + idx,
@@ -666,13 +752,21 @@ function initAnimations() {
             }
           });
 
+          // Déclenche l'écriture de la première carte dès l'entrée dans la section
+          ScrollTrigger.create({
+            trigger: solutionsSection,
+            start: 'top 85%',
+            once: true,
+            onEnter: () => typewriterControls[0]?.start(),
+          });
+
           const solTl = gsap.timeline({
             scrollTrigger: {
               trigger: solutionsSection,
               start: 'top top+=72',
-              end: `+=${(solutionCards.length - 1) * 90}%`,
+              end: `+=${(solutionCards.length - 1) * 45}%`,
               pin: true,
-              scrub: 0.75,
+              scrub: 0.1, // Réponse instantanée au défilement
               onUpdate: (self) => {
                 const activeIdx = Math.min(
                   solutionCards.length - 1,
@@ -681,6 +775,7 @@ function initAnimations() {
                 solutionCards.forEach((c, idx) => {
                   c.style.pointerEvents = idx === activeIdx ? 'auto' : 'none';
                 });
+                typewriterControls[activeIdx]?.start();
                 const activeTint = solutionCards[activeIdx]?.getAttribute('data-particle-tint');
                 if (activeTint) {
                   solutionsSection.setAttribute('data-particle-tint', activeTint);
@@ -694,48 +789,47 @@ function initAnimations() {
             const curr = solutionCards[i];
             const stepPos = i - 1;
 
-            // La carte précédente recule légèrement et s'assombrit
             solTl.to(
               prev,
               {
-                scale: 0.93,
-                y: -24,
-                opacity: 0,
-                duration: 0.85,
+                scale: 0.94,
+                y: -15,
+                autoAlpha: 0,
+                duration: 0.45,
                 ease: 'power2.inOut',
               },
               stepPos
             );
 
-            // La nouvelle carte monte de 80 px vers sa place nette
             solTl.fromTo(
               curr,
-              { y: 80, scale: 0.98, opacity: 0 },
+              { y: 50, scale: 0.98, autoAlpha: 0 },
               {
                 y: 0,
                 scale: 1,
-                opacity: 1,
-                duration: 0.85,
+                autoAlpha: 1,
+                duration: 0.45,
                 ease: 'power2.out',
               },
-              stepPos + 0.1
+              stepPos + 0.04
             );
           }
         } else {
           solutionsStack.classList.remove('is-pinned-ready');
-          solutionCards.forEach((card) => {
+          solutionCards.forEach((card, idx) => {
             gsap.fromTo(
               card,
-              { opacity: 0, y: 80 },
+              { opacity: 0, y: 50 },
               {
                 opacity: 1,
                 y: 0,
-                duration: 0.75,
+                duration: 0.65,
                 ease: 'power3.out',
                 scrollTrigger: {
                   trigger: card,
                   start: 'top 88%',
                   once: true,
+                  onEnter: () => typewriterControls[idx]?.start(),
                 },
               }
             );

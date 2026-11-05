@@ -60,6 +60,17 @@ const seanceSteps = [
   <section class="section hero-autonomie" transition:name="solution-card-autonomie">
     <div class="container grid-12 hero-autonomie-grid">
       <div class="hero-autonomie-content">
+        <nav class="activity-breadcrumb" aria-label="Fil d'Ariane" data-hero-fade>
+          <a href="/" class="activity-breadcrumb-link">
+            <span aria-hidden="true">←</span>
+            <span>Retour à l'accueil</span>
+          </a>
+          <span class="activity-breadcrumb-sep" aria-hidden="true">/</span>
+          <a href="/cc-care" class="activity-breadcrumb-link">CC Care</a>
+          <span class="activity-breadcrumb-sep" aria-hidden="true">/</span>
+          <span class="activity-breadcrumb-current">Autonomie &amp; Inclusion</span>
+        </nav>
+
         <div class="hero-activity-brand" data-hero-fade>
           <BrandLogo brand="cc-care" size="lg" loading="eager" alt="Logo CC Care — Autonomie & Inclusion" />
           <div class="hero-activity-brand-meta">
@@ -89,7 +100,7 @@ const seanceSteps = [
         <div class="media-frame hero-autonomie-frame">
           <Picture
             slug="08-autonomie-hero"
-            alt="Personne tenant une tablette numérique chez elle à la lumière du jour, geste calme et assuré"
+            alt="Adultes collaborant et développant leur autonomie pratique sur ordinateur en atelier"
             sizes="(max-width: 960px) 92vw, 520px"
             loading="eager"
             fetchpriority="high"
@@ -396,6 +407,38 @@ const seanceSteps = [
     clip: rect(0, 0, 0, 0);
     white-space: nowrap;
     border: 0;
+  }
+
+  .activity-breadcrumb {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    margin-bottom: var(--space-20);
+  }
+
+  .activity-breadcrumb-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 200ms var(--ease-out);
+  }
+
+  .activity-breadcrumb-link:hover {
+    color: var(--text);
+  }
+
+  .activity-breadcrumb-sep {
+    opacity: 0.5;
+  }
+
+  .activity-breadcrumb-current {
+    color: var(--activity-tint);
+    font-weight: 600;
   }
 
   .hero-autonomie {

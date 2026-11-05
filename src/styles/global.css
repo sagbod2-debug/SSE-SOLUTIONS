@@ -40,70 +40,6 @@ html[data-theme="light"] {
   --image-light-veil: rgba(255, 255, 255, 0.08);
 }
 
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) {
-    color-scheme: dark;
-    --bg: #0A0B0F;
-    --surface: #14161C;
-    --text: #F4F6FA;
-    --text-muted: #A1A8B5;
-    --accent: #F4F6FA;
-    --accent-fill: #FFFFFF;
-    --accent-fill-hover: #F4F6FA;
-    --accent-fill-text: #0B0D12;
-    --line: rgba(255, 255, 255, 0.10);
-
-    --tint-care: #4FD1A5;
-    --tint-autonomie: #4FD6E8;
-    --tint-consulting: #FF6B75;
-    --tint-events: #A99BFF;
-
-    --glass-bg: rgba(255, 255, 255, 0.06);
-    --glass-border: rgba(255, 255, 255, 0.16);
-    --glass-outer-ring: 0 0 0 1px rgba(255, 255, 255, 0.04);
-    --glass-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
-    --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.18);
-    --glass-specular-top: rgba(255, 255, 255, 0.60);
-    --glass-glow-color: rgba(255, 255, 255, 0.12);
-    --hero-scrim-start: rgba(10, 11, 15, 0.45);
-    --hero-scrim-end: rgba(10, 11, 15, 0.92);
-    --image-light-veil: transparent;
-  }
-}
-
-html[data-theme="dark"] {
-  color-scheme: dark;
-
-  /* 7.1 Variables de thème — Sombre (#0A0B0F) */
-  --bg: #0A0B0F;
-  --surface: #14161C;
-  --text: #F4F6FA;
-  --text-muted: #A1A8B5;
-  --accent: #F4F6FA;
-  --accent-fill: #FFFFFF;
-  --accent-fill-hover: #F4F6FA;
-  --accent-fill-text: #0B0D12;
-  --line: rgba(255, 255, 255, 0.10);
-
-  /* 7.1 Teintes par activité — Sombre */
-  --tint-care: #4FD1A5;
-  --tint-autonomie: #4FD6E8;
-  --tint-consulting: #FF6B75;
-  --tint-events: #A99BFF;
-
-  /* 7.3 Liquid Glass — Sombre */
-  --glass-bg: rgba(255, 255, 255, 0.06);
-  --glass-border: rgba(255, 255, 255, 0.16);
-  --glass-outer-ring: 0 0 0 1px rgba(255, 255, 255, 0.04);
-  --glass-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
-  --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.18);
-  --glass-specular-top: rgba(255, 255, 255, 0.60);
-  --glass-glow-color: rgba(255, 255, 255, 0.12);
-  --hero-scrim-start: rgba(10, 11, 15, 0.45);
-  --hero-scrim-end: rgba(10, 11, 15, 0.92);
-  --image-light-veil: transparent;
-}
-
 :root {
   /* Teinte d'activité courante (par défaut : l'or de la maison) */
   --activity-tint: var(--accent);
@@ -201,7 +137,7 @@ html {
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   scroll-padding-top: 5.5rem;
-  transition: background-color 400ms var(--ease-out), color 400ms var(--ease-out);
+  transition: background-color 200ms var(--ease-out), color 200ms var(--ease-out);
 }
 
 html.lenis,
@@ -232,7 +168,7 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  transition: background-color 400ms var(--ease-out), color 400ms var(--ease-out);
+  transition: background-color 200ms var(--ease-out), color 200ms var(--ease-out);
 }
 
 p {
@@ -315,20 +251,30 @@ select {
 
 .glass {
   background: var(--glass-bg);
-  -webkit-backdrop-filter: blur(24px) saturate(180%) brightness(1.04);
-  backdrop-filter: blur(24px) saturate(180%) brightness(1.04);
+  -webkit-backdrop-filter: blur(12px) saturate(150%);
+  backdrop-filter: blur(12px) saturate(150%);
   border: 1px solid var(--glass-border);
   box-shadow: var(--glass-shadow);
   position: relative;
 }
 
-/* Réfraction optique SVG sur Chromium lorsque supportée */
-html.supports-svg-refraction .glass--refract {
-  -webkit-backdrop-filter: url(#liquid-glass) blur(24px) saturate(180%) brightness(1.04);
-  backdrop-filter: url(#liquid-glass) blur(24px) saturate(180%) brightness(1.04);
+/* Optimisation GPU : pas de récursion de flou sur les sous-composants imbriqués */
+.glass .glass:not(.siri-bubble--main):not(.siri-bubble--satellite):not(.solution-card) {
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  background: rgba(255, 255, 255, 0.04);
+}
+html[data-theme="light"] .glass .glass:not(.siri-bubble--main):not(.siri-bubble--satellite):not(.solution-card) {
+  background: rgba(255, 255, 255, 0.65);
 }
 
-/* Reflet spéculaire (::before) : dégradé linéaire blanc 60% -> 0% sur le tiers supérieur + radial 280px suivant --mx, --my */
+/* Réfraction fluide sans SVG lourd sur GPU */
+.glass--refract {
+  -webkit-backdrop-filter: blur(14px) saturate(160%);
+  backdrop-filter: blur(14px) saturate(160%);
+}
+
+/* Reflet spéculaire (::before) */
 .glass::before {
   content: '';
   position: absolute;
@@ -336,60 +282,30 @@ html.supports-svg-refraction .glass--refract {
   border-radius: inherit;
   pointer-events: none;
   z-index: 0;
-  background:
-    radial-gradient(
-      280px circle at var(--mx, 50%) var(--my, -999px),
-      var(--glass-glow-color),
-      transparent 70%
-    ),
-    linear-gradient(
-      180deg,
-      var(--glass-specular-top, rgba(255, 255, 255, 0.60)) 0%,
-      rgba(255, 255, 255, 0) 33.33%
-    );
+  background: linear-gradient(
+    180deg,
+    var(--glass-specular-top, rgba(255, 255, 255, 0.40)) 0%,
+    rgba(255, 255, 255, 0) 30%
+  );
 }
 
 html[data-theme="dark"] .glass::before {
-  background:
-    radial-gradient(
-      280px circle at var(--mx, 50%) var(--my, -999px),
-      var(--glass-glow-color),
-      transparent 70%
-    ),
-    linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.16) 0%,
-      rgba(255, 255, 255, 0) 33.33%
-    );
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.12) 0%,
+    rgba(255, 255, 255, 0) 30%
+  );
 }
 
-/* Arête irisée (::after) : filet de 1 px en conic-gradient doux (vert, bleu-vert, rouge, violet à 25 % d'opacité), masqué au centre */
+/* Arête fine et légère */
 .glass::after {
   content: '';
   position: absolute;
-  inset: -1px;
+  inset: 0;
   border-radius: inherit;
-  padding: 1px;
   pointer-events: none;
   z-index: 0;
-  background: conic-gradient(
-    from var(--iridescent-angle, 0deg),
-    rgba(11, 122, 90, 0.25),
-    rgba(10, 122, 136, 0.25),
-    rgba(212, 42, 58, 0.25),
-    rgba(91, 75, 196, 0.25),
-    rgba(11, 122, 90, 0.25)
-  );
-  -webkit-mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-  mask-composite: exclude;
-  opacity: 0.85;
-  transition: opacity 300ms var(--ease-out);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.15);
 }
 
 @media (hover: hover) and (prefers-reduced-motion: no-preference) {
@@ -743,14 +659,14 @@ h3,
   display: block;
 }
 
-/* Transition de thème et de pages (View Transitions) */
+/* Transition de thème et de pages (View Transitions ultra-rapides < 260 ms) */
 ::view-transition-old(root),
 ::view-transition-new(root) {
-  animation-duration: 400ms;
+  animation-duration: 220ms;
   animation-timing-function: var(--ease-out);
 }
 
-/* 7.6 Morphing 600 ms --ease-out des cartes Nos solutions vers le haut des pages d'activité */
+/* Morphing réactif 260 ms --ease-out des cartes Nos solutions vers le haut des pages d'activité */
 ::view-transition-group(solution-card-care),
 ::view-transition-group(solution-card-autonomie),
 ::view-transition-group(solution-card-consulting),
@@ -758,7 +674,7 @@ h3,
 ::view-transition-group(activity-hero-care),
 ::view-transition-group(activity-hero-consulting),
 ::view-transition-group(activity-hero-events) {
-  animation-duration: 600ms;
+  animation-duration: 260ms;
   animation-timing-function: var(--ease-out);
 }
 

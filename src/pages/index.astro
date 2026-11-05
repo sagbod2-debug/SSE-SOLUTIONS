@@ -1,6 +1,5 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import LivingMesh from '../components/LivingMesh.astro';
 import BrandLogo, { type BrandKey } from '../components/BrandLogo.astro';
 import {
   SHOW_TEAM,
@@ -29,6 +28,8 @@ interface SolutionCard {
   brand: BrandKey;
   name: string;
   href: string;
+  pitch: string;
+  tags: string[];
   problem: string;
   solution: string;
   audience: string;
@@ -43,11 +44,14 @@ const solutions: SolutionCard[] = [
     brand: 'cc-care',
     name: 'CC Care',
     href: '/cc-care',
+    pitch:
+      'Un accompagnement social sur-mesure pour vos bénéficiaires, résidents et équipes : permanence sociale, diagnostic et coordination d’accès aux droits pour éviter les ruptures de parcours.',
+    tags: ['Permanence sociale', 'Accès aux droits', 'Sur site & à distance'],
     problem:
       'Des dossiers sociaux qui s’accumulent, des équipes débordées, des situations individuelles qui demandent du temps et un cadre clair.',
     solution:
       'Un accompagnement social sur site ou à distance, des ateliers collectifs et des écrits clairs pour vos équipes.',
-    audience: 'Établissements de santé, CCAS, structures sociales, entreprises.',
+    audience: 'Structures sociales et entreprises.',
     ctaLabel: 'Découvrir CC Care',
   },
   {
@@ -57,6 +61,9 @@ const solutions: SolutionCard[] = [
     brand: 'cc-care',
     name: 'Autonomie & Inclusion',
     href: '/cc-care/autonomie-inclusion',
+    pitch:
+      'Le programme opérationnel de 35 modules et 244 ateliers pour développer l’autonomie quotidienne, le budget et le logement, en français courant et FALC.',
+    tags: ['35 modules pratiques', '244 ateliers concrets', 'Français & FALC'],
     problem:
       'Des adultes accompagnés qui peinent avec les démarches, le budget, le logement ou le numérique, faute de supports adaptés.',
     solution:
@@ -72,6 +79,9 @@ const solutions: SolutionCard[] = [
     brand: 'cc-consulting',
     name: 'CC Consulting',
     href: '/cc-consulting',
+    pitch:
+      'Audit réglementaire, préparation rigoureuse aux commissions de sécurité, mise à jour des registres et schémas d’évacuation conformes aux exigences préfectorales.',
+    tags: ['Conformité ERP', 'Commissions de sécurité', 'Levée de prescriptions'],
     problem:
       'Une commission de sécurité qui approche, un registre incomplet, des prescriptions difficiles à prioriser.',
     solution:
@@ -87,11 +97,14 @@ const solutions: SolutionCard[] = [
     brand: 'cc-events',
     name: 'CC Events',
     href: '/cc-events',
+    pitch:
+      'Organisation clé en main de vos temps forts institutionnels et associatifs : rétroplanning minutieux, coordination des prestataires et pilotage terrain sans faille.',
+    tags: ['Régie générale', 'Rétroplanning 360°', 'Présence terrain J-J'],
     problem:
       'Un événement à organiser sans équipe dédiée, des prestataires à coordonner, un jour J qui ne laisse pas droit à l’erreur.',
     solution:
       'Conception, rétroplanning, coordination des prestataires et présence sur le terrain du montage au démontage.',
-    audience: 'Collectivités, établissements et entreprises qui organisent un temps fort.',
+    audience: 'Entreprises, institutions et associations qui organisent un événement.',
     ctaLabel: 'Découvrir CC Events',
   },
 ];
@@ -102,9 +115,6 @@ const solutions: SolutionCard[] = [
   description="Accompagnement social, sécurité incendie des ERP, événementiel : nous intervenons en Essonne auprès des établissements de santé et des entreprises."
   jsonLd={organizationJsonLd}
 >
-  <!-- 7.5 Champ de 1 200 particules WebGL natif sur toute la hauteur de l'accueil -->
-  <LivingMesh fixed={true} />
-
   <!-- SECTION 1 — OUVERTURE (PLEIN ÉCRAN) -->
   <section class="opening-section" data-particle-tint="care">
     <div class="container opening-inner">
@@ -115,7 +125,7 @@ const solutions: SolutionCard[] = [
       <p class="opening-brand-name" data-opening-item>SSE Solutions</p>
 
       <h1 class="opening-title" data-opening-item>
-        Un seul partenaire pour les personnes, les lieux et les grands moments.
+        L’allié terrain pour vos équipes, vos établissements et vos événements.
       </h1>
 
       <p class="opening-trilogy" data-opening-item>Social. Sécurité. Événements.</p>
@@ -133,98 +143,67 @@ const solutions: SolutionCard[] = [
     </div>
   </section>
 
-  <!-- SECTION 2 — « NOTRE IDÉE » (PANNEAU QUI MONTE) -->
+  <!-- SECTION 2 — « NOTRE IDÉE » (BULLE LIQUIDE GLACE SIRI & ATTRACTEURS) -->
   <section class="idea-section" id="notre-idee" data-particle-tint="autonomie">
     <div class="container">
-      <div class="idea-panel glass glass--refract" data-idea-panel>
+      <div class="idea-panel glass" data-idea-panel>
         <div class="idea-header">
           <p class="eyebrow">NOTRE IDÉE</p>
         </div>
 
-        <!-- Séquence animée en HTML/SVG pilotée par le défilement : les 3 activités s'assemblent en une seule maison puis se séparent -->
+        <!-- Scène Organique Siri : Bulle liquide centrale SSE Solutions et 3 bulles attirées -->
         <div
-          class="idea-stage"
-          data-idea-stage
+          class="siri-stage"
+          data-siri-stage
           role="img"
-          aria-label="Trois activités — CC Care, CC Consulting et CC Events — réunies au sein d’une seule maison : SSE Solutions"
+          aria-label="Trois expertises — CC Care, CC Consulting et CC Events — attirées en gravitation au sein d'une seule maison : SSE Solutions"
         >
-          <svg
-            class="idea-house-svg"
-            viewBox="0 0 760 260"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            aria-hidden="true"
-          >
-            <!-- Lignes de convergence vers la maison centrale -->
-            <path
-              class="idea-connector idea-connector--left"
-              data-idea-connector
-              d="M150 140 C 245 140, 290 130, 380 130"
-              stroke="var(--tint-care)"
-              stroke-width="1.5"
-              stroke-dasharray="5 5"
-            />
-            <path
-              class="idea-connector idea-connector--center"
-              data-idea-connector
-              d="M380 205 L 380 130"
-              stroke="var(--tint-consulting)"
-              stroke-width="1.5"
-              stroke-dasharray="5 5"
-            />
-            <path
-              class="idea-connector idea-connector--right"
-              data-idea-connector
-              d="M610 140 C 515 140, 470 130, 380 130"
-              stroke="var(--tint-events)"
-              stroke-width="1.5"
-              stroke-dasharray="5 5"
-            />
-
-            <!-- Silhouette de la maison commune SSE Solutions -->
-            <g class="idea-roof-group" data-idea-house>
-              <path
-                d="M270 108 L380 38 L490 108"
-                stroke="var(--text)"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-              <rect
-                x="292"
-                y="108"
-                width="176"
-                height="104"
-                rx="18"
-                stroke="var(--line)"
-                stroke-width="1.5"
-                fill="var(--glass-bg)"
-              />
-            </g>
-          </svg>
-
-          <div class="idea-nodes">
-            <div class="idea-node idea-node--care glass" data-idea-node="left">
-              <span class="idea-node-dot" aria-hidden="true"></span>
-              <strong>CC Care</strong>
-              <span>Social</span>
+          <!-- Orbite d'attraction : les 3 bulles satellites Siri liquides sont attirées derrière SSE Solutions -->
+          <div class="siri-bubble siri-bubble--satellite siri-bubble--care glass" data-siri-node="care">
+            <div class="siri-bubble-sheen" aria-hidden="true"></div>
+            <div class="siri-satellite-inner">
+              <div class="siri-satellite-logo">
+                <BrandLogo brand="cc-care" size="sm" loading="lazy" alt="Logo officiel CC Care" />
+              </div>
+              <strong class="siri-bubble-name">CC Care</strong>
+              <span class="siri-bubble-role">Social</span>
             </div>
+          </div>
 
-            <div class="idea-node idea-node--consulting glass" data-idea-node="center">
-              <span class="idea-node-dot" aria-hidden="true"></span>
-              <strong>CC Consulting</strong>
-              <span>Sécurité</span>
+          <div class="siri-bubble siri-bubble--satellite siri-bubble--consulting glass" data-siri-node="consulting">
+            <div class="siri-bubble-sheen" aria-hidden="true"></div>
+            <div class="siri-satellite-inner">
+              <div class="siri-satellite-logo">
+                <BrandLogo brand="cc-consulting" size="sm" loading="lazy" alt="Logo officiel CC Consulting" />
+              </div>
+              <strong class="siri-bubble-name">CC Consulting</strong>
+              <span class="siri-bubble-role">Sécurité Incendie</span>
             </div>
+          </div>
 
-            <div class="idea-node idea-node--events glass" data-idea-node="right">
-              <span class="idea-node-dot" aria-hidden="true"></span>
-              <strong>CC Events</strong>
-              <span>Événementiel</span>
+          <div class="siri-bubble siri-bubble--satellite siri-bubble--events glass" data-siri-node="events">
+            <div class="siri-bubble-sheen" aria-hidden="true"></div>
+            <div class="siri-satellite-inner">
+              <div class="siri-satellite-logo">
+                <BrandLogo brand="cc-events" size="sm" loading="lazy" alt="Logo officiel CC Events" />
+              </div>
+              <strong class="siri-bubble-name">CC Events</strong>
+              <span class="siri-bubble-role">Événementiel</span>
             </div>
+          </div>
 
-            <div class="idea-house-badge glass" data-idea-core>
-              <span class="idea-house-title">SSE Solutions</span>
-              <span class="idea-house-sub">Une seule maison</span>
+          <!-- Bulle Centrale Principale : SSE Solutions (effet Siri liquide et verre spéculaire) -->
+          <div class="siri-bubble siri-bubble--main glass" data-siri-core>
+            <div class="siri-bubble-sheen" aria-hidden="true"></div>
+            <div class="siri-bubble-content">
+              <div class="siri-bubble-logo">
+                <BrandLogo brand="sse-solutions" size="lg" loading="lazy" alt="Logo SSE Solutions" />
+              </div>
+              <h3 class="siri-bubble-title">SSE Solutions</h3>
+              <span class="siri-bubble-badge">Une seule maison</span>
+              <p class="siri-bubble-desc">
+                Un interlocuteur unique pour coordonner le social, la sécurité et l'événementiel.
+              </p>
             </div>
           </div>
         </div>
@@ -244,7 +223,7 @@ const solutions: SolutionCard[] = [
         }
 
         <p class="idea-text">
-          SSE Solutions réunit trois activités qui partagent une même méthode : comprendre avant d’agir, écrire clairement, suivre jusqu’au bout.
+          SSE Solutions réunit trois activités qui partagent une même méthode : écouter, comprendre, agir et accompagner.
         </p>
       </div>
     </div>
@@ -262,7 +241,7 @@ const solutions: SolutionCard[] = [
         {
           solutions.map((item, index) => (
             <article
-              class:list={['solution-card', `solution-card--${item.tintKey}`, 'glass', 'glass--refract']}
+              class:list={['solution-card', `solution-card--${item.tintKey}`, 'glass']}
               data-solution-card
               data-solution-index={index}
               data-particle-tint={item.tintKey}
@@ -282,10 +261,24 @@ const solutions: SolutionCard[] = [
                     </div>
                   </div>
 
-                  <span class="btn-glass solution-card__cta glass">
+                  <span class="btn-glass solution-card__cta glass" data-magnetic>
                     <span>{item.ctaLabel}</span>
                     <span class="btn-arrow" aria-hidden="true">→</span>
                   </span>
+                </div>
+
+                <!-- Pitch Commercial avec Effet d'écriture rapide -->
+                <div class="solution-card__commercial">
+                  <div class="solution-typewriter" data-typewriter-text={item.pitch}>
+                    <p class="solution-typewriter__text">{item.pitch}</p>
+                    <span class="solution-typewriter__cursor" aria-hidden="true">|</span>
+                  </div>
+
+                  <div class="solution-tags">
+                    {item.tags.map((tag) => (
+                      <span class="solution-tag glass">{tag}</span>
+                    ))}
+                  </div>
                 </div>
 
                 <dl class="solution-card__grid">
@@ -319,7 +312,7 @@ const solutions: SolutionCard[] = [
         <p class="eyebrow" data-reveal>NOTRE MÉTHODE</p>
         <h2 class="section-title" data-reveal-title>
           <span class="reveal-mask">
-            <span class="reveal-line">Comprendre avant d’agir.</span>
+            <span class="reveal-line">Écouter, comprendre, agir et accompagner.</span>
           </span>
         </h2>
       </div>
@@ -344,7 +337,7 @@ const solutions: SolutionCard[] = [
             <div class="method-step-body">
               <h3 class="card-title">Diagnostiquer.</h3>
               <p class="prose-measure">
-                Nous faisons un état des lieux précis et écrit, sans jargon.
+                Nous faisons un état des lieux précis et écrit.
               </p>
             </div>
           </li>
@@ -360,9 +353,9 @@ const solutions: SolutionCard[] = [
           <li class="method-step glass">
             <span class="num-index">04</span>
             <div class="method-step-body">
-              <h3 class="card-title">Suivre.</h3>
+              <h3 class="card-title">Accompagner.</h3>
               <p class="prose-measure">
-                Nous restons présents jusqu’au résultat, et au-delà si besoin.
+                Nous restons présents à vos côtés jusqu’au résultat, et dans la durée.
               </p>
             </div>
           </li>
@@ -602,134 +595,270 @@ const solutions: SolutionCard[] = [
   .idea-stage {
     position: relative;
     width: 100%;
-    max-width: 48rem;
-    min-height: 17rem;
+    max-width: 52rem;
+    min-height: 25rem;
     display: flex;
     align-items: center;
     justify-content: center;
   }
 
-  .idea-house-svg {
+  .siri-stage {
+    position: relative;
     width: 100%;
-    height: auto;
-    max-height: 16rem;
-    overflow: visible;
-  }
-
-  .idea-nodes {
-    position: absolute;
-    inset: 0;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    max-width: 62rem;
+    min-height: clamp(42rem, 64vh, 48rem);
+    display: flex;
     align-items: center;
-    justify-items: center;
-    gap: var(--space-16);
-    pointer-events: none;
+    justify-content: center;
+    margin-inline: auto;
   }
 
-  .idea-node {
-    padding: 0.9rem 1.25rem;
-    border-radius: 18px;
+  /* Bulle Centrale Siri : forme sphérique liquide fluide à 120 FPS sur GPU */
+  @keyframes siriLiquidBlob {
+    0%, 100% {
+      transform: translate(-50%, -50%) scale(1) rotate(0deg);
+    }
+    33% {
+      transform: translate(-50%, -50%) scale(1.02) rotate(1.5deg);
+    }
+    66% {
+      transform: translate(-50%, -50%) scale(0.985) rotate(-1.5deg);
+    }
+  }
+
+  .siri-bubble--main {
+    position: absolute;
+    left: 50%;
+    top: 62%;
+    transform: translate(-50%, -50%);
+    width: clamp(16.5rem, 28vw, 20.5rem);
+    height: clamp(16.5rem, 28vw, 20.5rem);
+    border-radius: 50%;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: clamp(1.25rem, 2.5vw, 2rem);
+    animation: siriLiquidBlob 8.5s ease-in-out infinite;
+    background: var(--glass-bg);
+    -webkit-backdrop-filter: blur(14px) saturate(160%);
+    backdrop-filter: blur(14px) saturate(160%);
+    border: 1.5px solid rgba(255, 255, 255, 0.55);
+    box-shadow:
+      0 0 35px -5px rgba(79, 209, 165, 0.35),
+      0 0 55px -10px rgba(169, 155, 255, 0.3),
+      0 18px 40px rgba(0, 0, 0, 0.3),
+      inset 0 0 25px rgba(255, 255, 255, 0.2),
+      inset 0 2px 4px rgba(255, 255, 255, 0.5);
+    will-change: transform;
+  }
+
+  html[data-theme="light"] .siri-bubble--main {
+    border-color: rgba(255, 255, 255, 0.9);
+    box-shadow:
+      0 0 30px -5px rgba(11, 122, 90, 0.2),
+      0 0 50px -10px rgba(91, 75, 196, 0.16),
+      0 12px 30px rgba(11, 13, 18, 0.06),
+      inset 0 0 25px rgba(255, 255, 255, 0.7),
+      inset 0 2px 4px rgba(255, 255, 255, 0.9);
+  }
+
+  .siri-bubble-content {
+    position: relative;
+    z-index: 2;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.25rem;
-    min-width: 9.5rem;
+    gap: 0.35rem;
   }
 
-  .idea-node > * {
-    position: relative;
-    z-index: 1;
+  .siri-bubble-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.25rem;
   }
 
-  .idea-node strong {
+  .siri-bubble-title {
     font-family: var(--font-display);
-    font-weight: 500;
-    font-size: 1rem;
+    font-weight: 600;
+    font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
+    letter-spacing: -0.02em;
     color: var(--text);
   }
 
-  .idea-node span {
+  .siri-bubble-badge {
+    display: inline-block;
     font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-muted);
+    padding: 0.2rem 0.75rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--line);
+    margin-bottom: 0.25rem;
+  }
+
+  .siri-bubble-desc {
+    font-size: 0.85rem;
+    line-height: 1.45;
+    color: var(--text-muted);
+    max-width: 28ch;
+    margin-inline: auto;
+  }
+
+  /* Bulles satellites : sphères liquides Siri circulaires sur GPU */
+  @keyframes siriSatelliteFloat1 {
+    0%, 100% { transform: translateY(-50%) scale(1); }
+    50% { transform: translateY(-54%) scale(1.02); }
+  }
+  @keyframes siriSatelliteFloat2 {
+    0%, 100% { transform: translateX(-50%) scale(1); }
+    50% { transform: translateX(-50%) translateY(-6px) scale(1.02); }
+  }
+  @keyframes siriSatelliteFloat3 {
+    0%, 100% { transform: translateY(-50%) scale(1); }
+    50% { transform: translateY(-46%) scale(1.02); }
+  }
+
+  .siri-bubble--satellite {
+    position: absolute;
+    width: clamp(9.25rem, 14vw, 11rem);
+    height: clamp(9.25rem, 14vw, 11rem);
+    border-radius: 50%;
+    aspect-ratio: 1;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    z-index: 2;
+    -webkit-backdrop-filter: blur(14px) saturate(160%);
+    backdrop-filter: blur(14px) saturate(160%);
+    background: var(--glass-bg);
+    border: 1.5px solid rgba(255, 255, 255, 0.5);
+    box-shadow: var(--glass-shadow);
+    transition: transform 300ms var(--ease-out), box-shadow 300ms var(--ease-out);
+    will-change: transform;
+    overflow: hidden;
+  }
+
+  .siri-satellite-inner {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+  }
+
+  .siri-satellite-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.2rem;
+  }
+
+  .siri-bubble--care {
+    left: clamp(1rem, 3.5vw, 2.5rem);
+    top: 58%;
+    transform: translateY(-50%);
+    animation: siriSatelliteFloat1 7.2s ease-in-out infinite;
+    --sat-tint: var(--tint-care);
+  }
+
+  .siri-bubble--consulting {
+    left: 50%;
+    top: 1.5rem;
+    transform: translateX(-50%);
+    animation: siriSatelliteFloat2 8.4s ease-in-out infinite;
+    --sat-tint: var(--tint-consulting);
+  }
+
+  .siri-bubble--events {
+    right: clamp(1rem, 3.5vw, 2.5rem);
+    top: 58%;
+    transform: translateY(-50%);
+    animation: siriSatelliteFloat3 7.8s ease-in-out infinite;
+    --sat-tint: var(--tint-events);
+  }
+
+  .siri-bubble--satellite {
+    border-color: color-mix(in srgb, var(--sat-tint) 55%, var(--glass-border));
+    box-shadow:
+      var(--glass-shadow),
+      0 0 35px -6px color-mix(in srgb, var(--sat-tint) 45%, transparent),
+      inset 0 0 20px color-mix(in srgb, var(--sat-tint) 25%, transparent),
+      inset 0 2px 4px rgba(255, 255, 255, 0.4);
+  }
+
+  html[data-theme="light"] .siri-bubble--satellite {
+    border-color: color-mix(in srgb, var(--sat-tint) 45%, rgba(0, 0, 0, 0.12));
+    box-shadow:
+      var(--glass-shadow),
+      0 0 28px -6px color-mix(in srgb, var(--sat-tint) 35%, transparent),
+      inset 0 0 16px rgba(255, 255, 255, 0.8),
+      inset 0 2px 4px rgba(255, 255, 255, 0.9);
+  }
+
+  .siri-bubble-dot {
+    width: 0.55rem;
+    height: 0.55rem;
+    border-radius: 50%;
+    background-color: var(--sat-tint);
+    box-shadow: 0 0 12px var(--sat-tint);
+    margin-bottom: 0.15rem;
+  }
+
+  .siri-bubble-name {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.05rem;
+    letter-spacing: -0.01em;
+    color: var(--text);
+  }
+
+  .siri-bubble-role {
+    font-size: 0.75rem;
+    font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 0.12em;
     color: var(--text-muted);
   }
 
-  .idea-node-dot {
-    width: 0.55rem;
-    height: 0.55rem;
-    border-radius: 50%;
-    margin-bottom: 0.15rem;
-  }
-
-  .idea-node--care .idea-node-dot {
-    background-color: var(--tint-care);
-    box-shadow: 0 0 12px var(--tint-care);
-  }
-
-  .idea-node--consulting .idea-node-dot {
-    background-color: var(--tint-consulting);
-    box-shadow: 0 0 12px var(--tint-consulting);
-  }
-
-  .idea-node--events .idea-node-dot {
-    background-color: var(--tint-events);
-    box-shadow: 0 0 12px var(--tint-events);
-  }
-
-  .idea-house-badge {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    padding: 1rem 1.6rem;
-    border-radius: 999px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.15rem;
-    box-shadow: var(--glass-shadow);
-  }
-
-  .idea-house-badge > * {
-    position: relative;
-    z-index: 1;
-  }
-
-  .idea-house-title {
-    font-family: var(--font-display);
-    font-weight: 500;
-    font-size: 1.125rem;
-    letter-spacing: -0.02em;
-    color: var(--text);
-  }
-
-  .idea-house-sub {
-    font-size: 0.75rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-  }
-
   @media (max-width: 767px) {
-    .idea-stage {
+    .siri-stage {
       min-height: auto;
       flex-direction: column;
-      gap: var(--space-16);
+      gap: var(--space-20);
+      padding-block: var(--space-16);
     }
-    .idea-house-svg {
-      display: none;
-    }
-    .idea-nodes {
-      position: static;
-      grid-template-columns: 1fr;
-      width: 100%;
-    }
-    .idea-house-badge {
+    .siri-bubble--main {
       position: static;
       transform: none;
-      margin-top: var(--space-8);
+      width: 100%;
+      max-width: 20rem;
+      height: auto;
+      min-height: 18rem;
+      border-radius: 28px;
+      animation: none;
+      order: 1;
+    }
+    .siri-bubble--satellite {
+      position: static;
+      transform: none !important;
+      width: 100%;
+      max-width: 18rem;
+      height: auto;
+      min-height: 8rem;
+      border-radius: 24px;
+      animation: none;
+      order: 2;
     }
   }
 
@@ -790,7 +919,7 @@ const solutions: SolutionCard[] = [
 
   @media (min-width: 1024px) {
     .solutions-stack.is-pinned-ready {
-      min-height: 29rem;
+      min-height: clamp(30rem, 58vh, 35.5rem);
     }
     .solutions-stack.is-pinned-ready .solution-card {
       position: absolute;
@@ -801,9 +930,11 @@ const solutions: SolutionCard[] = [
 
   .solution-card {
     --card-tint: var(--tint-care);
-    border-radius: 28px;
-    padding: clamp(1.75rem, 3.5vw, 3rem);
-    transition: border-color 300ms var(--ease-out), box-shadow 300ms var(--ease-out);
+    border-radius: 24px;
+    padding: clamp(1.25rem, 2.4vw, 2rem);
+    background: rgba(255, 255, 255, 0.96);
+    border-color: rgba(11, 13, 18, 0.08);
+    transition: border-color 250ms var(--ease-out), box-shadow 250ms var(--ease-out);
     box-shadow:
       var(--glass-shadow),
       0 20px 60px -15px color-mix(in srgb, var(--card-tint) 22%, transparent);
@@ -839,7 +970,7 @@ const solutions: SolutionCard[] = [
     flex-direction: column;
     justify-content: space-between;
     height: 100%;
-    gap: var(--space-40);
+    gap: clamp(1rem, 1.8vw, 1.5rem);
     color: inherit;
     text-decoration: none;
   }
@@ -849,29 +980,30 @@ const solutions: SolutionCard[] = [
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
-    gap: var(--space-24);
-    padding-bottom: var(--space-24);
+    gap: var(--space-16);
+    padding-bottom: clamp(0.75rem, 1.5vw, 1.25rem);
     border-bottom: 1px solid var(--line);
   }
 
   .solution-card__brand {
     display: flex;
     align-items: center;
-    gap: var(--space-24);
+    gap: clamp(1rem, 1.8vw, 1.5rem);
   }
 
   .solution-card__titles {
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
+    gap: 0.15rem;
   }
 
   .solution-card__titles .num-index {
     color: var(--card-tint);
+    font-size: 0.8125rem;
   }
 
   .solution-card__name {
-    font-size: clamp(1.75rem, 1.3rem + 1.8vw, 2.5rem);
+    font-size: clamp(1.5rem, 1.2rem + 1.2vw, 2.1rem);
     font-weight: 500;
     line-height: 1.05;
     letter-spacing: -0.02em;
@@ -882,27 +1014,104 @@ const solutions: SolutionCard[] = [
     border-color: color-mix(in srgb, var(--card-tint) 38%, var(--glass-border));
   }
 
+  .solution-card__commercial {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: clamp(0.75rem, 1.4vw, 1.15rem) clamp(1rem, 1.8vw, 1.35rem);
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    position: relative;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    overflow: visible;
+  }
+
+  html[data-theme="light"] .solution-card__commercial {
+    background: rgba(11, 13, 18, 0.03);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  }
+
+  .solution-typewriter {
+    font-size: clamp(0.95rem, 0.88rem + 0.3vw, 1.125rem);
+    font-weight: 500;
+    line-height: 1.45;
+    color: var(--text);
+    min-height: 2.4rem;
+    display: block;
+  }
+
+  .solution-typewriter__text {
+    display: inline;
+  }
+
+  .solution-typewriter__cursor {
+    display: inline-block;
+    color: var(--card-tint);
+    font-weight: 300;
+    margin-left: 2px;
+    animation: siriCursorBlink 0.75s infinite ease-in-out;
+  }
+
+  @keyframes siriCursorBlink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+
+  .solution-card.is-typing-done .solution-typewriter__cursor {
+    display: none;
+  }
+
+  .solution-tags {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    padding-top: 0.2rem;
+  }
+
+  .solution-tag {
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.78125rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    padding: 0.35rem 0.85rem;
+    border-radius: 999px;
+    color: var(--text);
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid color-mix(in srgb, var(--card-tint) 42%, var(--glass-border));
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+
+  html[data-theme="light"] .solution-tag {
+    background: rgba(11, 13, 18, 0.05);
+    border-color: color-mix(in srgb, var(--card-tint) 35%, rgba(0, 0, 0, 0.12));
+  }
+
   .solution-card__grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: var(--space-24);
+    gap: var(--space-16);
   }
 
   @media (min-width: 768px) {
     .solution-card__grid {
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: var(--space-40);
+      gap: clamp(1rem, 2vw, 2.5rem);
     }
   }
 
   .solution-block {
     display: flex;
     flex-direction: column;
-    gap: var(--space-8);
+    gap: 0.35rem;
   }
 
   .solution-block__label {
-    font-size: 0.75rem;
+    font-size: 0.6875rem;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.14em;
@@ -910,8 +1119,8 @@ const solutions: SolutionCard[] = [
   }
 
   .solution-block__text {
-    font-size: var(--fs-body);
-    line-height: 1.6;
+    font-size: clamp(0.8125rem, 0.78rem + 0.2vw, 0.9375rem);
+    line-height: 1.5;
     color: var(--text);
   }
 

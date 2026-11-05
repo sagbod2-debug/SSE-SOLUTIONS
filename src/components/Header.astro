@@ -20,6 +20,15 @@ const isActivityActive =
 
     <nav class="desktop-nav" aria-label="Navigation principale">
       <ul class="nav-list">
+        <li class="nav-item">
+          <a
+            href="/"
+            class:list={['nav-link', { 'is-active': currentPath === '/' }]}
+            aria-current={currentPath === '/' ? 'page' : undefined}
+          >
+            Accueil
+          </a>
+        </li>
         <li class="nav-item nav-dropdown" data-dropdown>
           <button
             type="button"
@@ -114,41 +123,6 @@ const isActivityActive =
     </nav>
 
     <div class="header-actions">
-      <!-- 1.3 Sélecteur de thème à 3 choix : Système / Clair / Sombre -->
-      <div
-        class="theme-switcher glass"
-        role="group"
-        aria-label="Choix du thème d'affichage"
-      >
-        <button
-          type="button"
-          class="theme-btn"
-          data-theme-choice="system"
-          aria-label="Thème Système"
-          aria-pressed="true"
-        >
-          Système
-        </button>
-        <button
-          type="button"
-          class="theme-btn"
-          data-theme-choice="light"
-          aria-label="Thème Clair"
-          aria-pressed="false"
-        >
-          Clair
-        </button>
-        <button
-          type="button"
-          class="theme-btn"
-          data-theme-choice="dark"
-          aria-label="Thème Sombre"
-          aria-pressed="false"
-        >
-          Sombre
-        </button>
-      </div>
-
       <a href="/contact" class="btn-primary header-cta" data-magnetic>
         <span>Nous écrire</span>
         <span class="btn-arrow" aria-hidden="true">→</span>
@@ -246,11 +220,10 @@ const isActivityActive =
     transition: background-color 300ms var(--ease-out), border-color 300ms var(--ease-out), box-shadow 300ms var(--ease-out);
   }
 
-  /* 7.8 Léger halo de la couleur de l'activité derrière l'en-tête en verre */
+  /* Halo propre derrière l'en-tête en verre */
   :global(html[data-activity]) .site-header {
-    box-shadow:
-      var(--glass-shadow),
-      0 6px 32px color-mix(in srgb, var(--activity-tint) 18%, transparent);
+    background: rgba(255, 255, 255, 0.94);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   }
 
   .site-header.is-scrolled,
@@ -444,44 +417,6 @@ const isActivityActive =
     align-items: center;
     gap: 0.75rem;
     z-index: 102;
-  }
-
-  /* Sélecteur de thème à 3 choix */
-  .theme-switcher {
-    display: inline-flex;
-    align-items: center;
-    padding: 2px;
-    border-radius: 999px;
-    gap: 2px;
-  }
-
-  .theme-btn {
-    background: transparent;
-    border: none;
-    color: var(--text-muted);
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    padding: 0.35rem 0.6rem;
-    border-radius: 999px;
-    cursor: pointer;
-    transition: background-color 250ms var(--ease-out), color 250ms var(--ease-out);
-  }
-
-  @media (max-width: 480px) {
-    .theme-btn {
-      padding: 0.3rem 0.45rem;
-      font-size: 0.6875rem;
-    }
-  }
-
-  .theme-btn:hover {
-    color: var(--text);
-  }
-
-  .theme-btn[aria-pressed="true"] {
-    background-color: var(--accent-fill);
-    color: var(--accent-fill-text);
   }
 
   .header-cta {

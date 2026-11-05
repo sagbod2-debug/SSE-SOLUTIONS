@@ -2,6 +2,7 @@
 import { ClientRouter } from 'astro:transitions';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import LivingMesh from '../components/LivingMesh.astro';
 import '../styles/global.css';
 
 interface Props {
@@ -94,49 +95,20 @@ const ogImageUrl = ogImage || `${siteOrigin}/og/${slugForOg}.png`;
 
     <meta name="theme-color" id="meta-theme-color" content="#FFFFFF" />
 
-    <!-- 1.3 Script en ligne anti-flash de thème + persistance View Transitions -->
+    <!-- Verrouillage strict du thème clair -->
     <script is:inline>
       (function () {
-        var STORAGE_KEY = 'sse-theme';
-        function getPref() {
-          try {
-            var v = localStorage.getItem(STORAGE_KEY);
-            if (v === 'light' || v === 'dark' || v === 'system') return v;
-          } catch (e) {}
-          return 'system';
-        }
-        function resolveTheme(pref) {
-          if (pref === 'light' || pref === 'dark') return pref;
-          return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
-            ? 'dark'
-            : 'light';
-        }
-        function applyTheme(doc, pref) {
-          var resolved = resolveTheme(pref);
-          var root = doc.documentElement;
-          root.setAttribute('data-theme', resolved);
-          root.setAttribute('data-theme-pref', pref);
-          var meta = doc.getElementById('meta-theme-color');
-          if (meta) {
-            meta.setAttribute('content', resolved === 'light' ? '#FFFFFF' : '#0A0B0F');
-          }
-        }
-        applyTheme(document, getPref());
+        try {
+          localStorage.removeItem('sse-theme');
+        } catch (e) {}
+        document.documentElement.setAttribute('data-theme', 'light');
+        document.documentElement.removeAttribute('data-theme-pref');
         document.addEventListener('astro:before-swap', function (ev) {
           if (ev && ev.newDocument) {
-            applyTheme(ev.newDocument, getPref());
+            ev.newDocument.documentElement.setAttribute('data-theme', 'light');
+            ev.newDocument.documentElement.removeAttribute('data-theme-pref');
           }
         });
-        document.addEventListener('astro:after-swap', function () {
-          applyTheme(document, getPref());
-        });
-        if (window.matchMedia) {
-          window
-            .matchMedia('(prefers-color-scheme: dark)')
-            .addEventListener('change', function () {
-              if (getPref() === 'system') applyTheme(document, 'system');
-            });
-        }
       })();
     </script>
 
@@ -162,6 +134,9 @@ const ogImageUrl = ogImage || `${siteOrigin}/og/${slugForOg}.png`;
     </svg>
 
     <a href="#main-content" class="skip-link">Aller au contenu</a>
+
+    <!-- Arrière-plan vivant de particules WebGL sur l'ensemble du site -->
+    <LivingMesh fixed={true} />
 
     <Header />
 

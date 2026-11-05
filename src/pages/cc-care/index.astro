@@ -23,14 +23,23 @@ const faqJsonLd =
 ---
 
 <BaseLayout
-  title="Assistante sociale pour établissements de santé et entreprises en Essonne · CC Care"
-  description="CC Care mène des missions d'accompagnement social, conduites par une assistante sociale, dans les établissements de santé, les structures sociales et les entreprises."
+  title="Accompagnement social pour structures sociales et entreprises en Essonne · CC Care"
+  description="CC Care mène des missions d'accompagnement social, conduites par des travailleurs sociaux et intervenants sociaux, au sein des structures sociales et des entreprises."
   theme="cc-care"
   jsonLd={faqJsonLd}
 >
   <section class="section hero-activity" transition:name="solution-card-care">
     <div class="container grid-12 hero-activity-grid">
       <div class="hero-activity-content">
+        <nav class="activity-breadcrumb" aria-label="Fil d'Ariane" data-hero-fade>
+          <a href="/" class="activity-breadcrumb-link">
+            <span aria-hidden="true">←</span>
+            <span>Retour à l'accueil</span>
+          </a>
+          <span class="activity-breadcrumb-sep" aria-hidden="true">/</span>
+          <span class="activity-breadcrumb-current">CC Care</span>
+        </nav>
+
         <div class="hero-activity-brand" data-hero-fade>
           <BrandLogo brand="cc-care" size="lg" loading="eager" alt="Logo officiel CC Care" />
           <div class="hero-activity-brand-meta">
@@ -39,7 +48,7 @@ const faqJsonLd =
           </div>
         </div>
         <h1 class="hero-title" data-hero-fade>
-          Une assistante sociale pour vos patients, vos usagers et vos salariés.
+          Une équipe d’intervenants sociaux pour vos résidents, vos usagers et vos salariés.
         </h1>
         <p class="hero-verbs" aria-label="Accompagner. Simplifier. Rendre autonome.">
           <span class="reveal-mask">
@@ -53,7 +62,7 @@ const faqJsonLd =
           </span>
         </p>
         <p class="prose-measure hero-activity-lead" data-hero-fade>
-          CC Care mène des missions d'accompagnement social, conduites par une assistante sociale, dans les établissements de santé, les structures sociales et les entreprises.
+          CC Care mène des missions d'accompagnement social, conduites par des travailleurs sociaux et intervenants sociaux, au sein des structures sociales et des entreprises.
         </p>
 
         <div class="btn-group hero-activity-actions" data-hero-fade>
@@ -72,7 +81,7 @@ const faqJsonLd =
         <div class="media-frame hero-activity-photo">
           <Picture
             slug="06-cc-care-hero"
-            alt="Entretien d’accompagnement en face à face autour d’une table claire, mains et dossiers posés avec sobriété"
+            alt="Séance d'accompagnement et d'animation collective avec intervenante au sein d'une structure sociale"
             sizes="(max-width: 960px) 92vw, 520px"
             loading="eager"
             fetchpriority="high"
@@ -96,7 +105,7 @@ const faqJsonLd =
         <li class="situation-card glass" data-glow data-reveal>
           <span class="num-index">01</span>
           <p class="situation-text">
-            Une sortie d'hospitalisation bloquée faute de relais à domicile.
+            Une rupture de logement ou de parcours qui fragilise l'insertion d'un usager.
           </p>
         </li>
         <li class="situation-card glass" data-glow data-reveal>
@@ -126,14 +135,14 @@ const faqJsonLd =
             </span>
           </h2>
           <p class="prose-measure missions-lead" data-reveal>
-            Nous intervenons là où une situation sociale freine un parcours de soin, un retour à domicile ou une vie professionnelle.
+            Nous intervenons là où une situation sociale freine l'autonomie, l'accès aux droits ou la stabilité professionnelle.
           </p>
         </div>
         <div class="missions-intro-right" data-reveal>
           <div class="media-frame missions-photo">
             <Picture
               slug="07-cc-care-missions"
-              alt="Main prenant des notes au stylo sur un carnet à côté d’un dossier administratif ouvert"
+              alt="Accompagnement social personnalisé pour l'autonomie, l'accès aux droits et la solidarité"
               sizes="(max-width: 960px) 92vw, 520px"
             />
           </div>
@@ -150,9 +159,9 @@ const faqJsonLd =
         </li>
         <li class="mission-card glass" data-glow data-reveal>
           <span class="num-index">02</span>
-          <h3 class="card-title">Parcours de soin.</h3>
+          <h3 class="card-title">Autonomie et maintien du lien.</h3>
           <p>
-            Préparer avec les équipes soignantes les sorties d'hospitalisation et les relais à domicile.
+            Coordonner les relais du quotidien et faciliter l'autonomie des personnes accompagnées.
           </p>
         </li>
         <li class="mission-card glass" data-glow data-reveal>
@@ -183,21 +192,15 @@ const faqJsonLd =
       </h2>
 
       <ul class="audiences-grid grid-12" data-reveal>
-        <li class="audience-item glass" data-glow>
+        <li class="audience-item audience-item--half glass" data-glow>
           <span class="num-index">01</span>
-          <span class="audience-label">Hôpitaux et cliniques</span>
-        </li>
-        <li class="audience-item glass" data-glow>
-          <span class="num-index">02</span>
-          <span class="audience-label">Établissements médico-sociaux</span>
-        </li>
-        <li class="audience-item glass" data-glow>
-          <span class="num-index">03</span>
           <span class="audience-label">Structures sociales</span>
+          <p class="audience-sub">Foyers, résidences sociales, centres d'hébergement et structures d'accueil ou d'insertion.</p>
         </li>
-        <li class="audience-item glass" data-glow>
-          <span class="num-index">04</span>
+        <li class="audience-item audience-item--half glass" data-glow>
+          <span class="num-index">02</span>
           <span class="audience-label">Entreprises</span>
+          <p class="audience-sub">Permanence sociale du travail, prévention de la précarité et appui direct à vos salariés.</p>
         </li>
       </ul>
     </div>
@@ -264,8 +267,12 @@ const faqJsonLd =
           </span>
         </h2>
         <div class="activity-contact-actions" data-reveal>
-          <a href="mailto:cccare@ssesolutions.fr" class="contact-email-link">
-            cccare@<wbr />ssesolutions.fr
+          <a href="mailto:cccare@ssesolutions.fr" class="contact-email-pill glass" data-glow>
+            <svg class="email-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+              <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+            </svg>
+            <span>cccare@ssesolutions.fr</span>
           </a>
           <a href="/contact?sujet=cc-care" class="btn-primary" data-magnetic data-glow>
             <span>Exposer une situation</span>
@@ -278,6 +285,38 @@ const faqJsonLd =
 </BaseLayout>
 
 <style>
+  .activity-breadcrumb {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    margin-bottom: var(--space-20);
+  }
+
+  .activity-breadcrumb-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 200ms var(--ease-out);
+  }
+
+  .activity-breadcrumb-link:hover {
+    color: var(--text);
+  }
+
+  .activity-breadcrumb-sep {
+    opacity: 0.5;
+  }
+
+  .activity-breadcrumb-current {
+    color: var(--activity-tint);
+    font-weight: 600;
+  }
+
   .hero-activity {
     padding-top: 8.5rem;
     padding-bottom: var(--space-64);
@@ -507,6 +546,16 @@ const faqJsonLd =
     .audience-item {
       grid-column: span 3;
     }
+    .audience-item--half {
+      grid-column: span 6;
+    }
+  }
+
+  .audience-sub {
+    font-size: 0.9375rem;
+    line-height: 1.5;
+    color: var(--text-muted);
+    margin-top: 0.25rem;
   }
 
   .audience-label {
@@ -546,17 +595,30 @@ const faqJsonLd =
     gap: var(--space-40);
   }
 
-  .contact-email-link {
-    font-family: var(--font-display);
-    font-size: clamp(1.35rem, 2.5vw, 2rem);
-    color: var(--accent);
-    border-bottom: 1px solid var(--line);
-    padding-bottom: 0.25rem;
-    overflow-wrap: normal;
-    transition: border-color 250ms var(--ease-out), color 250ms var(--ease-out);
+  .contact-email-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.85rem 1.75rem;
+    border-radius: 999px;
+    font-family: var(--font-sans);
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: var(--text);
+    white-space: nowrap;
+    border: 1px solid var(--glass-border);
+    background: var(--surface);
+    transition: transform 200ms var(--ease-out), border-color 200ms var(--ease-out), color 200ms var(--ease-out);
   }
 
-  .contact-email-link:hover {
+  .contact-email-pill:hover {
+    transform: translateY(-2px);
     border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .email-icon {
+    flex-shrink: 0;
+    color: var(--accent);
   }
 </style>

@@ -248,33 +248,24 @@ export function initLivingMeshes(): () => void {
     let lastFrameTime = 0;
     const startTime = performance.now();
 
-    const updateVisibleSectionTint = () => {
-      const defaultTint =
-        wrap?.getAttribute('data-default-tint') ||
-        document.documentElement.getAttribute('data-activity');
-      const tintedEls = document.querySelectorAll<HTMLElement>('[data-particle-tint]');
-      if (!tintedEls.length) {
-        if (defaultTint) activeSectionTintKey = defaultTint;
-        return;
-      }
-      const vh = window.innerHeight || 1;
-      const center = vh * 0.5;
-      let bestKey = defaultTint || 'care';
-      let bestDist = Infinity;
+    const defaultTint =
+      wrap?.getAttribute('data-default-tint') ||
+      document.documentElement.getAttribute('data-activity');
+    if (defaultTint) activeSectionTintKey = defaultTint;
 
-      tintedEls.forEach((el) => {
-        const r = el.getBoundingClientRect();
-        if (r.bottom > 0 && r.top < vh) {
-          const mid = (r.top + r.bottom) * 0.5;
-          const dist = Math.abs(mid - center);
-          if (dist < bestDist) {
-            bestDist = dist;
-            bestKey = el.getAttribute('data-particle-tint') || bestKey;
+    const tintedEls = document.querySelectorAll<HTMLElement>('[data-particle-tint]');
+    const tintObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const key = entry.target.getAttribute('data-particle-tint');
+            if (key) activeSectionTintKey = key;
           }
-        }
-      });
-      activeSectionTintKey = bestKey;
-    };
+        });
+      },
+      { threshold: 0.25 }
+    );
+    tintedEls.forEach((el) => tintObserver.observe(el));
 
     const drawFrame = (now: number) => {
       const isLight = document.documentElement.getAttribute('data-theme') !== 'dark';
@@ -310,7 +301,6 @@ export function initLivingMeshes(): () => void {
       gl.drawArrays(gl.POINTS, 0, PARTICLE_COUNT);
     };
 
-    updateVisibleSectionTint();
     drawFrame(startTime);
 
     // En mouvement réduit : trame fixe (rendu uniquement si le thème ou la taille change)
@@ -371,7 +361,6 @@ export function initLivingMeshes(): () => void {
 
     const onScroll = () => {
       scrollYVal = window.scrollY;
-      updateVisibleSectionTint();
       // Sur mobile, réaction au défilement au lieu du pointeur
       if (isCoarsePointer) {
         const phase = scrollYVal * 0.004;
@@ -408,6 +397,7 @@ export function initLivingMeshes(): () => void {
     cleanups.push(() => {
       stopLoop();
       io.disconnect();
+      tintObserver.disconnect();
       window.removeEventListener('resize', resize);
       window.removeEventListener('pointermove', onPointerMove);
       window.removeEventListener('scroll', onScroll);

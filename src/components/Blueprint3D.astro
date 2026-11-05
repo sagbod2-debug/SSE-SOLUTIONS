@@ -1,0 +1,353 @@
+---
+interface Props {
+  class?: string;
+}
+
+const { class: className = '' } = Astro.props;
+---
+
+<div class:list={['blueprint-3d-wrap', className]} aria-hidden="true">
+  <div class="blueprint-3d-stage">
+    <div class="blueprint-iso-grid"></div>
+
+    <!-- Modèle Isométrique 3D multicouches -->
+    <div class="blueprint-building" data-blueprint-building>
+      <!-- Niveau 0 : RDC & Entrée principale ERP -->
+      <div class="blueprint-level blueprint-level--0">
+        <div class="level-plate">
+          <svg class="level-svg" viewBox="0 0 500 350" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Contour du bâtiment RDC -->
+            <rect x="30" y="30" width="440" height="290" rx="12" class="wall-outer" />
+            <!-- Compartimentage Coupe-Feu -->
+            <line x1="250" y1="30" x2="250" y2="320" class="wall-fire" />
+            <line x1="30" y1="180" x2="250" y2="180" class="wall-fire" />
+            <rect x="270" y="50" width="180" height="120" rx="6" class="zone-safe" />
+            <!-- Voie d'évacuation verte -->
+            <path d="M 60 100 L 230 100 L 230 280 L 450 280" class="path-evac" />
+            <!-- Points de sécurité -->
+            <circle cx="250" cy="180" r="5" class="node-alarm" />
+            <circle cx="60" cy="100" r="4" class="node-extinguisher" />
+            <circle cx="450" cy="280" r="6" class="node-exit" />
+          </svg>
+          <div class="level-tag">NIVEAU 0 · RDC — ISSUES & RIA</div>
+        </div>
+      </div>
+
+      <!-- Niveau 1 : R+1 & Chambres / Bureaux / Accueil -->
+      <div class="blueprint-level blueprint-level--1">
+        <div class="level-plate">
+          <svg class="level-svg" viewBox="0 0 500 350" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="40" y="40" width="420" height="270" rx="10" class="wall-outer" />
+            <line x1="250" y1="40" x2="250" y2="310" class="wall-fire" />
+            <line x1="40" y1="175" x2="460" y2="175" class="wall-inner" />
+            <!-- Cloisons intérieures -->
+            <line x1="145" y1="40" x2="145" y2="175" class="wall-inner" />
+            <line x1="355" y1="40" x2="355" y2="175" class="wall-inner" />
+            <line x1="145" y1="175" x2="145" y2="310" class="wall-inner" />
+            <line x1="355" y1="175" x2="355" y2="310" class="wall-inner" />
+            <!-- Trajet d'évacuation R+1 -->
+            <path d="M 80 110 L 250 110 L 250 250 L 420 250" class="path-evac path-evac--pulse" />
+            <circle cx="250" cy="110" r="4" class="node-smoke" />
+            <circle cx="250" cy="250" r="5" class="node-alarm" />
+          </svg>
+          <div class="level-tag">NIVEAU 1 · R+1 — SECTORISATION COUPE-FEU</div>
+        </div>
+      </div>
+
+      <!-- Niveau 2 : R+2 Technique & Désenfumage -->
+      <div class="blueprint-level blueprint-level--2">
+        <div class="level-plate">
+          <svg class="level-svg" viewBox="0 0 500 350" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="60" y="60" width="380" height="230" rx="8" class="wall-outer dashed" />
+            <!-- Centrale de détection & CTA -->
+            <rect x="90" y="90" width="120" height="80" rx="4" class="zone-tech" />
+            <rect x="290" y="160" width="120" height="90" rx="4" class="zone-smoke" />
+            <circle cx="150" cy="130" r="6" class="node-core" />
+            <circle cx="350" cy="205" r="5" class="node-alarm" />
+          </svg>
+          <div class="level-tag">NIVEAU 2 · TOITURE — DÉSENFUMAGE & EXTRACTION</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Badges Techniques Flottants -->
+    <div class="blueprint-badge blueprint-badge--1">
+      <span class="badge-dot"></span>
+      <span>CONFORMITÉ ERP 1ère à 5ème CATÉGORIE</span>
+    </div>
+    <div class="blueprint-badge blueprint-badge--2">
+      <span class="badge-dot badge-dot--green"></span>
+      <span>DÉSENFUMAGE & ÉVACUATION VÉRIFIÉS</span>
+    </div>
+  </div>
+</div>
+
+<style>
+  .blueprint-3d-wrap {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 0;
+    opacity: 0.85;
+    mask-image: radial-gradient(ellipse 70% 65% at 65% 45%, #000 40%, transparent 80%);
+    -webkit-mask-image: radial-gradient(ellipse 70% 65% at 65% 45%, #000 40%, transparent 80%);
+  }
+
+  .blueprint-3d-stage {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    perspective: 1400px;
+    perspective-origin: 65% 40%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 2rem;
+  }
+
+  @media (max-width: 960px) {
+    .blueprint-3d-wrap {
+      opacity: 0.45;
+      mask-image: radial-gradient(ellipse 80% 70% at 50% 50%, #000 30%, transparent 75%);
+      -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 50%, #000 30%, transparent 75%);
+    }
+    .blueprint-3d-stage {
+      justify-content: center;
+      padding-right: 0;
+      perspective-origin: 50% 50%;
+    }
+  }
+
+  /* Trame isométrique discrète */
+  .blueprint-iso-grid {
+    position: absolute;
+    inset: 0;
+    background-size: 40px 40px;
+    background-image:
+      linear-gradient(to right, rgba(212, 42, 58, 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(212, 42, 58, 0.05) 1px, transparent 1px);
+    opacity: 0.6;
+  }
+
+  html[data-theme="dark"] .blueprint-iso-grid {
+    background-image:
+      linear-gradient(to right, rgba(255, 107, 117, 0.08) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 107, 117, 0.08) 1px, transparent 1px);
+  }
+
+  /* Bâtiment isométrique animé */
+  .blueprint-building {
+    position: relative;
+    width: clamp(20rem, 38vw, 34rem);
+    height: clamp(18rem, 32vw, 26rem);
+    transform-style: preserve-3d;
+    transform: rotateX(62deg) rotateZ(-32deg) translateY(-20px);
+    animation: blueprintDrift 14s ease-in-out infinite alternate;
+    will-change: transform;
+  }
+
+  @keyframes blueprintDrift {
+    0% {
+      transform: rotateX(60deg) rotateZ(-34deg) translateY(-15px) translateZ(0);
+    }
+    100% {
+      transform: rotateX(64deg) rotateZ(-28deg) translateY(-25px) translateZ(10px);
+    }
+  }
+
+  /* Niveaux empilés selon l'axe Z 3D */
+  .blueprint-level {
+    position: absolute;
+    inset: 0;
+    transform-style: preserve-3d;
+    transition: transform 600ms var(--ease-out);
+  }
+
+  .blueprint-level--0 {
+    transform: translateZ(0px);
+  }
+
+  .blueprint-level--1 {
+    transform: translateZ(65px);
+  }
+
+  .blueprint-level--2 {
+    transform: translateZ(130px);
+  }
+
+  .level-plate {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: rgba(212, 42, 58, 0.03);
+    border: 1px dashed rgba(212, 42, 58, 0.25);
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  }
+
+  html[data-theme="dark"] .level-plate {
+    background: rgba(255, 107, 117, 0.03);
+    border-color: rgba(255, 107, 117, 0.28);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+  }
+
+  .level-svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  /* Éléments vectoriels techniques */
+  .wall-outer {
+    stroke: var(--tint-consulting);
+    stroke-width: 2.2;
+    stroke-opacity: 0.7;
+    fill: none;
+  }
+
+  .wall-outer.dashed {
+    stroke-dasharray: 6 4;
+  }
+
+  .wall-inner {
+    stroke: var(--text-muted);
+    stroke-width: 1.2;
+    stroke-opacity: 0.4;
+    stroke-dasharray: 4 3;
+  }
+
+  .wall-fire {
+    stroke: var(--tint-consulting);
+    stroke-width: 2.5;
+    stroke-dasharray: 8 4;
+  }
+
+  .zone-safe {
+    stroke: rgba(11, 122, 90, 0.6);
+    fill: rgba(11, 122, 90, 0.08);
+    stroke-width: 1.5;
+  }
+
+  .zone-tech {
+    stroke: rgba(212, 42, 58, 0.5);
+    fill: rgba(212, 42, 58, 0.08);
+    stroke-width: 1.5;
+  }
+
+  .zone-smoke {
+    stroke: rgba(91, 75, 196, 0.5);
+    fill: rgba(91, 75, 196, 0.08);
+    stroke-width: 1.5;
+  }
+
+  .path-evac {
+    stroke: #10b981;
+    stroke-width: 2.5;
+    stroke-dasharray: 6 4;
+    animation: evacDash 2s linear infinite;
+  }
+
+  @keyframes evacDash {
+    to {
+      stroke-dashoffset: -20;
+    }
+  }
+
+  /* Noeuds et capteurs */
+  .node-alarm {
+    fill: var(--tint-consulting);
+    filter: drop-shadow(0 0 6px var(--tint-consulting));
+  }
+
+  .node-extinguisher {
+    fill: #ef4444;
+  }
+
+  .node-exit {
+    fill: #10b981;
+    filter: drop-shadow(0 0 8px #10b981);
+  }
+
+  .node-smoke {
+    fill: #60a5fa;
+    filter: drop-shadow(0 0 6px #60a5fa);
+  }
+
+  .node-core {
+    fill: var(--tint-consulting);
+    animation: corePulse 2s ease-in-out infinite alternate;
+  }
+
+  @keyframes corePulse {
+    0% { r: 5; opacity: 0.7; }
+    100% { r: 8; opacity: 1; filter: drop-shadow(0 0 12px var(--tint-consulting)); }
+  }
+
+  .level-tag {
+    position: absolute;
+    bottom: -1.75rem;
+    left: 0.5rem;
+    font-size: 0.6875rem;
+    font-family: var(--font-sans);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--tint-consulting);
+    opacity: 0.85;
+    text-transform: uppercase;
+  }
+
+  /* Badges techniques flottants */
+  .blueprint-badge {
+    position: absolute;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0.85rem;
+    border-radius: 999px;
+    background: var(--surface);
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    color: var(--text);
+    pointer-events: auto;
+  }
+
+  .blueprint-badge--1 {
+    top: 15%;
+    right: 5%;
+  }
+
+  .blueprint-badge--2 {
+    bottom: 12%;
+    right: 18%;
+  }
+
+  .badge-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--tint-consulting);
+    box-shadow: 0 0 8px var(--tint-consulting);
+  }
+
+  .badge-dot--green {
+    background: #10b981;
+    box-shadow: 0 0 8px #10b981;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .blueprint-building {
+      animation: none !important;
+    }
+    .path-evac {
+      animation: none !important;
+    }
+    .node-core {
+      animation: none !important;
+    }
+  }
+</style>
+

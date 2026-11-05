@@ -28,6 +28,15 @@ const subjects = [
   <section class="section contact-section">
     <div class="container grid-12 contact-grid">
       <div class="contact-main">
+        <nav class="activity-breadcrumb" aria-label="Fil d'Ariane" data-hero-fade>
+          <a href="/" class="activity-breadcrumb-link">
+            <span aria-hidden="true">←</span>
+            <span>Retour à l'accueil</span>
+          </a>
+          <span class="activity-breadcrumb-sep" aria-hidden="true">/</span>
+          <span class="activity-breadcrumb-current">Contact</span>
+        </nav>
+
         <p class="eyebrow" data-hero-fade>CONTACT</p>
         <h1 class="hero-title hero-title--medium">
           <span class="reveal-mask">
@@ -199,6 +208,13 @@ const subjects = [
           <p class="eyebrow">COORDONNÉES DIRECTES</p>
 
           <div class="sidebar-block">
+            <h2 class="sidebar-heading">Direction & Général</h2>
+            <a href="mailto:contact@ssesolutions.fr" class="sidebar-email">
+              contact@<wbr />ssesolutions.fr
+            </a>
+          </div>
+
+          <div class="sidebar-block">
             <h2 class="sidebar-heading">CC Care</h2>
             <a href="mailto:cccare@ssesolutions.fr" class="sidebar-email">
               cccare@<wbr />ssesolutions.fr
@@ -209,6 +225,13 @@ const subjects = [
             <h2 class="sidebar-heading">CC Consulting</h2>
             <a href="mailto:ccconsulting@ssesolutions.fr" class="sidebar-email">
               ccconsulting@<wbr />ssesolutions.fr
+            </a>
+          </div>
+
+          <div class="sidebar-block">
+            <h2 class="sidebar-heading">CC Events</h2>
+            <a href="mailto:ccevents@ssesolutions.fr" class="sidebar-email">
+              ccevents@<wbr />ssesolutions.fr
             </a>
           </div>
 
@@ -256,10 +279,13 @@ const subjects = [
 
     if (!pills.length || !hiddenInput || !form) return;
 
-    const getFallbackEmail = (sujetLabel: string) =>
-      sujetLabel.toLowerCase().includes('consulting')
-        ? 'ccconsulting@ssesolutions.fr'
-        : 'cccare@ssesolutions.fr';
+    const getFallbackEmail = (sujetLabel: string) => {
+      const lower = sujetLabel.toLowerCase();
+      if (lower.includes('consulting')) return 'ccconsulting@ssesolutions.fr';
+      if (lower.includes('event')) return 'ccevents@ssesolutions.fr';
+      if (lower.includes('care') || lower.includes('autonomie')) return 'cccare@ssesolutions.fr';
+      return 'contact@ssesolutions.fr';
+    };
 
     const selectSubject = (targetBtn: HTMLButtonElement) => {
       pills.forEach((btn) => {
@@ -394,6 +420,38 @@ const subjects = [
 </script>
 
 <style>
+  .activity-breadcrumb {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    margin-bottom: var(--space-20);
+  }
+
+  .activity-breadcrumb-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 200ms var(--ease-out);
+  }
+
+  .activity-breadcrumb-link:hover {
+    color: var(--text);
+  }
+
+  .activity-breadcrumb-sep {
+    opacity: 0.5;
+  }
+
+  .activity-breadcrumb-current {
+    color: var(--accent);
+    font-weight: 600;
+  }
+
   .contact-section {
     padding-top: 8.5rem;
     padding-bottom: var(--space-104);
