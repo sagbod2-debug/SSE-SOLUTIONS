@@ -23,109 +23,109 @@ const rules = [
   theme="cc-events"
   livingMesh={false}
 >
-  <canvas class="act-field" data-ev-field aria-hidden="true"></canvas>
-
-  <div class="ev-hero-track" data-ev-track>
-  <section class="act-hero ev-hero" data-ev-hero aria-labelledby="ev-hero-title">
-    <canvas class="act-hero__canvas" data-ev-hero-canvas aria-hidden="true"></canvas>
-    <div class="act-hero__fallback" aria-hidden="true">
+  <div class="film" data-film>
+    <canvas class="film__canvas" data-film-canvas aria-hidden="true"></canvas>
+    <div class="film__fallback" aria-hidden="true">
       <BrandLogo brand="cc-events" size="xl" loading="eager" alt="" />
     </div>
-    <div class="act-hero__fade" aria-hidden="true"></div>
 
-    <div class="container act-hero__inner">
-      <div class="act-hero__spacer" aria-hidden="true"></div>
-      <div class="act-hero__content">
-        <nav class="act-breadcrumb" aria-label="Fil d'Ariane" data-hero-fade>
-          <a href="/"><span aria-hidden="true">←</span><span>Retour à l'accueil</span></a>
-          <span aria-hidden="true">/</span>
-          <span aria-current="page">CC Events</span>
-        </nav>
-        <h1 class="act-title" id="ev-hero-title" data-hero-fade>Un événement réussi s’imagine, se coordonne…</h1>
-        <p class="act-verbs" data-hero-fade>Imaginer. Coordonner. Réussir.</p>
-        <p class="act-lead" data-hero-fade>
-          CC Events organise vos événements et coordonne les équipes événementielles, de la préparation au dernier invité parti.
-        </p>
-        <div class="act-actions" data-hero-fade>
-          <a href="/contact?sujet=cc-events" class="act-btn">Parler de mon événement</a>
-          <a href="#offres" class="act-btn act-btn--ghost">Voir nos offres</a>
+    <!-- Chapitre 1 : le montage (J-30 → Jour J) -->
+    <section class="film__chapter film__chapter--hero" data-film-from="0" data-film-to="0.32" aria-labelledby="ev-hero-title">
+      <div class="film__sticky">
+        <p class="film__count" aria-hidden="true"><span data-film-count>J-30</span></p>
+        <div class="container film__credits">
+          <nav class="act-breadcrumb" aria-label="Fil d'Ariane">
+            <a href="/"><span aria-hidden="true">←</span><span>Retour à l'accueil</span></a>
+            <span aria-hidden="true">/</span>
+            <span aria-current="page">CC Events</span>
+          </nav>
+          <h1 class="film__title" id="ev-hero-title">Un événement réussi s’imagine, se coordonne…</h1>
+          <p class="act-verbs">Imaginer. Coordonner. Réussir.</p>
+          <p class="film__lead">
+            CC Events organise vos événements et coordonne les équipes événementielles, de la préparation au dernier invité parti.
+          </p>
+          <div class="act-actions">
+            <a href="/contact?sujet=cc-events" class="act-btn">Parler de mon événement</a>
+            <a href="#offres" class="act-btn act-btn--ghost film__ghost">Voir nos offres</a>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
-  </div>
+    </section>
 
-  <section id="offres" class="ev-offers" data-ev-offers aria-labelledby="ev-offers-title">
-    <div class="ev-offers__stage">
-      <canvas class="ev-offers__canvas" data-ev-orbs-canvas aria-hidden="true"></canvas>
-      <div class="container ev-offers__inner">
-        <h2 class="act-section-title ev-offers__title" id="ev-offers-title">Ce que nous prenons en charge.</h2>
-        <ol class="ev-offers__list" role="list">
+    <!-- Chapitre 2 : les offres, chacune vue sous un angle de la même salle -->
+    <section id="offres" class="film__chapter" data-film-from="0.36" data-film-to="0.7" aria-labelledby="ev-offers-title">
+      <div class="container film__inner">
+        <h2 class="film__chapter-title act-section-title" id="ev-offers-title">Nos offres.</h2>
+        <ol class="film__steps" role="list">
           {offers.map((o, i) => (
-            <li class="ev-offer" data-ev-offer tabindex="0">
-              <span class="ev-offer__num">{String(i + 1).padStart(2, '0')}</span>
-              <h3 class="ev-offer__title">{o.title}</h3>
-              <p class="ev-offer__text">{o.text}</p>
+            <li class="film__panel" data-film-offer>
+              <p class="film__panel-num">{String(i + 1).padStart(2, '0')} / 03</p>
+              <h3 class="film__panel-title">{o.title}</h3>
+              <p class="film__panel-text">{o.text}</p>
             </li>
           ))}
         </ol>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="act-block" aria-labelledby="ev-rules-title">
-    <div class="container act-block__inner">
-      <h2 class="act-section-title" id="ev-rules-title" data-reveal>Nos trois règles.</h2>
-      <ol class="act-grid act-grid--3" role="list" data-reveal>
-        {rules.map((r) => (
-          <li class="act-card">
-            <h3 class="act-card__title">{r.title}</h3>
-            <p>{r.text}</p>
-          </li>
-        ))}
-      </ol>
-    </div>
-  </section>
+    <!-- Chapitre 3 : les règles, trois ambiances lumineuses -->
+    <section class="film__chapter" data-film-from="0.74" data-film-to="1" aria-labelledby="ev-rules-title">
+      <div class="container film__inner film__inner--right">
+        <h2 class="film__chapter-title act-section-title" id="ev-rules-title">Nos trois règles.</h2>
+        <ol class="film__steps" role="list">
+          {rules.map((r, i) => (
+            <li class="film__panel" data-film-rule>
+              <p class="film__panel-num">{String(i + 1).padStart(2, '0')} / 03</p>
+              <h3 class="film__panel-title">{r.title}</h3>
+              <p class="film__panel-text">{r.text}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+  </div>
 
-  <section class="act-block" aria-labelledby="ev-who-title">
-    <div class="container act-block__inner">
-      <h2 class="act-section-title" id="ev-who-title" data-reveal>Pour qui.</h2>
-      <ul class="act-list act-list--3" role="list" data-reveal>
-        <li>Entreprises</li>
-        <li>Institutions</li>
-        <li>Associations</li>
-      </ul>
-    </div>
-  </section>
-
-  {SHOW_EVENTS_PROOF && (
-    <section class="act-block" aria-labelledby="ev-proof-title">
+  <div class="after-film" data-film-end>
+    <section class="act-block" aria-labelledby="ev-who-title">
       <div class="container act-block__inner">
-        <h2 class="act-section-title" id="ev-proof-title" data-reveal>Ils nous ont fait confiance</h2>
-        <div class="events-proof-gallery grid-12" data-reveal></div>
+        <h2 class="act-section-title" id="ev-who-title" data-reveal>Pour qui.</h2>
+        <ul class="after-film__who" role="list" data-reveal>
+          <li>Entreprises</li>
+          <li>Institutions</li>
+          <li>Associations</li>
+        </ul>
       </div>
     </section>
-  )}
 
-  {SHOW_REAL_PHOTOS && (
-    <section class="section real-photos-slot" data-real-photos-slot>
-      <div class="container">
-        <div class="real-photos-grid grid-12"></div>
-      </div>
-    </section>
-  )}
-
-  <section class="act-block act-cta-wrap" aria-labelledby="ev-cta-title">
-    <div class="container">
-      <div class="act-cta" data-reveal>
-        <div class="act-cta__text">
-          <h2 class="act-section-title" id="ev-cta-title">Un événement en préparation ?</h2>
-          <a href="mailto:ccevents@ssesolutions.fr" class="act-cta__mail">ccevents@ssesolutions.fr</a>
+    {SHOW_EVENTS_PROOF && (
+      <section class="act-block" aria-labelledby="ev-proof-title">
+        <div class="container act-block__inner">
+          <h2 class="act-section-title" id="ev-proof-title" data-reveal>Ils nous ont fait confiance</h2>
+          <div class="events-proof-gallery grid-12" data-reveal></div>
         </div>
-        <a href="/contact?sujet=cc-events" class="act-btn act-btn--invert">Parler de mon événement</a>
+      </section>
+    )}
+
+    {SHOW_REAL_PHOTOS && (
+      <section class="section real-photos-slot" data-real-photos-slot>
+        <div class="container">
+          <div class="real-photos-grid grid-12"></div>
+        </div>
+      </section>
+    )}
+
+    <section class="act-block act-cta-wrap" aria-labelledby="ev-cta-title">
+      <div class="container">
+        <div class="act-cta" data-reveal>
+          <div class="act-cta__text">
+            <h2 class="act-section-title" id="ev-cta-title">Un événement en préparation ?</h2>
+            <a href="mailto:ccevents@ssesolutions.fr" class="act-cta__mail">ccevents@ssesolutions.fr</a>
+          </div>
+          <a href="/contact?sujet=cc-events" class="act-btn act-btn--invert">Parler de mon événement</a>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
 </BaseLayout>
 
 <script>
@@ -134,7 +134,7 @@ const rules = [
   let cleanup: (() => void) | null = null;
   document.addEventListener('astro:page-load', () => {
     cleanup?.();
-    cleanup = document.querySelector('[data-ev-hero]') ? initEventsPage() : null;
+    cleanup = document.querySelector('[data-film]') ? initEventsPage() : null;
   });
   document.addEventListener('astro:before-swap', () => {
     cleanup?.();
@@ -143,147 +143,196 @@ const rules = [
 </script>
 
 <style>
-  /* Le hero reste à l'écran pendant que la scène se construit au défilement */
-  @media (min-width: 960px) {
-    .ev-hero-track {
-      height: 210vh;
-    }
-    .ev-hero {
-      position: sticky;
-      top: 0;
-      height: 100vh;
-      min-height: 46rem;
-    }
+  .film {
+    position: relative;
   }
 
-  .ev-offers {
-    position: relative;
-    z-index: 2;
-    border-bottom: 1px solid var(--line);
-  }
-
-  .ev-offers__canvas {
-    position: relative;
-    display: block;
+  .film__canvas {
+    position: fixed;
+    inset: 0;
     width: 100%;
-    height: 22rem;
+    height: 100%;
+    display: block;
+    z-index: 0;
     opacity: 0;
-    transition: opacity 900ms var(--ease-out);
+    transition: opacity 1s var(--ease-out);
   }
 
-  .ev-offers.is-3d-ready .ev-offers__canvas {
+  .film.is-3d-ready .film__canvas {
     opacity: 1;
   }
 
-  .ev-offers__inner {
+  .film.is-past .film__canvas {
+    visibility: hidden;
+  }
+
+  .film__fallback {
+    display: none;
+    position: absolute;
+    top: 8rem;
+    right: 6%;
+    width: min(36%, 28rem);
+  }
+
+  .film.is-3d-fallback .film__fallback {
+    display: block;
+  }
+
+  .film__chapter {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Chapitre 1 : générique en bas de l'image */
+  .film__chapter--hero {
+    height: 320vh;
+  }
+
+  .film__sticky {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    min-height: 40rem;
+    display: flex;
+    align-items: flex-end;
+    background: linear-gradient(0deg, color-mix(in srgb, var(--bg) 94%, transparent) 0%, color-mix(in srgb, var(--bg) 55%, transparent) 22%, transparent 40%);
+  }
+
+  .film__credits {
     display: flex;
     flex-direction: column;
-    gap: 2rem;
-    padding-bottom: 5rem;
+    gap: 1.1rem;
+    padding-bottom: clamp(2.5rem, 6vh, 4.5rem);
   }
 
-  .ev-offers__title {
-    order: -1;
-    padding-top: 5rem;
+  .film__title {
+    font-size: clamp(2.2rem, 1.2rem + 3vw, 3.9rem);
+    line-height: 1.04;
+    letter-spacing: -0.025em;
+    font-weight: 450;
+    max-width: 18ch;
   }
 
-  .ev-offers__list {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: 1rem;
+  .film__lead {
+    font-size: 1.125rem;
+    line-height: 1.55;
+    color: var(--text);
+    max-width: 36rem;
+  }
+
+  .film__ghost {
+    background: color-mix(in srgb, var(--bg) 70%, transparent);
+  }
+
+  .film__count {
+    position: absolute;
+    top: 6.5rem;
+    right: var(--page-margin);
+    font-family: var(--font-mono);
+    font-size: clamp(2.5rem, 2rem + 3vw, 5.5rem);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    font-variant-numeric: tabular-nums;
+  }
+
+  @media (min-width: 1400px) {
+    .film__count {
+      right: calc((100vw - var(--container-max)) / 2);
+    }
+  }
+
+  /* Chapitres 2 et 3 : panneaux qui défilent sur le côté pendant que la caméra bouge */
+  .film__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding-block: 18vh 40vh;
+  }
+
+  .film__inner--right {
+    align-items: flex-end;
+  }
+
+  .film__chapter-title {
+    padding: 0.35rem 0.9rem;
+    border-radius: 14px;
+    background: var(--bg);
+    color: var(--text);
+  }
+
+  .film__steps {
     list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 70vh;
+    margin-top: 30vh;
+    width: min(100%, 26rem);
   }
 
-  .ev-offer {
+  .film__panel {
     display: flex;
     flex-direction: column;
     gap: 0.6rem;
     padding: 1.75rem;
-    border-radius: 20px;
-    background: var(--surface);
+    border-radius: 18px;
+    background: var(--bg);
     border: 1px solid var(--line);
-    opacity: 0.55;
-    transition: opacity 400ms var(--ease-out), border-color 400ms var(--ease-out), transform 500ms var(--ease-out);
-    outline: none;
+    opacity: 0.6;
+    transform: translateY(16px);
+    transition: opacity 500ms var(--ease-out), transform 600ms var(--ease-out);
   }
 
-  .ev-offer.is-active,
-  .ev-offer:hover,
-  .ev-offer:focus-visible {
+  .film__panel.is-active {
     opacity: 1;
-    border-color: color-mix(in srgb, var(--activity-tint) 45%, var(--line));
+    transform: none;
   }
 
-  .ev-offer:focus-visible {
-    outline: 2px solid var(--text);
-    outline-offset: 3px;
-  }
-
-  .ev-offer__num {
+  .film__panel-num {
     font-family: var(--font-mono);
     font-size: 0.8125rem;
     color: var(--activity-tint);
   }
 
-  .ev-offer__title {
-    font-size: 1.375rem;
+  .film__panel-title {
+    font-size: 1.5rem;
     font-weight: 500;
-    line-height: 1.25;
+    line-height: 1.2;
   }
 
-  .ev-offer__text {
+  .film__panel-text {
     font-size: 1rem;
     line-height: 1.55;
     color: var(--text-muted);
   }
 
-  /* Bureau : scène collante, sphères au-dessus des cartes alignées en trois colonnes */
-  @media (min-width: 960px) {
-    .ev-offers {
-      height: 320vh;
-    }
-    .ev-offers__stage {
-      position: sticky;
-      top: 0;
-      height: 100vh;
-      min-height: 46rem;
-      overflow: hidden;
-    }
-    .ev-offers__canvas {
-      position: absolute;
-      inset: 0;
-      height: 100%;
-    }
-    .ev-offers__inner {
-      position: relative;
-      height: 100%;
-      justify-content: space-between;
-      padding-top: 6.5rem;
-      padding-bottom: 3rem;
-      pointer-events: none;
-    }
-    .ev-offers__title {
-      padding-top: 0;
-      max-width: 14ch;
-    }
-    .ev-offers__list {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 1.5rem;
-      pointer-events: auto;
-    }
-    .ev-offer {
-      background: color-mix(in srgb, var(--surface) 88%, transparent);
-      transform: translateY(12px);
-    }
-    .ev-offer.is-active {
-      transform: none;
-    }
+  /* Après le film : blocs opaques */
+  .after-film {
+    position: relative;
+    z-index: 2;
+    background: var(--bg);
+    border-top: 1px solid var(--line);
+  }
+
+  .after-film__who {
+    list-style: none;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    border-top: 1px solid var(--line);
+  }
+
+  .after-film__who li {
+    padding-block: 1.5rem;
+    border-bottom: 1px solid var(--line);
+    font-size: clamp(1.75rem, 1.2rem + 2vw, 3rem);
+    font-weight: 450;
+    letter-spacing: -0.02em;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .ev-offer,
-    .ev-offers__canvas {
+    .film__panel {
       transition: none;
+      transform: none;
     }
   }
 </style>

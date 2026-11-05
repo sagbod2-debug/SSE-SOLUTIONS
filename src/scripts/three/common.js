@@ -137,17 +137,25 @@ export function runLoop(canvas, stage, onFrame, onResize) {
     if (!reduce) raf = requestAnimationFrame(frame);
   }
 
+  let visible = true, paused = false;
   const io = new IntersectionObserver((entries) => {
-    running = entries[0].isIntersecting;
+    visible = entries[0].isIntersecting;
+    running = visible && !paused;
     if (running && !raf) raf = requestAnimationFrame(frame);
   });
   io.observe(canvas);
   raf = requestAnimationFrame(frame);
 
   return {
+    /** Met la boucle en pause (scène hors champ, par exemple derrière un bloc opaque). */
+    setPaused(v) {
+      paused = !!v;
+      running = visible && !paused;
+      if (running && !raf) raf = requestAnimationFrame(frame);
+    },
     /** Redessine une image (utile en mouvement réduit quand l'état change). */
     redraw() {
-      if (!raf) raf = requestAnimationFrame(frame);
+      if (!raf && running) raf = requestAnimationFrame(frame);
     },
     dispose() {
       cancelAnimationFrame(raf);

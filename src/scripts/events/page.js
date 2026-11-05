@@ -1,85 +1,78 @@
-// Page CC Events : scène qui se construit au défilement, sphères des offres, champ de traits.
-import { mountField } from '../three/particle-field.js';
-
+// Page CC Events : une seule scène « maquette » derrière toute la page, pilotée par chapitres.
+// Chaque chapitre [data-film-from, data-film-to] fait avancer la ligne de temps de la scène.
 const clamp = (v) => Math.max(0, Math.min(1, v));
 const dark = () => document.documentElement.getAttribute('data-theme') === 'dark';
+const COUNTDOWN = ['J-30', 'J-15', 'J-7', 'J-1', 'Jour J'];
 
 export function initEventsPage() {
-  const hero = document.querySelector('[data-ev-hero]');
-  const track = document.querySelector('[data-ev-track]');
-  const heroCanvas = document.querySelector('[data-ev-hero-canvas]');
-  const offers = document.querySelector('[data-ev-offers]');
-  const orbsCanvas = document.querySelector('[data-ev-orbs-canvas]');
-  const fieldCanvas = document.querySelector('[data-ev-field]');
-  const cards = Array.from(document.querySelectorAll('[data-ev-offer]'));
-  if (!hero) return () => {};
-
+  const root = document.querySelector('[data-film]');
+  const canvas = document.querySelector('[data-film-canvas]');
+  if (!root || !canvas) return () => {};
+  const chapters = Array.from(document.querySelectorAll('[data-film-from]'));
+  const filmEnd = document.querySelector('[data-film-end]');
+  const counter = document.querySelector('[data-film-count]');
+  const offers = Array.from(document.querySelectorAll('[data-film-offer]'));
+  const rules = Array.from(document.querySelectorAll('[data-film-rule]'));
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  let disposed = false;
-  let stageScene = null, orbsScene = null, field = null, mods = null;
-  let active = -1;
+
+  let film = null, disposed = false, mod = null, lastCount = '';
 
   async function start() {
     try {
-      if (!mods) {
-        const [a, b] = await Promise.all([import('../three/events-stage.js'), import('../three/events-orbs.js')]);
-        mods = { hero: a.mountEventsHero, orbs: b.mountEventsOrbs };
-      }
+      if (!mod) mod = await import('../three/events-film.js');
     } catch {
-      hero.classList.add('is-3d-fallback');
+      root.classList.add('is-3d-fallback');
       return;
     }
     if (disposed) return;
-    stageScene?.dispose();
-    orbsScene?.dispose();
-    stageScene = heroCanvas ? mods.hero(heroCanvas, { dark: dark() }) : null;
-    orbsScene = orbsCanvas ? mods.orbs(orbsCanvas, { dark: dark(), count: cards.length }) : null;
-    hero.classList.toggle('is-3d-ready', !!stageScene);
-    hero.classList.toggle('is-3d-fallback', !stageScene);
-    offers?.classList.toggle('is-3d-ready', !!orbsScene);
-    active = -1;
+    film?.dispose();
+    film = mod.mountEventsFilm(canvas, { dark: dark() });
+    root.classList.toggle('is-3d-ready', !!film);
+    root.classList.toggle('is-3d-fallback', !film);
     measure();
   }
 
-  if (fieldCanvas) field = mountField(fieldCanvas, { theme: dark() ? 'sombre' : 'clair', palette: 'events' });
-
-  const themeObs = new MutationObserver(() => {
-    field?.setTheme(dark() ? 'sombre' : 'clair');
-    if (mods) start();
-  });
+  const themeObs = new MutationObserver(() => { if (mod) start(); });
   themeObs.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
-
-  function setActive(i) {
-    if (i === active) return;
-    active = i;
-    cards.forEach((c, k) => c.classList.toggle('is-active', k === i));
-    orbsScene?.setActive(i);
-  }
 
   function measure() {
     const vh = window.innerHeight || 800;
-    const hr = hero.getBoundingClientRect();
-    // la scène se construit pendant la traversée du hero (piste collante sur grand écran)
-    const tr = track ? track.getBoundingClientRect() : hr;
-    const span = tr.height > hr.height + 10 ? tr.height - vh : hr.height * 0.75;
-    stageScene?.setBuild(reduce ? 1 : clamp(-tr.top / Math.max(1, span)));
+    let p = 0;
+    chapters.forEach((el) => {
+      const r = el.getBoundingClientRect();
+      const from = parseFloat(el.dataset.filmFrom || '0');
+      const to = parseFloat(el.dataset.filmTo || '1');
+      const span = Math.max(1, r.height - vh * 0.5);
+      const local = clamp((vh * 0.5 - r.top) / span);
+      if (r.top < vh * 0.5) p = from + (to - from) * local;
+    });
+    film?.setProgress(reduce ? Math.max(p, 0.3) : p);
 
-    if (offers && cards.length) {
-      const r = offers.getBoundingClientRect();
-      const sticky = window.matchMedia('(min-width: 960px)').matches;
-      if (sticky) {
-        const p = clamp((-r.top + vh * 0.2) / Math.max(1, r.height - vh));
-        setActive(r.top > vh * 0.6 ? -1 : Math.min(cards.length - 1, Math.floor(p * cards.length)));
-      } else {
-        // mobile : la carte la plus proche du centre de l'écran
-        let best = -1, bestD = Infinity;
-        cards.forEach((c, k) => {
-          const cr = c.getBoundingClientRect();
-          const d = Math.abs(cr.top + cr.height / 2 - vh * 0.55);
-          if (d < bestD && cr.bottom > 0 && cr.top < vh) { bestD = d; best = k; }
-        });
-        setActive(best);
-      }
+    // compte à rebours du montage
+    const k = Math.min(COUNTDOWN.length - 1, Math.floor(clamp(p / 0.3) * (COUNTDOWN.length - 1) + 0.0001));
+    const label = COUNTDOWN[k];
+    if (counter && label !== lastCount) {
+      lastCount = label;
+      counter.textContent = label;
+    }
+
+    const mark = (list) => {
+      let best = -1, bestD = Infinity;
+      list.forEach((el, i) => {
+        const r = el.getBoundingClientRect();
+        const d = Math.abs(r.top + r.height / 2 - vh / 2);
+        if (d < bestD && r.bottom > 0 && r.top < vh) { bestD = d; best = i; }
+      });
+      list.forEach((el, i) => el.classList.toggle('is-active', i === best));
+    };
+    mark(offers);
+    mark(rules);
+
+    // au-delà du film : la scène est masquée par des blocs opaques, on l'arrête
+    if (filmEnd) {
+      const past = filmEnd.getBoundingClientRect().top < 0;
+      root.classList.toggle('is-past', past);
+      film?.setPaused(past);
     }
   }
 
@@ -91,19 +84,8 @@ export function initEventsPage() {
   };
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', onScroll, { passive: true });
-
-  const hoverHandlers = cards.map((c, k) => {
-    const on = () => orbsScene?.setHover(k, true);
-    const off = () => orbsScene?.setHover(k, false);
-    c.addEventListener('pointerenter', on);
-    c.addEventListener('pointerleave', off);
-    c.addEventListener('focusin', on);
-    c.addEventListener('focusout', off);
-    return [c, on, off];
-  });
-
   measure();
-  const idle = window.requestIdleCallback || ((cb) => setTimeout(cb, 120));
+  const idle = window.requestIdleCallback || ((cb) => setTimeout(cb, 80));
   idle(() => { if (!disposed) start(); });
 
   return () => {
@@ -111,14 +93,6 @@ export function initEventsPage() {
     window.removeEventListener('scroll', onScroll);
     window.removeEventListener('resize', onScroll);
     themeObs.disconnect();
-    hoverHandlers.forEach(([c, on, off]) => {
-      c.removeEventListener('pointerenter', on);
-      c.removeEventListener('pointerleave', off);
-      c.removeEventListener('focusin', on);
-      c.removeEventListener('focusout', off);
-    });
-    stageScene?.dispose();
-    orbsScene?.dispose();
-    field?.dispose();
+    film?.dispose();
   };
 }
