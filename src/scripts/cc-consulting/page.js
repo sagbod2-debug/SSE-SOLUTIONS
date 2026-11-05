@@ -1,5 +1,5 @@
 // Page CC Consulting : hero 3D, champ de traits réactif à la souris et nœuds de services au défilement.
-import { mountField } from './particle-field.js';
+import { mountField } from '../three/particle-field.js';
 
 const STEPS = [
   ['Audit de conformité', 'Un état des lieux précis de votre établissement face à la réglementation incendie.'],

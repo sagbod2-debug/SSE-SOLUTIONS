@@ -1,179 +1,107 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Picture from '../components/Picture.astro';
 import BrandLogo from '../components/BrandLogo.astro';
 import { SHOW_EVENTS_PROOF, SHOW_REAL_PHOTOS } from '../config/flags';
+import '../styles/activity-3d.css';
+
+const offers = [
+  { title: "Organisation d'événements", text: 'Conception, planning, prestataires et logistique de vos événements.' },
+  { title: 'Gestion des équipes', text: 'Recrutement, briefing et encadrement des équipes sur le terrain.' },
+  { title: 'Coordination le jour J', text: 'Un pilotage en temps réel pour que tout se déroule comme prévu.' },
+];
+
+const rules = [
+  { title: 'Organisation', text: 'Chaque professionnel sait ce qu’il a à faire.' },
+  { title: 'Déploiement', text: 'Une mise en place méthodique, des postes clairement définis et une régie active le jour J.' },
+  { title: 'Satisfaction', text: 'Des invités enthousiastes et un événement mené à bien en toute sérénité.' },
+];
 ---
 
 <BaseLayout
   title="Organisation d'événements et coordination d'équipes en Essonne · CC Events"
   description="CC Events organise vos événements et coordonne les équipes événementielles, de la préparation au dernier invité parti."
   theme="cc-events"
+  livingMesh={false}
 >
-  <section class="hero-events" transition:name="solution-card-events">
-    <div class="hero-events-bg" aria-hidden="true">
-      <Picture
-        slug="12-cc-events-hero"
-        alt="Grande salle de réception habillée de lumières chaudes et dorées avant l’accueil des invités"
-        sizes="100vw"
-        loading="eager"
-        fetchpriority="high"
-        parallax={false}
-        transitionName="activity-hero-events"
-      />
-      <div class="hero-events-scrim"></div>
+  <canvas class="act-field" data-ev-field aria-hidden="true"></canvas>
+
+  <div class="ev-hero-track" data-ev-track>
+  <section class="act-hero ev-hero" data-ev-hero aria-labelledby="ev-hero-title">
+    <canvas class="act-hero__canvas" data-ev-hero-canvas aria-hidden="true"></canvas>
+    <div class="act-hero__fallback" aria-hidden="true">
+      <BrandLogo brand="cc-events" size="xl" loading="eager" alt="" />
     </div>
+    <div class="act-hero__fade" aria-hidden="true"></div>
 
-    <div class="container grid-12 hero-events-inner">
-      <div class="hero-events-content">
-        <nav class="activity-breadcrumb" aria-label="Fil d'Ariane" data-hero-fade>
-          <a href="/" class="activity-breadcrumb-link">
-            <span aria-hidden="true">←</span>
-            <span>Retour à l'accueil</span>
-          </a>
-          <span class="activity-breadcrumb-sep" aria-hidden="true">/</span>
-          <span class="activity-breadcrumb-current">CC Events</span>
+    <div class="container act-hero__inner">
+      <div class="act-hero__spacer" aria-hidden="true"></div>
+      <div class="act-hero__content">
+        <nav class="act-breadcrumb" aria-label="Fil d'Ariane" data-hero-fade>
+          <a href="/"><span aria-hidden="true">←</span><span>Retour à l'accueil</span></a>
+          <span aria-hidden="true">/</span>
+          <span aria-current="page">CC Events</span>
         </nav>
-
-        <div class="hero-activity-brand" data-hero-fade>
-          <BrandLogo brand="cc-events" size="lg" loading="eager" alt="Logo officiel CC Events" />
-          <div class="hero-activity-brand-meta">
-            <p class="eyebrow">CC EVENTS · ÉVÉNEMENTIEL</p>
-            <p class="hero-activity-brand-name">CC Events</p>
-          </div>
-        </div>
-        <h1 class="hero-title" data-hero-fade>
-          Un événement réussi s’imagine, se coordonne…
-        </h1>
-        <p class="hero-verbs" aria-label="Imaginer. Coordonner. Réussir.">
-          <span class="reveal-mask">
-            <span class="reveal-line" data-hero-line>Imaginer.</span>
-          </span>
-          <span class="reveal-mask">
-            <span class="reveal-line" data-hero-line>Coordonner.</span>
-          </span>
-          <span class="reveal-mask">
-            <span class="reveal-line" data-hero-line>Réussir.</span>
-          </span>
-        </p>
-        <p class="prose-measure hero-events-lead" data-hero-fade>
+        <h1 class="act-title" id="ev-hero-title" data-hero-fade>Un événement réussi s’imagine, se coordonne…</h1>
+        <p class="act-verbs" data-hero-fade>Imaginer. Coordonner. Réussir.</p>
+        <p class="act-lead" data-hero-fade>
           CC Events organise vos événements et coordonne les équipes événementielles, de la préparation au dernier invité parti.
         </p>
-
-        <div class="btn-group hero-events-actions" data-hero-fade>
-          <a href="/contact?sujet=cc-events" class="btn-primary" data-magnetic data-glow>
-            <span>Parler de mon événement</span>
-            <span class="btn-arrow" aria-hidden="true">→</span>
-          </a>
+        <div class="act-actions" data-hero-fade>
+          <a href="/contact?sujet=cc-events" class="act-btn">Parler de mon événement</a>
+          <a href="#offres" class="act-btn act-btn--ghost">Voir nos offres</a>
         </div>
       </div>
     </div>
   </section>
+  </div>
 
-  <section class="section section--spacious">
-    <div class="container">
-      <div class="events-services-list">
-        <article class="events-service-row" data-reveal>
-          <span class="num-index">01</span>
-          <h2 class="card-title">Organisation d'événements.</h2>
-          <p class="prose-measure">
-            Conception, planning, prestataires et logistique de vos événements.
-          </p>
-        </article>
-
-        <article class="events-service-row" data-reveal>
-          <span class="num-index">02</span>
-          <h2 class="card-title">Gestion des équipes.</h2>
-          <p class="prose-measure">
-            Recrutement, briefing et encadrement des équipes sur le terrain.
-          </p>
-        </article>
-
-        <article class="events-service-row" data-reveal>
-          <span class="num-index">03</span>
-          <h2 class="card-title">Coordination le jour J.</h2>
-          <p class="prose-measure">
-            Un pilotage en temps réel pour que tout se déroule comme prévu.
-          </p>
-        </article>
-      </div>
-
-      <div class="events-wide-showcase" data-reveal>
-        <div class="media-frame events-wide-frame">
-          <Picture
-            slug="13-cc-events-services"
-            alt="Régie technique et préparation en coulisses d’un événement avec éclairages de scène en arrière-plan"
-            sizes="100vw"
-          />
-        </div>
+  <section id="offres" class="ev-offers" data-ev-offers aria-labelledby="ev-offers-title">
+    <div class="ev-offers__stage">
+      <canvas class="ev-offers__canvas" data-ev-orbs-canvas aria-hidden="true"></canvas>
+      <div class="container ev-offers__inner">
+        <h2 class="act-section-title ev-offers__title" id="ev-offers-title">Ce que nous prenons en charge.</h2>
+        <ol class="ev-offers__list" role="list">
+          {offers.map((o, i) => (
+            <li class="ev-offer" data-ev-offer tabindex="0">
+              <span class="ev-offer__num">{String(i + 1).padStart(2, '0')}</span>
+              <h3 class="ev-offer__title">{o.title}</h3>
+              <p class="ev-offer__text">{o.text}</p>
+            </li>
+          ))}
+        </ol>
       </div>
     </div>
   </section>
 
-  <section class="section section--secondary section--spacious events-rules-section">
-    <div class="container">
-      <p class="eyebrow" data-reveal>MÉTHODE TERRAIN</p>
-      <h2 class="section-title" data-reveal-title>
-        <span class="reveal-mask">
-          <span class="reveal-line">Nos trois règles</span>
-        </span>
-      </h2>
-
-      <ol class="events-rules-grid grid-12">
-        <li class="events-rule-card glass" data-glow data-reveal>
-          <span class="num-index">01</span>
-          <h3 class="card-title">Organisation.</h3>
-          <p class="events-rule-text">
-            Chaque professionnel sait ce qu’il a à faire.
-          </p>
-        </li>
-        <li class="events-rule-card glass" data-glow data-reveal>
-          <span class="num-index">02</span>
-          <h3 class="card-title">Déploiement.</h3>
-          <p class="events-rule-text">
-            Une mise en place méthodique, des postes clairement définis et une régie active le jour J.
-          </p>
-        </li>
-        <li class="events-rule-card glass" data-glow data-reveal>
-          <span class="num-index">03</span>
-          <h3 class="card-title">Satisfaction.</h3>
-          <p class="events-rule-text">
-            Des invités enthousiastes et un événement mené à bien en toute sérénité.
-          </p>
-        </li>
+  <section class="act-block" aria-labelledby="ev-rules-title">
+    <div class="container act-block__inner">
+      <h2 class="act-section-title" id="ev-rules-title" data-reveal>Nos trois règles.</h2>
+      <ol class="act-grid act-grid--3" role="list" data-reveal>
+        {rules.map((r) => (
+          <li class="act-card">
+            <h3 class="act-card__title">{r.title}</h3>
+            <p>{r.text}</p>
+          </li>
+        ))}
       </ol>
     </div>
   </section>
 
-  <section class="section section--spacious">
-    <div class="container">
-      <p class="eyebrow" data-reveal>POUR QUI</p>
-      <ul class="events-audiences grid-12" data-reveal>
-        <li class="events-audience-item glass" data-glow>
-          <span class="num-index">01</span>
-          <span class="events-audience-name">Entreprises</span>
-        </li>
-        <li class="events-audience-item glass" data-glow>
-          <span class="num-index">02</span>
-          <span class="events-audience-name">Institutions</span>
-        </li>
-        <li class="events-audience-item glass" data-glow>
-          <span class="num-index">03</span>
-          <span class="events-audience-name">Associations</span>
-        </li>
+  <section class="act-block" aria-labelledby="ev-who-title">
+    <div class="container act-block__inner">
+      <h2 class="act-section-title" id="ev-who-title" data-reveal>Pour qui.</h2>
+      <ul class="act-list act-list--3" role="list" data-reveal>
+        <li>Entreprises</li>
+        <li>Institutions</li>
+        <li>Associations</li>
       </ul>
     </div>
   </section>
 
   {SHOW_EVENTS_PROOF && (
-    <section class="section section--secondary section--spacious events-proof-section">
-      <div class="container">
-        <p class="eyebrow" data-reveal>RÉFÉRENCES</p>
-        <h2 class="section-title" data-reveal-title>
-          <span class="reveal-mask">
-            <span class="reveal-line">Ils nous ont fait confiance</span>
-          </span>
-        </h2>
+    <section class="act-block" aria-labelledby="ev-proof-title">
+      <div class="container act-block__inner">
+        <h2 class="act-section-title" id="ev-proof-title" data-reveal>Ils nous ont fait confiance</h2>
         <div class="events-proof-gallery grid-12" data-reveal></div>
       </div>
     </section>
@@ -187,302 +115,175 @@ import { SHOW_EVENTS_PROOF, SHOW_REAL_PHOTOS } from '../config/flags';
     </section>
   )}
 
-  <section class="section section--spacious">
-    <div class="container grid-12">
-      <div class="events-contact-box glass">
-        <h2 class="section-title" data-reveal-title>
-          <span class="reveal-mask">
-            <span class="reveal-line">Un événement en préparation ?</span>
-          </span>
-        </h2>
-        <div class="events-contact-actions" data-reveal>
-          <a href="mailto:ccevents@ssesolutions.fr" class="contact-email-pill glass" data-glow>
-            <svg class="email-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <rect width="20" height="16" x="2" y="4" rx="2"></rect>
-              <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
-            </svg>
-            <span>ccevents@ssesolutions.fr</span>
-          </a>
-          <a href="/contact?sujet=cc-events" class="btn-primary" data-magnetic data-glow>
-            <span>Parler de mon événement</span>
-            <span class="btn-arrow" aria-hidden="true">→</span>
-          </a>
+  <section class="act-block act-cta-wrap" aria-labelledby="ev-cta-title">
+    <div class="container">
+      <div class="act-cta" data-reveal>
+        <div class="act-cta__text">
+          <h2 class="act-section-title" id="ev-cta-title">Un événement en préparation ?</h2>
+          <a href="mailto:ccevents@ssesolutions.fr" class="act-cta__mail">ccevents@ssesolutions.fr</a>
         </div>
+        <a href="/contact?sujet=cc-events" class="act-btn act-btn--invert">Parler de mon événement</a>
       </div>
     </div>
   </section>
 </BaseLayout>
 
+<script>
+  import { initEventsPage } from '../scripts/events/page.js';
+
+  let cleanup: (() => void) | null = null;
+  document.addEventListener('astro:page-load', () => {
+    cleanup?.();
+    cleanup = document.querySelector('[data-ev-hero]') ? initEventsPage() : null;
+  });
+  document.addEventListener('astro:before-swap', () => {
+    cleanup?.();
+    cleanup = null;
+  });
+</script>
+
 <style>
-  .activity-breadcrumb {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 0.8125rem;
-    font-weight: 500;
-    color: var(--text-muted);
-    margin-bottom: var(--space-20);
-  }
-
-  .activity-breadcrumb-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-    color: var(--text-muted);
-    text-decoration: none;
-    transition: color 200ms var(--ease-out);
-  }
-
-  .activity-breadcrumb-link:hover {
-    color: var(--text);
-  }
-
-  .activity-breadcrumb-sep {
-    opacity: 0.5;
-  }
-
-  .activity-breadcrumb-current {
-    color: var(--activity-tint);
-    font-weight: 600;
-  }
-
-  .hero-events {
-    position: relative;
-    min-height: 100vh;
-    display: flex;
-    align-items: flex-end;
-    padding-top: 8.5rem;
-    padding-bottom: var(--space-64);
-    border-bottom: 1px solid var(--line);
-    border-top: 2px solid var(--activity-tint);
-    overflow: hidden;
-  }
-
-  .hero-events-bg {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-  }
-
-  .hero-events-bg :global(.picture-placeholder),
-  .hero-events-bg :global(picture),
-  .hero-events-bg :global(img) {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    opacity: 0.36;
-  }
-
-  .hero-events-scrim {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(180deg, var(--hero-scrim-start) 0%, var(--hero-scrim-end) 100%);
-  }
-
-  .hero-events-inner {
-    position: relative;
-    z-index: 1;
-    align-items: end;
-    row-gap: var(--space-40);
-  }
-
-  .hero-activity-brand {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: var(--space-24);
-    margin-bottom: var(--space-24);
-  }
-
-  .hero-activity-brand-meta {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-  }
-
-  .hero-activity-brand-meta .eyebrow {
-    margin-bottom: 0;
-  }
-
-  .hero-activity-brand-name {
-    font-family: var(--font-display);
-    font-weight: 500;
-    font-size: 1.5rem;
-    letter-spacing: -0.02em;
-    color: var(--text);
-  }
-
-  .hero-events-content {
-    grid-column: 1 / -1;
-  }
-
-  .hero-events-logo {
-    grid-column: 1 / -1;
-  }
-
+  /* Le hero reste à l'écran pendant que la scène se construit au défilement */
   @media (min-width: 960px) {
-    .hero-events-content {
-      grid-column: 1 / 9;
+    .ev-hero-track {
+      height: 210vh;
     }
-    .hero-events-logo {
-      grid-column: 9 / 13;
-      justify-self: end;
-    }
-  }
-
-  .hero-title {
-    font-size: clamp(2.1rem, 1.35rem + 3vw, 3.6rem);
-    max-width: 24ch;
-  }
-
-  .hero-verbs {
-    margin-top: var(--space-24);
-    font-family: var(--font-display);
-    font-size: clamp(1.35rem, 1rem + 1.5vw, 2.15rem);
-    line-height: 1.08;
-    letter-spacing: -0.02em;
-    color: var(--activity-tint);
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.45em;
-  }
-
-  .hero-events-lead {
-    margin-top: var(--space-24);
-    font-size: clamp(1.125rem, 1.35vw, 1.35rem);
-    color: var(--text);
-  }
-
-  .events-rules-grid {
-    margin-top: var(--space-64);
-    row-gap: var(--space-24);
-  }
-
-  .events-rule-card {
-    --pointer-glow: color-mix(in srgb, var(--tint-events) 16%, transparent);
-    grid-column: 1 / -1;
-    border-top: 2px solid var(--activity-tint);
-    border-radius: var(--radius-sharp);
-    padding: var(--space-40);
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-16);
-  }
-
-  @media (min-width: 768px) {
-    .events-rule-card {
-      grid-column: span 4;
+    .ev-hero {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      min-height: 46rem;
     }
   }
 
-  .events-rule-text {
-    font-family: var(--font-display);
-    font-size: var(--fs-h3);
-    line-height: 1.38;
-    color: var(--text);
-  }
-
-  .hero-events-actions {
-    margin-top: var(--space-40);
-  }
-
-  .logo-panel--events {
-    border-color: var(--activity-tint);
-  }
-
-  .events-services-list {
-    border-top: 1px solid var(--line);
-    margin-bottom: var(--space-64);
-  }
-
-  .events-service-row {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--space-16);
-    padding-block: var(--space-40);
+  .ev-offers {
+    position: relative;
+    z-index: 2;
     border-bottom: 1px solid var(--line);
-    align-items: baseline;
   }
 
-  @media (min-width: 768px) {
-    .events-service-row {
-      grid-template-columns: 1fr 4fr 7fr;
-      gap: var(--space-24);
-    }
+  .ev-offers__canvas {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 22rem;
+    opacity: 0;
+    transition: opacity 900ms var(--ease-out);
   }
 
-  .events-wide-frame {
-    aspect-ratio: 21 / 9;
-    border-color: var(--activity-tint);
+  .ev-offers.is-3d-ready .ev-offers__canvas {
+    opacity: 1;
   }
 
-  .events-audiences {
-    margin-top: var(--space-40);
-    row-gap: var(--space-24);
-  }
-
-  .events-audience-item {
-    --pointer-glow: color-mix(in srgb, var(--tint-events) 16%, transparent);
-    grid-column: 1 / -1;
-    border-top: 2px solid var(--activity-tint);
-    padding: var(--space-40);
+  .ev-offers__inner {
     display: flex;
     flex-direction: column;
-    gap: var(--space-16);
+    gap: 2rem;
+    padding-bottom: 5rem;
   }
 
-  @media (min-width: 768px) {
-    .events-audience-item {
-      grid-column: span 4;
-    }
+  .ev-offers__title {
+    order: -1;
+    padding-top: 5rem;
   }
 
-  .events-audience-name {
-    font-family: var(--font-display);
-    font-size: var(--fs-h3);
-    color: var(--text);
+  .ev-offers__list {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1rem;
+    list-style: none;
   }
 
-  .events-contact-box {
-    grid-column: 1 / -1;
+  .ev-offer {
     display: flex;
     flex-direction: column;
-    gap: var(--space-40);
+    gap: 0.6rem;
+    padding: 1.75rem;
+    border-radius: 20px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    opacity: 0.55;
+    transition: opacity 400ms var(--ease-out), border-color 400ms var(--ease-out), transform 500ms var(--ease-out);
+    outline: none;
   }
 
-  .events-contact-actions {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: var(--space-24);
+  .ev-offer.is-active,
+  .ev-offer:hover,
+  .ev-offer:focus-visible {
+    opacity: 1;
+    border-color: color-mix(in srgb, var(--activity-tint) 45%, var(--line));
   }
 
-  .contact-email-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 0.9rem 1.6rem;
-    border-radius: 999px;
-    font-family: var(--font-sans);
-    font-size: clamp(0.9375rem, 1vw, 1.0625rem);
+  .ev-offer:focus-visible {
+    outline: 2px solid var(--text);
+    outline-offset: 3px;
+  }
+
+  .ev-offer__num {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    color: var(--activity-tint);
+  }
+
+  .ev-offer__title {
+    font-size: 1.375rem;
     font-weight: 500;
-    color: var(--text);
-    text-decoration: none;
-    border: 1px solid var(--glass-border);
-    background: var(--glass-bg);
-    box-shadow: var(--glass-shadow);
-    white-space: nowrap;
-    transition: transform 250ms var(--ease-out), border-color 250ms var(--ease-out), box-shadow 250ms var(--ease-out);
+    line-height: 1.25;
   }
 
-  .contact-email-pill:hover {
-    transform: translateY(-2px);
-    border-color: color-mix(in srgb, var(--tint-events) 55%, var(--glass-border));
-    box-shadow: var(--glass-shadow), 0 8px 24px -4px color-mix(in srgb, var(--tint-events) 28%, transparent);
+  .ev-offer__text {
+    font-size: 1rem;
+    line-height: 1.55;
+    color: var(--text-muted);
   }
 
-  .contact-email-pill .email-icon {
-    flex-shrink: 0;
-    color: var(--tint-events);
+  /* Bureau : scène collante, sphères au-dessus des cartes alignées en trois colonnes */
+  @media (min-width: 960px) {
+    .ev-offers {
+      height: 320vh;
+    }
+    .ev-offers__stage {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      min-height: 46rem;
+      overflow: hidden;
+    }
+    .ev-offers__canvas {
+      position: absolute;
+      inset: 0;
+      height: 100%;
+    }
+    .ev-offers__inner {
+      position: relative;
+      height: 100%;
+      justify-content: space-between;
+      padding-top: 6.5rem;
+      padding-bottom: 3rem;
+      pointer-events: none;
+    }
+    .ev-offers__title {
+      padding-top: 0;
+      max-width: 14ch;
+    }
+    .ev-offers__list {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.5rem;
+      pointer-events: auto;
+    }
+    .ev-offer {
+      background: color-mix(in srgb, var(--surface) 88%, transparent);
+      transform: translateY(12px);
+    }
+    .ev-offer.is-active {
+      transform: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ev-offer,
+    .ev-offers__canvas {
+      transition: none;
+    }
   }
 </style>

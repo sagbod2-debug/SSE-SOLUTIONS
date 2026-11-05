@@ -1,7 +1,18 @@
-// Champ de particules réactif à la souris (esprit « page vivante »)
+// Champ de petits traits réactif à la souris (esprit « page vivante »).
+// Palettes par activité : [rgb, opacité de repos]
 const PALETTES = {
-  clair: [['20,20,20', 0.32], ['85,89,95', 0.3], ['180,35,42', 0.55], ['185,138,78', 0.55], ['154,161,169', 0.35]],
-  sombre: [['242,242,243', 0.28], ['164,168,176', 0.3], ['224,72,79', 0.6], ['217,185,138', 0.55], ['120,126,134', 0.35]]
+  consulting: {
+    clair: [['20,20,20', 0.32], ['85,89,95', 0.3], ['180,35,42', 0.55], ['185,138,78', 0.55], ['154,161,169', 0.35]],
+    sombre: [['242,242,243', 0.28], ['164,168,176', 0.3], ['224,72,79', 0.6], ['217,185,138', 0.55], ['120,126,134', 0.35]],
+  },
+  events: {
+    clair: [['20,20,20', 0.3], ['91,75,196', 0.5], ['201,160,74', 0.6], ['120,126,134', 0.3], ['214,120,170', 0.4]],
+    sombre: [['242,242,243', 0.26], ['164,152,242', 0.55], ['233,196,110', 0.6], ['120,126,134', 0.32], ['240,150,200', 0.45]],
+  },
+  care: {
+    clair: [['20,20,20', 0.26], ['43,93,156', 0.45], ['90,154,58', 0.45], ['201,160,74', 0.5], ['214,130,110', 0.45]],
+    sombre: [['242,242,243', 0.24], ['110,160,220', 0.5], ['130,200,100', 0.5], ['233,196,110', 0.55], ['240,160,140', 0.5]],
+  },
 };
 
 export function mountField(canvas, opts = {}) {
@@ -9,6 +20,7 @@ export function mountField(canvas, opts = {}) {
   if (!ctx) return null;
   const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   let theme = opts.theme === 'sombre' ? 'sombre' : 'clair';
+  const palKey = PALETTES[opts.palette] ? opts.palette : 'consulting';
   let W = 0, H = 0, dpr = 1, parts = [];
   const mouse = { x: -9999, y: -9999, sx: -9999, sy: -9999, active: 0, target: 0 };
   let lastScroll = window.scrollY || 0, raf = 0, t0 = performance.now();
@@ -20,7 +32,7 @@ export function mountField(canvas, opts = {}) {
     canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     const n = Math.min(1300, Math.round((W * H) / 1500));
-    const pal = PALETTES[theme];
+    const pal = PALETTES[palKey][theme];
     parts = [];
     for (let i = 0; i < n; i++) {
       // distribution un peu plus dense à droite et en bas, plus aérée derrière le texte
