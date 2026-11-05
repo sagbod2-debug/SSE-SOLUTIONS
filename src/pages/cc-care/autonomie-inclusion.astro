@@ -263,7 +263,6 @@ const seanceSteps = [
     <div class="container">
       <div class="modules-header">
         <div>
-          <p class="eyebrow" data-reveal>35 MODULES THÉMATIQUES</p>
           <h2 class="section-title" data-reveal-title>
             <span class="reveal-mask">
               <span class="reveal-line">Les 35 modules.</span>
@@ -298,6 +297,21 @@ const seanceSteps = [
           <button type="button" class="filter-chip glass" data-filter="culture" aria-pressed="false">
             Culture &amp; loisirs
           </button>
+        </div>
+      </div>
+
+      <div class="auto-orbs" data-auto-orbs>
+        <canvas class="auto-orbs__canvas" data-auto-orbs-canvas aria-hidden="true"></canvas>
+        <div class="auto-orbs__panel">
+          <p class="auto-orbs__count"><span data-auto-count>{modules35.filter((m) => m.cat === 'quotidien').length}</span> modules</p>
+          <p class="auto-orbs__title" data-auto-title>Vie quotidienne</p>
+          <ul class="auto-orbs__list" data-auto-list role="list">
+            {modules35.filter((m) => m.cat === 'quotidien').map((m) => <li>{m.title}</li>)}
+          </ul>
+          <div class="auto-orbs__nav">
+            <button type="button" class="auto-orbs__btn" data-auto-prev aria-label="Domaine précédent">←</button>
+            <button type="button" class="auto-orbs__btn" data-auto-next aria-label="Domaine suivant">→</button>
+          </div>
         </div>
       </div>
 
@@ -394,9 +408,184 @@ const seanceSteps = [
   }
 
   document.addEventListener('astro:page-load', initModulesFilter);
+
+  // Carrousel 3D des domaines : synchronisé avec les filtres
+  let orbsCleanup: (() => void) | null = null;
+  async function initOrbs() {
+    orbsCleanup?.();
+    orbsCleanup = null;
+    const wrap = document.querySelector<HTMLElement>('[data-auto-orbs]');
+    const canvas = document.querySelector<HTMLCanvasElement>('[data-auto-orbs-canvas]');
+    if (!wrap || !canvas) return;
+    const chips = Array.from(document.querySelectorAll<HTMLButtonElement>('.filter-chip[data-filter]')).filter(
+      (b) => b.dataset.filter !== 'all'
+    );
+    const items = Array.from(document.querySelectorAll<HTMLElement>('.module-item[data-module-cat]'));
+    const domains = chips.map((b) => ({ cat: b.dataset.filter || '', label: (b.textContent || '').trim() }));
+    const titleEl = wrap.querySelector('[data-auto-title]');
+    const countEl = wrap.querySelector('[data-auto-count]');
+    const listEl = wrap.querySelector('[data-auto-list]');
+    let current = 0;
+    let scene: { setActive(i: number): void; dispose(): void } | null = null;
+    let disposed = false;
+
+    function show(i: number, fromChip = false) {
+      current = (i + domains.length) % domains.length;
+      const d = domains[current];
+      const mods = items.filter((it) => it.dataset.moduleCat === d.cat).map((it) => it.querySelector('.module-title')?.textContent || '');
+      if (titleEl) titleEl.textContent = d.label;
+      if (countEl) countEl.textContent = String(mods.length);
+      if (listEl) {
+        listEl.replaceChildren(...mods.map((t) => { const li = document.createElement('li'); li.textContent = t; return li; }));
+      }
+      scene?.setActive(current);
+      if (!fromChip) chips[current]?.click();
+    }
+
+    const onChip = (e: Event) => {
+      const i = chips.indexOf(e.currentTarget as HTMLButtonElement);
+      if (i >= 0) show(i, true);
+    };
+    chips.forEach((c) => c.addEventListener('click', onChip));
+    const prev = wrap.querySelector('[data-auto-prev]');
+    const next = wrap.querySelector('[data-auto-next]');
+    const onPrev = () => show(current - 1);
+    const onNext = () => show(current + 1);
+    prev?.addEventListener('click', onPrev);
+    next?.addEventListener('click', onNext);
+
+    const dark = () => document.documentElement.getAttribute('data-theme') === 'dark';
+    async function mount() {
+      try {
+        const { mountAutonomieOrbs } = await import('../../scripts/three/autonomie-orbs.js');
+        if (disposed) return;
+        scene?.dispose();
+        scene = mountAutonomieOrbs(canvas!, { dark: dark(), domains, onSelect: (i: number) => show(i) });
+        wrap!.classList.toggle('is-3d-ready', !!scene);
+        scene?.setActive(current);
+      } catch {
+        wrap!.classList.remove('is-3d-ready');
+      }
+    }
+    const io = new IntersectionObserver((en) => {
+      if (en[0].isIntersecting) { io.disconnect(); mount(); }
+    }, { rootMargin: '300px' });
+    io.observe(wrap);
+    const themeObs = new MutationObserver(() => { if (scene) mount(); });
+    themeObs.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+
+    orbsCleanup = () => {
+      disposed = true;
+      io.disconnect();
+      themeObs.disconnect();
+      chips.forEach((c) => c.removeEventListener('click', onChip));
+      prev?.removeEventListener('click', onPrev);
+      next?.removeEventListener('click', onNext);
+      scene?.dispose();
+    };
+  }
+  document.addEventListener('astro:page-load', initOrbs);
+  document.addEventListener('astro:before-swap', () => { orbsCleanup?.(); orbsCleanup = null; });
 </script>
 
 <style>
+  .auto-orbs {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.5rem;
+    margin-bottom: var(--space-40);
+  }
+
+  .auto-orbs__canvas {
+    width: 100%;
+    height: 22rem;
+    display: block;
+    border-radius: 24px;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 800ms var(--ease-out);
+  }
+
+  .auto-orbs.is-3d-ready .auto-orbs__canvas {
+    opacity: 1;
+  }
+
+  .auto-orbs:not(.is-3d-ready) .auto-orbs__canvas {
+    display: none;
+  }
+
+  .auto-orbs__panel {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .auto-orbs__count {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    color: var(--activity-tint);
+  }
+
+  .auto-orbs__title {
+    font-size: clamp(1.5rem, 1.2rem + 1vw, 2.125rem);
+    font-weight: 450;
+    letter-spacing: -0.015em;
+    color: var(--text);
+  }
+
+  .auto-orbs__list {
+    list-style: none;
+    border-top: 1px solid var(--line);
+  }
+
+  .auto-orbs__list :global(li) {
+    padding-block: 0.7rem;
+    border-bottom: 1px solid var(--line);
+    font-size: 1rem;
+    color: var(--text);
+  }
+
+  .auto-orbs__nav {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .auto-orbs__btn {
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: transparent;
+    color: var(--text);
+    font: inherit;
+    font-size: 1.125rem;
+    cursor: pointer;
+  }
+
+  .auto-orbs__btn:hover {
+    border-color: color-mix(in srgb, var(--text) 30%, transparent);
+  }
+
+  .auto-orbs__btn:focus-visible {
+    outline: 2px solid var(--text);
+    outline-offset: 2px;
+  }
+
+  @media (min-width: 960px) {
+    .auto-orbs {
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+      align-items: center;
+      gap: 3rem;
+    }
+    .auto-orbs__canvas {
+      height: 30rem;
+    }
+  }
+
   .sr-only {
     position: absolute;
     width: 1px;

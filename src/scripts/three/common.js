@@ -132,7 +132,8 @@ export function runLoop(canvas, stage, onFrame, onResize) {
     px += (ptrX - px) * 0.05;
     py += (ptrY - py) * 0.05;
     onFrame(t, { px, py, reduce });
-    stage.renderer.render(stage.scene, stage.camera);
+    if (stage.renderFrame) stage.renderFrame();
+    else stage.renderer.render(stage.scene, stage.camera);
     if (!reduce) raf = requestAnimationFrame(frame);
   }
 
