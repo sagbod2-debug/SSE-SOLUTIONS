@@ -11,10 +11,10 @@ const situations = [
 ];
 
 const missions = [
-  { title: 'Accès aux droits et démarches', text: "Accompagner les personnes dans leurs démarches administratives et l'ouverture de leurs droits." },
-  { title: 'Autonomie et maintien du lien', text: 'Coordonner les relais du quotidien et faciliter l’autonomie des personnes accompagnées.' },
-  { title: 'Orientation', text: 'Mettre les personnes en lien avec les bons services et les bons partenaires.' },
-  { title: 'Appui aux équipes', text: 'Apporter un regard social aux équipes des établissements et des entreprises.' },
+  { title: 'Accès aux droits et démarches.', text: "Accompagner les personnes dans leurs démarches administratives et l'ouverture de leurs droits." },
+  { title: 'Autonomie et maintien du lien.', text: 'Coordonner les relais du quotidien et faciliter l’autonomie des personnes accompagnées.' },
+  { title: 'Orientation.', text: 'Mettre les personnes en lien avec les bons services et les bons partenaires.' },
+  { title: 'Appui aux équipes.', text: 'Apporter un regard social aux équipes des établissements et des entreprises.' },
 ];
 
 const activeFaqItems = CARE_FAQ_ITEMS.filter((item) => item.answer.trim().length > 0);
@@ -39,68 +39,61 @@ const faqJsonLd =
   jsonLd={faqJsonLd}
   livingMesh={false}
 >
-  <canvas class="act-field" data-care-field aria-hidden="true"></canvas>
-
-  <div class="care-hero-track" data-care-track>
-    <section class="act-hero care-hero" data-care-hero aria-labelledby="care-hero-title">
-      <canvas class="act-hero__canvas" data-care-hero-canvas aria-hidden="true"></canvas>
-      <div class="act-hero__fallback" aria-hidden="true">
+  <!-- Ensemble : les formes éparses se rassemblent autour du logo -->
+  <div class="ch" data-care-hero>
+    <div class="ch__stage">
+      <canvas class="ch__canvas" data-care-hero-canvas aria-hidden="true"></canvas>
+      <div class="ch__fallback" aria-hidden="true">
         <BrandLogo brand="cc-care" size="xl" loading="eager" alt="" />
       </div>
-      <div class="act-hero__fade" aria-hidden="true"></div>
-
-      <div class="container act-hero__inner">
-        <div class="act-hero__spacer" aria-hidden="true"></div>
-        <div class="act-hero__content">
-          <nav class="act-breadcrumb" aria-label="Fil d'Ariane" data-hero-fade>
-            <a href="/"><span aria-hidden="true">←</span><span>Retour à l'accueil</span></a>
-            <span aria-hidden="true">/</span>
-            <span aria-current="page">CC Care</span>
-          </nav>
-          <h1 class="act-title act-title--long" id="care-hero-title" data-hero-fade>Une équipe d’intervenants sociaux pour vos résidents, vos usagers et vos salariés.</h1>
-          <p class="act-verbs" data-hero-fade>Accompagner. Simplifier. Rendre autonome.</p>
-          <p class="act-lead" data-hero-fade>
-            CC Care mène des missions d'accompagnement social, conduites par des travailleurs sociaux et intervenants sociaux, au sein des structures sociales et des entreprises.
-          </p>
-          <div class="act-actions" data-hero-fade>
-            <a href="/contact?sujet=cc-care" class="act-btn">Exposer une situation</a>
-            <a href="/cc-care/autonomie-inclusion" class="act-btn act-btn--ghost">Le programme Autonomie &amp; Inclusion</a>
-          </div>
+      <div class="container ch__top">
+        <nav class="act-breadcrumb ch__crumb" aria-label="Fil d'Ariane">
+          <a href="/"><span aria-hidden="true">←</span><span>Retour à l'accueil</span></a>
+          <span aria-hidden="true">/</span>
+          <span aria-current="page">CC Care</span>
+        </nav>
+        <h1 class="ch__title">Une équipe d’intervenants sociaux pour vos résidents, vos usagers et vos salariés.</h1>
+        <p class="act-verbs">Accompagner. Simplifier. Rendre autonome.</p>
+      </div>
+      <div class="container ch__bottom">
+        <p class="ch__lead">
+          CC Care mène des missions d'accompagnement social, conduites par des travailleurs sociaux et intervenants sociaux, au sein des structures sociales et des entreprises.
+        </p>
+        <div class="act-actions ch__actions">
+          <a href="/contact?sujet=cc-care" class="act-btn">Exposer une situation</a>
+          <a href="/cc-care/autonomie-inclusion" class="act-btn act-btn--ghost">Le programme Autonomie &amp; Inclusion</a>
         </div>
       </div>
-    </section>
+    </div>
   </div>
 
-  <section class="act-block" aria-labelledby="care-sit-title">
-    <div class="container act-block__inner">
-      <h2 class="act-section-title" id="care-sit-title" data-reveal>Vous reconnaissez ces situations ?</h2>
-      <ul class="act-list act-list--3" role="list" data-reveal>
-        {situations.map((s) => <li>{s}</li>)}
-      </ul>
-    </div>
-  </section>
-
-  <section class="care-missions" data-care-missions aria-labelledby="care-mis-title">
-    <div class="care-missions__stage">
-      <div class="container care-missions__inner">
-        <div class="care-missions__text">
-          <h2 class="act-section-title" id="care-mis-title">Tout ce qui touche au social.</h2>
+  <!-- Une personne seule, puis chaque mission vient l'entourer -->
+  <section class="cs" data-care-shelter aria-labelledby="cs-sit-title">
+    <div class="container cs__grid">
+      <div class="cs__visual">
+        <canvas class="cs__canvas" data-care-shelter-canvas aria-hidden="true"></canvas>
+      </div>
+      <div class="cs__text">
+        <div class="cs__group">
+          <h2 class="act-section-title" id="cs-sit-title">Vous reconnaissez ces situations ?</h2>
+          <ul class="cs__list" role="list">
+            {situations.map((s) => <li class="cs__item cs__item--situation" data-care-step>{s}</li>)}
+          </ul>
+        </div>
+        <div class="cs__group">
+          <h2 class="act-section-title">Tout ce qui touche au social.</h2>
           <p class="act-block__lead">
             Nous intervenons là où une situation sociale freine l'autonomie, l'accès aux droits ou la stabilité professionnelle.
           </p>
-          <ol class="care-missions__list" role="list">
-            {missions.map((m, i) => (
-              <li class="care-mission" data-care-mission>
-                <span class="care-mission__num">{String(i + 1).padStart(2, '0')}</span>
-                <span class="care-mission__body">
-                  <h3 class="care-mission__title">{m.title}</h3>
-                  <p class="care-mission__text">{m.text}</p>
-                </span>
+          <ol class="cs__list" role="list">
+            {missions.map((m) => (
+              <li class="cs__item" data-care-step data-care-mission>
+                <h3 class="cs__title">{m.title}</h3>
+                <p class="cs__desc">{m.text}</p>
               </li>
             ))}
           </ol>
         </div>
-        <canvas class="care-missions__canvas" data-care-cells-canvas aria-hidden="true"></canvas>
       </div>
     </div>
   </section>
@@ -108,14 +101,14 @@ const faqJsonLd =
   <section class="act-block" aria-labelledby="care-who-title">
     <div class="container act-block__inner">
       <h2 class="act-section-title" id="care-who-title" data-reveal>Nos interlocuteurs.</h2>
-      <ul class="act-grid act-grid--2" role="list" data-reveal>
-        <li class="act-card">
-          <h3 class="act-card__title">Structures sociales</h3>
-          <p>Foyers, résidences sociales, centres d'hébergement et structures d'accueil ou d'insertion.</p>
+      <ul class="cw" role="list" data-reveal>
+        <li>
+          <h3 class="cw__name">Structures sociales</h3>
+          <p class="cw__desc">Foyers, résidences sociales, centres d'hébergement et structures d'accueil ou d'insertion.</p>
         </li>
-        <li class="act-card">
-          <h3 class="act-card__title">Entreprises</h3>
-          <p>Permanence sociale du travail, prévention de la précarité et appui direct à vos salariés.</p>
+        <li>
+          <h3 class="cw__name">Entreprises</h3>
+          <p class="cw__desc">Permanence sociale du travail, prévention de la précarité et appui direct à vos salariés.</p>
         </li>
       </ul>
     </div>
@@ -123,8 +116,8 @@ const faqJsonLd =
 
   <section class="act-block" aria-labelledby="care-prog-title">
     <div class="container">
-      <div class="care-program" data-reveal>
-        <div class="care-program__text">
+      <div class="cp" data-reveal>
+        <div class="cp__text">
           <h2 class="act-section-title" id="care-prog-title">Autonomie &amp; Inclusion.</h2>
           <p class="act-block__lead">
             Notre programme en ligne de 35 modules pour l'autonomie au quotidien, en français courant et en version FALC relue par des personnes concernées. Nous cherchons des structures partenaires pour le tester gratuitement début 2027.
@@ -187,120 +180,235 @@ const faqJsonLd =
 </script>
 
 <style>
-  @media (min-width: 960px) {
-    .care-hero-track {
-      height: 200vh;
-    }
-    .care-hero {
-      position: sticky;
-      top: 0;
-      height: 100vh;
-      min-height: 46rem;
-    }
+  /* ---------- Hero centré ---------- */
+  .ch {
+    position: relative;
+    height: 240vh;
   }
 
-  .care-missions {
+  .ch__stage {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    min-height: 42rem;
+    overflow: hidden;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .ch__canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    opacity: 0;
+    transition: opacity 1s var(--ease-out);
+  }
+
+  .ch.is-3d-ready .ch__canvas {
+    opacity: 1;
+  }
+
+  .ch__fallback {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -40%);
+    width: min(40%, 18rem);
+  }
+
+  .ch.is-3d-fallback .ch__fallback {
+    display: block;
+  }
+
+  .ch__top,
+  .ch__bottom {
     position: relative;
-    z-index: 2;
-    border-block: 1px solid var(--line);
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.9rem;
+  }
+
+  .ch__top {
+    padding-top: 6.5rem;
+  }
+
+  .ch__bottom {
+    padding-bottom: clamp(1.5rem, 5vh, 3rem);
+  }
+
+  .ch__crumb {
+    justify-content: center;
+  }
+
+  .ch__title {
+    font-size: clamp(1.9rem, 1.1rem + 2.4vw, 3.3rem);
+    line-height: 1.08;
+    letter-spacing: -0.025em;
+    font-weight: 450;
+    max-width: 26ch;
+  }
+
+  .ch__lead {
+    font-size: 1.0625rem;
+    line-height: 1.55;
+    color: var(--text-muted);
+    max-width: 40rem;
+    background: color-mix(in srgb, var(--bg) 70%, transparent);
+    border-radius: 12px;
+  }
+
+  .ch__actions {
+    justify-content: center;
+  }
+
+  /* ---------- L'abri : visuel collant + texte qui défile ---------- */
+  .cs {
+    position: relative;
+    z-index: 1;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .cs__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .cs__visual {
+    position: sticky;
+    top: 4.5rem;
+    height: 42vh;
+    z-index: 0;
     background: var(--bg);
   }
 
-  .care-missions__inner {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: 2rem;
-    padding-block: 5rem;
+  .cs__canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
   }
 
-  .care-missions__text {
+  .cs__text {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6rem;
+    padding-block: 3rem 8rem;
+  }
+
+  .cs__group {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
   }
 
-  .care-missions__canvas {
-    width: 100%;
-    height: 22rem;
-    display: block;
-    opacity: 0;
-    transition: opacity 900ms var(--ease-out);
-    order: -1;
-  }
-
-  .care-missions.is-3d-ready .care-missions__canvas {
-    opacity: 1;
-  }
-
-  .care-missions__list {
+  .cs__list {
     list-style: none;
-    border-top: 1px solid var(--line);
-  }
-
-  .care-mission {
-    display: flex;
-    gap: 1rem;
-    padding-block: 1.25rem;
-    border-bottom: 1px solid var(--line);
-    opacity: 0.5;
-    transition: opacity 400ms var(--ease-out);
-  }
-
-  .care-mission.is-active {
-    opacity: 1;
-  }
-
-  .care-mission__num {
-    font-family: var(--font-mono);
-    font-size: 0.8125rem;
-    color: var(--activity-tint);
-    padding-top: 0.3rem;
-  }
-
-  .care-mission__body {
     display: flex;
     flex-direction: column;
-    gap: 0.35rem;
+    gap: 3rem;
   }
 
-  .care-mission__title {
-    font-size: 1.25rem;
+  .cs__item {
+    padding: 1.5rem;
+    border-radius: 18px;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    opacity: 0.45;
+    transition: opacity 500ms var(--ease-out), border-color 500ms var(--ease-out);
+  }
+
+  .cs__item.is-active {
+    opacity: 1;
+    border-color: color-mix(in srgb, var(--activity-tint) 40%, var(--line));
+  }
+
+  .cs__item--situation {
+    font-size: clamp(1.25rem, 1rem + 1vw, 1.75rem);
+    line-height: 1.35;
+    letter-spacing: -0.01em;
+  }
+
+  .cs__title {
+    font-size: 1.375rem;
     font-weight: 500;
-    line-height: 1.3;
+    margin-bottom: 0.4rem;
   }
 
-  .care-mission__text {
-    font-size: 1rem;
-    line-height: 1.55;
+  .cs__desc {
     color: var(--text-muted);
+    line-height: 1.55;
   }
 
   @media (min-width: 960px) {
-    .care-missions {
-      height: 280vh;
+    .cs__grid {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 4rem;
     }
-    .care-missions__stage {
-      position: sticky;
+    .cs__visual {
       top: 0;
       height: 100vh;
-      min-height: 46rem;
       display: flex;
       align-items: center;
     }
-    .care-missions__inner {
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-      align-items: center;
-      gap: 3rem;
-      padding-block: 6rem 2rem;
-      width: 100%;
+    .cs__canvas {
+      height: 80vh;
     }
-    .care-missions__canvas {
-      order: 0;
-      height: min(70vh, 36rem);
+    .cs__text {
+      padding-block: 30vh 30vh;
+      gap: 40vh;
+    }
+    .cs__list {
+      gap: 30vh;
     }
   }
 
-  .care-program {
+  /* ---------- Interlocuteurs ---------- */
+  .cw {
+    list-style: none;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    border-top: 1px solid var(--line);
+  }
+
+  @media (min-width: 900px) {
+    .cw {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: 3rem;
+    }
+  }
+
+  .cw li {
+    padding-block: 2rem;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .cw__name {
+    font-size: clamp(1.75rem, 1.2rem + 2vw, 2.75rem);
+    font-weight: 450;
+    letter-spacing: -0.02em;
+    color: var(--activity-tint);
+  }
+
+  .cw__desc {
+    font-size: 1.0625rem;
+    line-height: 1.55;
+    color: var(--text-muted);
+    max-width: 34rem;
+  }
+
+  .cp {
     display: flex;
     flex-wrap: wrap;
     align-items: flex-end;
@@ -312,7 +420,7 @@ const faqJsonLd =
     border: 1px solid var(--line);
   }
 
-  .care-program__text {
+  .cp__text {
     display: flex;
     flex-direction: column;
     gap: 1rem;
@@ -320,8 +428,13 @@ const faqJsonLd =
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .care-mission,
-    .care-missions__canvas {
+    .ch {
+      height: auto;
+    }
+    .ch__stage {
+      position: relative;
+    }
+    .cs__item {
       transition: none;
     }
   }

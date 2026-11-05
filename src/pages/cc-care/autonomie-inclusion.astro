@@ -1,8 +1,8 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import Picture from '../../components/Picture.astro';
 import BrandLogo from '../../components/BrandLogo.astro';
 import { SHOW_PILOT_DETAILS, SHOW_REAL_PHOTOS } from '../../config/flags';
+import '../../styles/activity-3d.css';
 
 const modules35 = [
   { num: 1, title: 'Santé, hygiène et bien-être', cat: 'sante' },
@@ -51,296 +51,145 @@ const seanceSteps = [
   'Validation',
 ];
 ---
-
 <BaseLayout
   title="Programme en ligne d’autonomie au quotidien, en FALC et français courant · Autonomie & Inclusion"
   description="Programme en ligne de 35 modules pour l’autonomie au quotidien des adultes accompagnés, en français courant et en version FALC."
   theme="autonomie-inclusion"
+  livingMesh={false}
 >
-  <section class="section hero-autonomie" transition:name="solution-card-autonomie">
-    <div class="container grid-12 hero-autonomie-grid">
-      <div class="hero-autonomie-content">
-        <nav class="activity-breadcrumb" aria-label="Fil d'Ariane" data-hero-fade>
-          <a href="/" class="activity-breadcrumb-link">
-            <span aria-hidden="true">←</span>
-            <span>Retour à l'accueil</span>
-          </a>
-          <span class="activity-breadcrumb-sep" aria-hidden="true">/</span>
-          <a href="/cc-care" class="activity-breadcrumb-link">CC Care</a>
-          <span class="activity-breadcrumb-sep" aria-hidden="true">/</span>
-          <span class="activity-breadcrumb-current">Autonomie &amp; Inclusion</span>
-        </nav>
+  <!-- Le quotidien en miniature : la ville, puis le parcours en quatre étapes -->
+  <div class="at" data-town>
+    <div class="at__stage">
+      <canvas class="at__canvas" data-town-canvas aria-hidden="true"></canvas>
+      <div class="at__labels" aria-hidden="true">
+        <span class="at__label" data-town-label>Logement</span>
+        <span class="at__label" data-town-label>Démarches</span>
+        <span class="at__label" data-town-label>Santé</span>
+        <span class="at__label" data-town-label>Mobilité</span>
+        <span class="at__label" data-town-label>Budget</span>
+      </div>
+      <div class="at__fallback" aria-hidden="true">
+        <BrandLogo brand="cc-care" size="xl" loading="eager" alt="" />
+      </div>
 
-        <div class="hero-activity-brand" data-hero-fade>
-          <BrandLogo brand="cc-care" size="lg" loading="eager" alt="Logo CC Care — Autonomie & Inclusion" />
-          <div class="hero-activity-brand-meta">
-            <p class="eyebrow">CC CARE · PROGRAMME EN LIGNE</p>
-            <p class="hero-activity-brand-name">Autonomie &amp; Inclusion</p>
-          </div>
-        </div>
-        <h1 class="hero-title">
-          <span class="reveal-mask">
-            <span class="reveal-line" data-hero-line>Autonomie &amp; Inclusion.</span>
-          </span>
-        </h1>
-        <p class="prose-measure hero-autonomie-lead" data-hero-fade>
+      <div class="container at__hero">
+        <nav class="act-breadcrumb" aria-label="Fil d'Ariane">
+          <a href="/"><span aria-hidden="true">←</span><span>Retour à l'accueil</span></a>
+          <span aria-hidden="true">/</span>
+          <a href="/cc-care">CC Care</a>
+          <span aria-hidden="true">/</span>
+          <span aria-current="page">Autonomie &amp; Inclusion</span>
+        </nav>
+        <h1 class="at__title">Autonomie &amp; Inclusion.</h1>
+        <p class="at__lead">
           Un programme en ligne pour aider les adultes accompagnés par votre structure à gagner en autonomie dans la vie de tous les jours : démarches, santé, logement, numérique, budget, parentalité, mobilité.
         </p>
-
-        <div class="hero-cta-block" data-hero-fade>
-          <a href="/contact?sujet=autonomie-inclusion" class="btn-primary" data-magnetic data-glow>
-            <span>Devenir structure partenaire</span>
-            <span class="btn-arrow" aria-hidden="true">→</span>
-          </a>
-          <p class="hero-subnote">Test gratuit en avant-première, début 2027.</p>
+        <div class="act-actions">
+          <a href="/contact?sujet=autonomie-inclusion" class="act-btn">Devenir structure partenaire</a>
         </div>
+        <p class="at__note">Test gratuit en avant-première, début 2027.</p>
       </div>
 
-      <div class="hero-autonomie-media" data-hero-fade>
-        <div class="media-frame hero-autonomie-frame">
-          <Picture
-            slug="08-autonomie-hero"
-            alt="Adultes collaborant et développant leur autonomie pratique sur ordinateur en atelier"
-            sizes="(max-width: 960px) 92vw, 520px"
-            loading="eager"
-            fetchpriority="high"
-          />
-        </div>
+      <div class="container at__steps-wrap">
+        <h2 class="at__steps-title">Un parcours en quatre étapes.</h2>
+        <ol class="at__steps" role="list">
+          <li class="at__step" data-town-step><span class="at__step-num">01</span><h3>Découvrir.</h3><p>Les consignes, le vocabulaire, une première réussite.</p></li>
+          <li class="at__step" data-town-step><span class="at__step-num">02</span><h3>S'entraîner.</h3><p>Répéter, voir des démonstrations, faire des exercices corrigés.</p></li>
+          <li class="at__step" data-town-step><span class="at__step-num">03</span><h3>Appliquer.</h3><p>Des situations de la vie réelle et des prises de décision.</p></li>
+          <li class="at__step" data-town-step><span class="at__step-num">04</span><h3>Devenir autonome.</h3><p>Agir seul, prévenir les risques, faire le bilan.</p></li>
+        </ol>
       </div>
     </div>
-  </section>
+  </div>
 
-  <section class="section section--secondary section--spacious">
-    <div class="container">
-      <h2 class="section-title" data-reveal-title>
-        <span class="reveal-mask">
-          <span class="reveal-line">Deux façons de lire. Le même contenu.</span>
-        </span>
-      </h2>
-
-      <div class="grid-12 versions-grid">
-        <article class="version-card glass" data-glow data-reveal>
-          <span class="num-index">01</span>
-          <h3 class="card-title">FALC</h3>
-          <p>
-            Facile à lire et à comprendre. Des phrases courtes, des mots simples, une idée à la fois.
-          </p>
-        </article>
-
-        <article class="version-card glass" data-glow data-reveal>
-          <span class="num-index">02</span>
-          <h3 class="card-title">Français courant</h3>
-          <p>
-            Pour les personnes à l'aise avec l'écrit, qui veulent aller plus loin.
-          </p>
-        </article>
-      </div>
-
-      <p class="versions-note" data-reveal>
-        Chaque personne choisit sa version. Les objectifs restent les mêmes, et restent pensés pour des adultes.
-      </p>
-    </div>
-  </section>
-
-  <section class="section section--spacious beyond-digital-section">
-    <div class="container grid-12">
-      <div class="beyond-digital-box glass" data-glow data-reveal>
-        <p class="eyebrow">VIE QUOTIDIENNE</p>
-        <h2 class="section-title" data-reveal-title>
-          <span class="reveal-mask">
-            <span class="reveal-line">Bien plus que le numérique</span>
-          </span>
-        </h2>
-        <p class="beyond-digital-text prose-measure">
-          Beaucoup d'outils d'inclusion se concentrent sur le numérique. Autonomie &amp; Inclusion couvre toute la vie quotidienne : démarches, santé, logement, budget, parentalité, mobilité, sécurité. Chaque atelier part d'une situation réelle et existe en deux versions de lecture.
+  <!-- Deux façons de lire : une carte qui se retourne -->
+  <section class="act-block" aria-labelledby="au-read-title">
+    <div class="container au-read">
+      <div class="au-read__text">
+        <h2 class="act-section-title" id="au-read-title" data-reveal>Deux façons de lire. Le même contenu.</h2>
+        <div class="au-read__switch" role="group" aria-label="Choisir la version de lecture" data-flip-switch>
+          <button type="button" class="au-read__opt is-on" aria-pressed="true" data-flip="falc">FALC</button>
+          <button type="button" class="au-read__opt" aria-pressed="false" data-flip="courant">Français courant</button>
+        </div>
+        <p class="act-block__lead" data-reveal>
+          Chaque personne choisit sa version. Les objectifs restent les mêmes, et restent pensés pour des adultes.
         </p>
       </div>
+      <div class="au-card" data-flip-card>
+        <div class="au-card__inner">
+          <article class="au-card__face au-card__face--front" aria-hidden="false">
+            <p class="au-card__tag">01</p>
+            <h3 class="au-card__title">FALC</h3>
+            <p class="au-card__text">Facile à lire et à comprendre. Des phrases courtes, des mots simples, une idée à la fois.</p>
+          </article>
+          <article class="au-card__face au-card__face--back" aria-hidden="true">
+            <p class="au-card__tag">02</p>
+            <h3 class="au-card__title">Français courant</h3>
+            <p class="au-card__text">Pour les personnes à l'aise avec l'écrit, qui veulent aller plus loin.</p>
+          </article>
+        </div>
+      </div>
     </div>
   </section>
 
-  <section class="section">
-    <div class="container">
-      <dl class="autonomie-stats grid-12" data-reveal>
-        <div class="autonomie-stat-card glass" data-glow>
-          <dt class="autonomie-stat-label">modules</dt>
-          <dd class="autonomie-stat-num" data-count-to="35">35</dd>
-        </div>
-        <div class="autonomie-stat-card glass" data-glow>
-          <dt class="autonomie-stat-label">ateliers</dt>
-          <dd class="autonomie-stat-num" data-count-to="244">244</dd>
-        </div>
-        <div class="autonomie-stat-card glass" data-glow>
-          <dt class="autonomie-stat-label">fiches (chaque atelier en 2 versions)</dt>
-          <dd class="autonomie-stat-num" data-count-to="488">488</dd>
-        </div>
+  <section class="act-block" aria-labelledby="au-beyond-title">
+    <div class="container act-block__inner">
+      <h2 class="act-section-title" id="au-beyond-title" data-reveal>Bien plus que le numérique</h2>
+      <p class="au-beyond" data-reveal>
+        Beaucoup d'outils d'inclusion se concentrent sur le numérique. Autonomie &amp; Inclusion couvre toute la vie quotidienne : démarches, santé, logement, budget, parentalité, mobilité, sécurité. Chaque atelier part d'une situation réelle et existe en deux versions de lecture.
+      </p>
+      <dl class="au-stats" data-reveal>
+        <div><dt>modules</dt><dd data-count-to="35">35</dd></div>
+        <div><dt>ateliers</dt><dd data-count-to="244">244</dd></div>
+        <div><dt>fiches (chaque atelier en 2 versions)</dt><dd data-count-to="488">488</dd></div>
       </dl>
     </div>
   </section>
 
-  <section class="section section--secondary section--spacious">
-    <div class="container">
-      <div class="grid-12 parcours-layout">
-        <div class="parcours-left">
-          <h2 class="section-title" data-reveal-title>
-            <span class="reveal-mask">
-              <span class="reveal-line">Un parcours en quatre étapes.</span>
-            </span>
-          </h2>
-          <div class="media-frame parcours-photo" data-reveal>
-            <Picture
-              slug="09-autonomie-parcours"
-              alt="Main tenant un trousseau de clés devant la porte d’un logement lumineux, symbole d’autonomie au quotidien"
-              sizes="(max-width: 960px) 92vw, 480px"
-            />
-          </div>
-        </div>
-
-        <ol class="parcours-steps">
-          <li class="parcours-step" data-reveal>
-            <span class="num-index">01</span>
-            <div>
-              <h3 class="card-title">Découvrir.</h3>
-              <p>Les consignes, le vocabulaire, une première réussite.</p>
-            </div>
-          </li>
-          <li class="parcours-step" data-reveal>
-            <span class="num-index">02</span>
-            <div>
-              <h3 class="card-title">S'entraîner.</h3>
-              <p>Répéter, voir des démonstrations, faire des exercices corrigés.</p>
-            </div>
-          </li>
-          <li class="parcours-step" data-reveal>
-            <span class="num-index">03</span>
-            <div>
-              <h3 class="card-title">Appliquer.</h3>
-              <p>Des situations de la vie réelle et des prises de décision.</p>
-            </div>
-          </li>
-          <li class="parcours-step" data-reveal>
-            <span class="num-index">04</span>
-            <div>
-              <h3 class="card-title">Devenir autonome.</h3>
-              <p>Agir seul, prévenir les risques, faire le bilan.</p>
-            </div>
-          </li>
-        </ol>
-      </div>
-    </div>
-  </section>
-
-  <section class="section section--spacious">
-    <div class="container">
-      <h2 class="section-title" data-reveal-title>
-        <span class="reveal-mask">
-          <span class="reveal-line">Comment se passe une séance.</span>
-        </span>
-      </h2>
-
-      <ol class="seance-flow glass" aria-label="Déroulement d'une séance en 6 temps" data-reveal>
-        {
-          seanceSteps.map((step, idx) => (
-            <li class="seance-node">
-              <span class="num-index">{String(idx + 1).padStart(2, '0')}</span>
-              <span class="seance-node-name">{step}</span>
-              {idx < seanceSteps.length - 1 && (
-                <span class="seance-arrow" aria-hidden="true">
-                  →
-                </span>
-              )}
-            </li>
-          ))
-        }
+  <section class="act-block" aria-labelledby="au-seance-title">
+    <div class="container act-block__inner">
+      <h2 class="act-section-title" id="au-seance-title" data-reveal>Comment se passe une séance.</h2>
+      <ol class="au-seance" aria-label="Déroulement d'une séance en 6 temps" data-reveal>
+        {seanceSteps.map((step, idx) => (
+          <li><span class="au-seance__num">{String(idx + 1).padStart(2, '0')}</span><span class="au-seance__name">{step}</span></li>
+        ))}
       </ol>
-
-      <p class="prose-measure seance-text" data-reveal>
+      <p class="act-block__lead" data-reveal>
         En cas de difficulté, la personne reçoit un rappel et un nouvel exemple, puis elle réessaie. Votre équipe suit la progression de chacun.
       </p>
     </div>
   </section>
 
-  <section class="section section--secondary section--spacious" id="modules-35">
-    <div class="container">
-      <div class="modules-header">
-        <div>
-          <h2 class="section-title" data-reveal-title>
-            <span class="reveal-mask">
-              <span class="reveal-line">Les 35 modules.</span>
-            </span>
-          </h2>
-        </div>
-
-        <div
-          class="modules-filters"
-          role="group"
-          aria-label="Filtrer les 35 modules par thème"
-          data-reveal
-        >
-          <button type="button" class="filter-chip glass is-active" data-filter="all" aria-pressed="true">
-            Tous (35)
-          </button>
-          <button type="button" class="filter-chip glass" data-filter="quotidien" aria-pressed="false">
-            Vie quotidienne
-          </button>
-          <button type="button" class="filter-chip glass" data-filter="sante" aria-pressed="false">
-            Santé &amp; bien-être
-          </button>
-          <button type="button" class="filter-chip glass" data-filter="citoyennete" aria-pressed="false">
-            Citoyenneté
-          </button>
-          <button type="button" class="filter-chip glass" data-filter="prevention" aria-pressed="false">
-            Sécurité &amp; prévention
-          </button>
-          <button type="button" class="filter-chip glass" data-filter="competences" aria-pressed="false">
-            Apprentissages
-          </button>
-          <button type="button" class="filter-chip glass" data-filter="culture" aria-pressed="false">
-            Culture &amp; loisirs
-          </button>
+  <section class="act-block" id="modules-35" aria-labelledby="au-mod-title">
+    <div class="container act-block__inner">
+      <div class="au-mod__head">
+        <h2 class="act-section-title" id="au-mod-title" data-reveal>Les 35 modules.</h2>
+        <div class="au-mod__filters" role="group" aria-label="Filtrer les 35 modules par thème">
+          <button type="button" class="au-chip is-active" data-filter="all" aria-pressed="true">Tous (35)</button>
+          <button type="button" class="au-chip" data-filter="quotidien" aria-pressed="false">Vie quotidienne</button>
+          <button type="button" class="au-chip" data-filter="sante" aria-pressed="false">Santé &amp; bien-être</button>
+          <button type="button" class="au-chip" data-filter="citoyennete" aria-pressed="false">Citoyenneté</button>
+          <button type="button" class="au-chip" data-filter="prevention" aria-pressed="false">Sécurité &amp; prévention</button>
+          <button type="button" class="au-chip" data-filter="competences" aria-pressed="false">Apprentissages</button>
+          <button type="button" class="au-chip" data-filter="culture" aria-pressed="false">Culture &amp; loisirs</button>
         </div>
       </div>
-
-      <div class="auto-orbs" data-auto-orbs>
-        <canvas class="auto-orbs__canvas" data-auto-orbs-canvas aria-hidden="true"></canvas>
-        <div class="auto-orbs__panel">
-          <p class="auto-orbs__count"><span data-auto-count>{modules35.filter((m) => m.cat === 'quotidien').length}</span> modules</p>
-          <p class="auto-orbs__title" data-auto-title>Vie quotidienne</p>
-          <ul class="auto-orbs__list" data-auto-list role="list">
-            {modules35.filter((m) => m.cat === 'quotidien').map((m) => <li>{m.title}</li>)}
-          </ul>
-          <div class="auto-orbs__nav">
-            <button type="button" class="auto-orbs__btn" data-auto-prev aria-label="Domaine précédent">←</button>
-            <button type="button" class="auto-orbs__btn" data-auto-next aria-label="Domaine suivant">→</button>
-          </div>
-        </div>
-      </div>
-
-      <p class="sr-only" id="modules-live-status" aria-live="polite">35 modules affichés</p>
-
-      <ol class="modules-grid" id="modules-grid">
-        {
-          modules35.map((m) => (
-            <li class="module-item glass" data-module-cat={m.cat}>
-              <span class="num-index">{String(m.num).padStart(2, '0')}</span>
-              <span class="module-title">{m.title}</span>
-            </li>
-          ))
-        }
+      <p class="act-sr-only" id="modules-live-status" aria-live="polite">35 modules affichés</p>
+      <ol class="au-tiles" data-tiles>
+        {modules35.map((m) => (
+          <li class="au-tile" data-module-cat={m.cat}>
+            <span class="au-tile__num">{String(m.num).padStart(2, '0')}</span>
+            <span class="au-tile__title">{m.title}</span>
+          </li>
+        ))}
       </ol>
     </div>
   </section>
 
   {SHOW_PILOT_DETAILS && (
-    <section class="section section--spacious pilot-details-section">
-      <div class="container grid-12">
-        <div class="pilot-details-box glass" data-glow data-reveal>
-          <p class="eyebrow">AVANT-PREMIÈRE 2027</p>
-          <h2 class="section-title" data-reveal-title>
-            <span class="reveal-mask">
-              <span class="reveal-line">Ce que comprend le test gratuit</span>
-            </span>
-          </h2>
-        </div>
+    <section class="act-block" aria-labelledby="au-pilot-title">
+      <div class="container act-block__inner">
+        <h2 class="act-section-title" id="au-pilot-title" data-reveal>Ce que comprend le test gratuit</h2>
       </div>
     </section>
   )}
@@ -353,615 +202,513 @@ const seanceSteps = [
     </section>
   )}
 
-  <section class="section section--spacious">
-    <div class="container grid-12">
-      <div class="partenaires-box glass">
-        <h2 class="section-title" data-reveal-title>
-          <span class="reveal-mask">
-            <span class="reveal-line">Testez-le avec nous.</span>
-          </span>
-        </h2>
-        <p class="prose-measure partenaires-text" data-reveal>
-          Nous cherchons quelques structures de l'Essonne pour tester le programme gratuitement en avant-première, début 2027, avec un petit groupe de personnes accompagnées, et l'ajuster à leurs besoins. CCAS, centres sociaux, CHRS, missions locales, ESAT, associations : parlons-en.
-        </p>
-        <div class="btn-group" data-reveal>
-          <a href="/contact?sujet=autonomie-inclusion" class="btn-primary" data-magnetic data-glow>
-            <span>Devenir structure partenaire</span>
-            <span class="btn-arrow" aria-hidden="true">→</span>
-          </a>
+  <section class="act-block act-cta-wrap" aria-labelledby="au-cta-title">
+    <div class="container">
+      <div class="act-cta" data-reveal>
+        <div class="act-cta__text">
+          <h2 class="act-section-title" id="au-cta-title">Testez-le avec nous.</h2>
+          <p class="au-cta__text">
+            Nous cherchons quelques structures de l'Essonne pour tester le programme gratuitement en avant-première, début 2027, avec un petit groupe de personnes accompagnées, et l'ajuster à leurs besoins. CCAS, centres sociaux, CHRS, missions locales, ESAT, associations : parlons-en.
+          </p>
         </div>
+        <a href="/contact?sujet=autonomie-inclusion" class="act-btn act-btn--invert">Devenir structure partenaire</a>
       </div>
     </div>
   </section>
 </BaseLayout>
 
 <script>
-  function initModulesFilter() {
-    const filterBtns = document.querySelectorAll<HTMLButtonElement>('.filter-chip[data-filter]');
-    const moduleItems = document.querySelectorAll<HTMLElement>('.module-item[data-module-cat]');
-    const liveStatus = document.getElementById('modules-live-status');
+  import { initAutonomiePage } from '../../scripts/autonomie/page.js';
 
-    if (!filterBtns.length || !moduleItems.length) return;
-
-    filterBtns.forEach((btn) => {
-      btn.addEventListener('click', () => {
-        const filter = btn.getAttribute('data-filter') || 'all';
-        filterBtns.forEach((b) => {
-          const active = b === btn;
-          b.classList.toggle('is-active', active);
-          b.setAttribute('aria-pressed', active ? 'true' : 'false');
-        });
-
-        let visibleCount = 0;
-        moduleItems.forEach((item) => {
-          const cat = item.getAttribute('data-module-cat');
-          const match = filter === 'all' || cat === filter;
-          item.hidden = !match;
-          if (match) visibleCount++;
-        });
-
-        if (liveStatus) {
-          liveStatus.textContent = `${visibleCount} modules affichés`;
-        }
-      });
-    });
-  }
-
-  document.addEventListener('astro:page-load', initModulesFilter);
-
-  // Carrousel 3D des domaines : synchronisé avec les filtres
-  let orbsCleanup: (() => void) | null = null;
-  async function initOrbs() {
-    orbsCleanup?.();
-    orbsCleanup = null;
-    const wrap = document.querySelector<HTMLElement>('[data-auto-orbs]');
-    const canvas = document.querySelector<HTMLCanvasElement>('[data-auto-orbs-canvas]');
-    if (!wrap || !canvas) return;
-    const chips = Array.from(document.querySelectorAll<HTMLButtonElement>('.filter-chip[data-filter]')).filter(
-      (b) => b.dataset.filter !== 'all'
-    );
-    const items = Array.from(document.querySelectorAll<HTMLElement>('.module-item[data-module-cat]'));
-    const domains = chips.map((b) => ({ cat: b.dataset.filter || '', label: (b.textContent || '').trim() }));
-    const titleEl = wrap.querySelector('[data-auto-title]');
-    const countEl = wrap.querySelector('[data-auto-count]');
-    const listEl = wrap.querySelector('[data-auto-list]');
-    let current = 0;
-    let scene: { setActive(i: number): void; dispose(): void } | null = null;
-    let disposed = false;
-
-    function show(i: number, fromChip = false) {
-      current = (i + domains.length) % domains.length;
-      const d = domains[current];
-      const mods = items.filter((it) => it.dataset.moduleCat === d.cat).map((it) => it.querySelector('.module-title')?.textContent || '');
-      if (titleEl) titleEl.textContent = d.label;
-      if (countEl) countEl.textContent = String(mods.length);
-      if (listEl) {
-        listEl.replaceChildren(...mods.map((t) => { const li = document.createElement('li'); li.textContent = t; return li; }));
-      }
-      scene?.setActive(current);
-      if (!fromChip) chips[current]?.click();
-    }
-
-    const onChip = (e: Event) => {
-      const i = chips.indexOf(e.currentTarget as HTMLButtonElement);
-      if (i >= 0) show(i, true);
-    };
-    chips.forEach((c) => c.addEventListener('click', onChip));
-    const prev = wrap.querySelector('[data-auto-prev]');
-    const next = wrap.querySelector('[data-auto-next]');
-    const onPrev = () => show(current - 1);
-    const onNext = () => show(current + 1);
-    prev?.addEventListener('click', onPrev);
-    next?.addEventListener('click', onNext);
-
-    const dark = () => document.documentElement.getAttribute('data-theme') === 'dark';
-    async function mount() {
-      try {
-        const { mountAutonomieOrbs } = await import('../../scripts/three/autonomie-orbs.js');
-        if (disposed) return;
-        scene?.dispose();
-        scene = mountAutonomieOrbs(canvas!, { dark: dark(), domains, onSelect: (i: number) => show(i) });
-        wrap!.classList.toggle('is-3d-ready', !!scene);
-        scene?.setActive(current);
-      } catch {
-        wrap!.classList.remove('is-3d-ready');
-      }
-    }
-    const io = new IntersectionObserver((en) => {
-      if (en[0].isIntersecting) { io.disconnect(); mount(); }
-    }, { rootMargin: '300px' });
-    io.observe(wrap);
-    const themeObs = new MutationObserver(() => { if (scene) mount(); });
-    themeObs.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
-
-    orbsCleanup = () => {
-      disposed = true;
-      io.disconnect();
-      themeObs.disconnect();
-      chips.forEach((c) => c.removeEventListener('click', onChip));
-      prev?.removeEventListener('click', onPrev);
-      next?.removeEventListener('click', onNext);
-      scene?.dispose();
-    };
-  }
-  document.addEventListener('astro:page-load', initOrbs);
-  document.addEventListener('astro:before-swap', () => { orbsCleanup?.(); orbsCleanup = null; });
+  let cleanup: (() => void) | null = null;
+  document.addEventListener('astro:page-load', () => {
+    cleanup?.();
+    cleanup = document.querySelector('[data-town]') ? initAutonomiePage() : null;
+  });
+  document.addEventListener('astro:before-swap', () => {
+    cleanup?.();
+    cleanup = null;
+  });
 </script>
 
 <style>
-  .auto-orbs {
+  /* ---------- La ville et le parcours ---------- */
+  .at {
+    --ap: 0;
     position: relative;
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: 1.5rem;
-    margin-bottom: var(--space-40);
+    height: 460vh;
   }
 
-  .auto-orbs__canvas {
+  .at__stage {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    min-height: 40rem;
+    overflow: hidden;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .at__canvas {
+    position: absolute;
+    inset: 0;
     width: 100%;
-    height: 22rem;
+    height: 100%;
     display: block;
-    border-radius: 24px;
-    border: 1px solid var(--line);
-    background: var(--surface);
-    cursor: pointer;
     opacity: 0;
-    transition: opacity 800ms var(--ease-out);
+    transition: opacity 1s var(--ease-out);
   }
 
-  .auto-orbs.is-3d-ready .auto-orbs__canvas {
+  .at.is-3d-ready .at__canvas {
     opacity: 1;
   }
 
-  .auto-orbs:not(.is-3d-ready) .auto-orbs__canvas {
+  .at__fallback {
+    display: none;
+    position: absolute;
+    right: 8%;
+    top: 30%;
+    width: min(30%, 20rem);
+  }
+
+  .at.is-3d-fallback .at__fallback {
+    display: block;
+  }
+
+  .at__labels {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .at.is-3d-fallback .at__labels {
     display: none;
   }
 
-  .auto-orbs__panel {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
+  .at__label {
+    position: absolute;
+    left: 0;
+    top: 0;
+    padding: 0.3rem 0.7rem;
+    border-radius: 999px;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--text);
+    background: var(--bg);
+    border: 1px solid var(--line);
+    white-space: nowrap;
+    transition: background-color 300ms var(--ease-out), color 300ms var(--ease-out);
   }
 
-  .auto-orbs__count {
+  .at__label.is-on {
+    background: var(--activity-tint);
+    color: var(--bg);
+    border-color: transparent;
+  }
+
+  .at__hero {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    padding-top: 6.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    opacity: clamp(0, (0.14 - var(--ap)) / 0.08, 1);
+    pointer-events: auto;
+  }
+
+  .at__title {
+    font-size: clamp(2.6rem, 1.5rem + 4vw, 5rem);
+    line-height: 1.02;
+    letter-spacing: -0.03em;
+    font-weight: 450;
+  }
+
+  .at__lead {
+    font-size: 1.0625rem;
+    line-height: 1.55;
+    max-width: 30rem;
+    color: var(--text);
+    background: color-mix(in srgb, var(--bg) 75%, transparent);
+    border-radius: 12px;
+  }
+
+  .at__note {
+    font-size: 0.9375rem;
+    color: var(--text-muted);
+  }
+
+  .at__steps-wrap {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 6rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 1rem;
+    opacity: clamp(0, (var(--ap) - 0.16) / 0.06, 1);
+    pointer-events: none;
+  }
+
+  .at__steps-title {
+    font-size: clamp(1.5rem, 1.1rem + 1.4vw, 2.25rem);
+    font-weight: 450;
+    letter-spacing: -0.02em;
+    padding: 0.35rem 0.9rem;
+    border-radius: 14px;
+    background: var(--bg);
+  }
+
+  .at__steps {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: min(100%, 22rem);
+  }
+
+  .at__step {
+    padding: 0.9rem 1.1rem;
+    border-radius: 14px;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    opacity: 0.45;
+    transition: opacity 400ms var(--ease-out), border-color 400ms var(--ease-out);
+  }
+
+  .at__step.is-active {
+    opacity: 1;
+    border-color: var(--activity-tint);
+  }
+
+  .at__step h3 {
+    font-size: 1.125rem;
+    font-weight: 500;
+  }
+
+  .at__step p {
+    font-size: 0.9375rem;
+    color: var(--text-muted);
+    line-height: 1.45;
+  }
+
+  .at__step-num {
     font-family: var(--font-mono);
-    font-size: 0.8125rem;
+    font-size: 0.75rem;
     color: var(--activity-tint);
   }
 
-  .auto-orbs__title {
-    font-size: clamp(1.5rem, 1.2rem + 1vw, 2.125rem);
-    font-weight: 450;
-    letter-spacing: -0.015em;
-    color: var(--text);
+  @media (max-width: 760px) {
+    .at__steps-wrap {
+      top: auto;
+      bottom: 1.5rem;
+    }
+    .at__steps .at__step:not(.is-active) {
+      display: none;
+    }
   }
 
-  .auto-orbs__list {
-    list-style: none;
-    border-top: 1px solid var(--line);
+  /* ---------- Carte FALC / français courant ---------- */
+  .au-read {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2.5rem;
+    align-items: center;
   }
 
-  .auto-orbs__list :global(li) {
-    padding-block: 0.7rem;
-    border-bottom: 1px solid var(--line);
-    font-size: 1rem;
-    color: var(--text);
+  @media (min-width: 900px) {
+    .au-read {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 4rem;
+    }
   }
 
-  .auto-orbs__nav {
+  .au-read__text {
     display: flex;
-    gap: 0.5rem;
-    margin-top: 0.5rem;
+    flex-direction: column;
+    gap: 1.5rem;
   }
 
-  .auto-orbs__btn {
-    width: 2.75rem;
-    height: 2.75rem;
+  .au-read__switch {
+    display: inline-flex;
+    align-self: flex-start;
+    padding: 0.3rem;
     border-radius: 999px;
     border: 1px solid var(--line);
+  }
+
+  .au-read__opt {
+    min-height: 2.75rem;
+    padding: 0 1.25rem;
+    border-radius: 999px;
+    border: 0;
     background: transparent;
     color: var(--text);
     font: inherit;
-    font-size: 1.125rem;
+    font-weight: 500;
     cursor: pointer;
   }
 
-  .auto-orbs__btn:hover {
-    border-color: color-mix(in srgb, var(--text) 30%, transparent);
+  .au-read__opt.is-on {
+    background: var(--text);
+    color: var(--bg);
   }
 
-  .auto-orbs__btn:focus-visible {
+  .au-read__opt:focus-visible {
     outline: 2px solid var(--text);
     outline-offset: 2px;
   }
 
-  @media (min-width: 960px) {
-    .auto-orbs {
-      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
-      align-items: center;
-      gap: 3rem;
-    }
-    .auto-orbs__canvas {
-      height: 30rem;
-    }
+  .au-card {
+    perspective: 1400px;
+    min-height: 20rem;
   }
 
-  .sr-only {
+  .au-card__inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: 20rem;
+    transform-style: preserve-3d;
+    transition: transform 900ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .au-card.is-flipped .au-card__inner {
+    transform: rotateY(180deg);
+  }
+
+  .au-card__face {
     position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
-  }
-
-  .activity-breadcrumb {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 0.8125rem;
-    font-weight: 500;
-    color: var(--text-muted);
-    margin-bottom: var(--space-20);
-  }
-
-  .activity-breadcrumb-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-    color: var(--text-muted);
-    text-decoration: none;
-    transition: color 200ms var(--ease-out);
-  }
-
-  .activity-breadcrumb-link:hover {
-    color: var(--text);
-  }
-
-  .activity-breadcrumb-sep {
-    opacity: 0.5;
-  }
-
-  .activity-breadcrumb-current {
-    color: var(--activity-tint);
-    font-weight: 600;
-  }
-
-  .hero-autonomie {
-    padding-top: 8.5rem;
-    padding-bottom: var(--space-64);
-    border-top: 2px solid var(--activity-tint);
-  }
-
-  .hero-activity-brand {
+    inset: 0;
     display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: var(--space-24);
-    margin-bottom: var(--space-24);
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    padding: clamp(1.75rem, 4vw, 3rem);
+    border-radius: 24px;
+    backface-visibility: hidden;
+    border: 1px solid var(--line);
+    background: var(--surface);
   }
 
-  .hero-activity-brand-meta {
+  .au-card__face--front {
+    background: var(--activity-tint);
+    color: var(--bg);
+    border-color: transparent;
+  }
+
+  .au-card__face--back {
+    transform: rotateY(180deg);
+  }
+
+  .au-card__tag {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    opacity: 0.8;
+  }
+
+  .au-card__title {
+    font-size: clamp(2rem, 1.4rem + 2vw, 3rem);
+    font-weight: 450;
+    letter-spacing: -0.02em;
+  }
+
+  .au-card__face--front .au-card__title {
+    color: var(--bg);
+  }
+
+  .au-card__text {
+    font-size: 1.125rem;
+    line-height: 1.5;
+    max-width: 30rem;
+  }
+
+  /* ---------- Bien plus que le numérique ---------- */
+  .au-beyond {
+    font-size: clamp(1.25rem, 1rem + 1vw, 1.75rem);
+    line-height: 1.4;
+    letter-spacing: -0.01em;
+    max-width: 52rem;
+  }
+
+  .au-stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.5rem;
+    border-top: 1px solid var(--line);
+    padding-top: 2rem;
+  }
+
+  .au-stats div {
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
   }
 
-  .hero-activity-brand-meta .eyebrow {
-    margin-bottom: 0;
-  }
-
-  .hero-activity-brand-name {
-    font-family: var(--font-display);
-    font-weight: 500;
-    font-size: 1.5rem;
-    letter-spacing: -0.02em;
-    color: var(--text);
-  }
-
-  .hero-autonomie-grid {
-    align-items: center;
-    row-gap: var(--space-40);
-  }
-
-  .hero-autonomie-content {
-    grid-column: 1 / -1;
-  }
-
-  .hero-autonomie-media {
-    grid-column: 1 / -1;
-  }
-
-  @media (min-width: 960px) {
-    .hero-autonomie-content {
-      grid-column: 1 / 8;
-    }
-    .hero-autonomie-media {
-      grid-column: 8 / 13;
-    }
-  }
-
-  .hero-autonomie-lead {
-    margin-top: var(--space-40);
-    font-size: clamp(1.125rem, 1.3vw, 1.3rem);
-    color: var(--text);
-  }
-
-  .hero-cta-block {
-    margin-top: var(--space-40);
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: var(--space-16);
-  }
-
-  .hero-subnote {
-    font-size: var(--fs-small);
-    color: var(--text-muted);
-    letter-spacing: 0.02em;
-  }
-
-  .hero-autonomie-frame {
-    aspect-ratio: 4 / 3;
-  }
-
-  .versions-grid {
-    margin-top: var(--space-64);
-    row-gap: var(--space-24);
-  }
-
-  .version-card {
-    --pointer-glow: color-mix(in srgb, var(--tint-care) 16%, transparent);
-    grid-column: 1 / -1;
-    border-top: 2px solid var(--activity-tint);
-    border-radius: var(--radius-sharp);
-    padding: var(--space-40);
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-16);
-  }
-
-  @media (min-width: 768px) {
-    .version-card {
-      grid-column: span 6;
-    }
-  }
-
-  .version-card p {
+  .au-stats dt {
+    order: 2;
+    font-size: 0.9375rem;
     color: var(--text-muted);
   }
 
-  .versions-note {
-    margin-top: var(--space-40);
-    font-size: var(--fs-body);
-    font-weight: 500;
-    color: var(--text);
-    padding-left: var(--space-24);
-    border-left: 2px solid var(--activity-tint);
-  }
-
-  .beyond-digital-box,
-  .pilot-details-box {
-    --pointer-glow: color-mix(in srgb, var(--tint-care) 16%, transparent);
-    grid-column: 1 / -1;
-    padding: var(--space-64) var(--space-40);
-    border-top: 2px solid var(--activity-tint);
-    border-radius: var(--radius-sharp);
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-24);
-  }
-
-  .beyond-digital-text {
-    font-size: clamp(1.0625rem, 1.25vw, 1.25rem);
-    color: var(--text);
-  }
-
-  .autonomie-stats {
-    row-gap: var(--space-24);
-  }
-
-  .autonomie-stat-card {
-    grid-column: 1 / -1;
-    padding: var(--space-40);
-    display: flex;
-    flex-direction: column-reverse;
-    gap: var(--space-8);
-  }
-
-  @media (min-width: 768px) {
-    .autonomie-stat-card {
-      grid-column: span 4;
-    }
-  }
-
-  .autonomie-stat-num {
-    font-family: var(--font-display);
-    font-size: clamp(2.75rem, 4.5vw, 4.25rem);
+  .au-stats dd {
+    order: 1;
+    font-size: clamp(2.5rem, 1.6rem + 3.5vw, 5rem);
     line-height: 1;
-    color: var(--accent);
-    font-variant-numeric: tabular-nums;
+    font-weight: 450;
+    letter-spacing: -0.03em;
+    color: var(--activity-tint);
   }
 
-  .autonomie-stat-label {
-    font-size: var(--fs-small);
-    color: var(--text-muted);
-  }
-
-  .parcours-layout {
-    align-items: start;
-    row-gap: var(--space-40);
-  }
-
-  .parcours-left {
-    grid-column: 1 / -1;
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-40);
-  }
-
-  .parcours-steps {
-    grid-column: 1 / -1;
-    display: flex;
-    flex-direction: column;
-  }
-
-  @media (min-width: 960px) {
-    .parcours-left {
-      grid-column: 1 / 6;
-    }
-    .parcours-steps {
-      grid-column: 7 / 13;
-    }
-  }
-
-  .parcours-photo {
-    aspect-ratio: 16 / 10;
-  }
-
-  .parcours-step {
+  /* ---------- Séance ---------- */
+  .au-seance {
+    list-style: none;
     display: grid;
-    grid-template-columns: 3rem 1fr;
-    gap: var(--space-16);
-    padding-block: var(--space-24);
-    border-bottom: 1px solid var(--line);
-    align-items: baseline;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
   }
 
-  .parcours-step:first-child {
-    border-top: 1px solid var(--line);
+  @media (min-width: 900px) {
+    .au-seance {
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 0;
+      border-top: 2px solid var(--activity-tint);
+    }
+    .au-seance li {
+      padding-top: 1.25rem;
+      position: relative;
+    }
+    .au-seance li::before {
+      content: '';
+      position: absolute;
+      top: -0.45rem;
+      left: 0;
+      width: 0.8rem;
+      height: 0.8rem;
+      border-radius: 50%;
+      background: var(--activity-tint);
+    }
   }
 
-  .parcours-step h3 {
-    margin-bottom: var(--space-8);
+  .au-seance li {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
   }
 
-  .parcours-step p {
+  .au-seance__num {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
     color: var(--text-muted);
   }
 
-  .seance-flow {
-    margin-top: var(--space-64);
-    margin-bottom: var(--space-40);
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: var(--space-16);
-    padding: var(--space-40);
+  .au-seance__name {
+    font-size: 1.125rem;
+    font-weight: 500;
   }
 
-  .seance-node {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.75rem;
-  }
-
-  .seance-node-name {
-    font-family: var(--font-display);
-    font-size: var(--fs-h3);
-    color: var(--text);
-  }
-
-  .seance-arrow {
-    color: var(--accent);
-    margin-inline: 0.5rem;
-    font-size: 1.25rem;
-  }
-
-  .seance-text {
-    font-size: var(--fs-body);
-    color: var(--text);
-  }
-
-  .modules-header {
+  /* ---------- 35 modules : tuiles qui se soulèvent ---------- */
+  .au-mod__head {
     display: flex;
     flex-direction: column;
-    gap: var(--space-24);
-    margin-bottom: var(--space-40);
+    gap: 1.5rem;
   }
 
-  .modules-filters {
+  .au-mod__filters {
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
   }
 
-  .filter-chip {
+  .au-chip {
+    min-height: 2.75rem;
+    padding: 0 1.1rem;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: transparent;
     color: var(--text);
-    border-radius: var(--radius-sharp);
-    padding: 0.55rem 1rem;
-    font-size: var(--fs-small);
-    font-weight: 500;
+    font: inherit;
+    font-size: 0.9375rem;
     cursor: pointer;
-    transition: background-color 250ms var(--ease-out), color 250ms var(--ease-out),
-      border-color 250ms var(--ease-out);
-    min-height: 2.5rem;
+    transition: background-color 200ms var(--ease-out), color 200ms var(--ease-out);
   }
 
-  .filter-chip:hover {
-    border-color: var(--activity-tint);
+  .au-chip.is-active {
+    background: var(--text);
+    color: var(--bg);
+    border-color: transparent;
   }
 
-  .filter-chip.is-active {
-    background-color: var(--accent-fill);
-    color: var(--accent-fill-text);
-    border-color: var(--accent-fill);
-    font-weight: 600;
+  .au-chip:focus-visible {
+    outline: 2px solid var(--text);
+    outline-offset: 2px;
   }
 
-  .modules-grid {
+  .au-tiles {
+    list-style: none;
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
     gap: 0.75rem;
+    perspective: 1600px;
   }
 
-  @media (min-width: 640px) {
-    .modules-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .modules-grid {
-      grid-template-columns: repeat(3, 1fr);
-    }
-  }
-
-  .module-item {
+  .au-tile {
     display: flex;
-    align-items: baseline;
-    gap: 0.875rem;
-    border-radius: var(--radius-sharp);
-    padding: 1rem 1.25rem;
+    flex-direction: column;
+    gap: 0.5rem;
+    min-height: 6.5rem;
+    padding: 1.1rem 1.2rem;
+    border-radius: 16px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    transform-origin: 50% 100%;
+    transition: transform 600ms cubic-bezier(0.16, 1, 0.3, 1), opacity 400ms var(--ease-out), box-shadow 600ms var(--ease-out), border-color 400ms var(--ease-out);
   }
 
-  .module-item[hidden] {
-    display: none !important;
+  .au-tiles.is-filtered .au-tile {
+    opacity: 0.28;
+    transform: rotateX(28deg) translateY(6px) scale(0.97);
   }
 
-  .module-title {
+  .au-tiles.is-filtered .au-tile.is-match {
+    opacity: 1;
+    transform: translateY(-6px) translateZ(30px);
+    border-color: var(--activity-tint);
+    box-shadow: 0 18px 30px -18px rgba(0, 0, 0, 0.35);
+  }
+
+  .au-tile__num {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--activity-tint);
+  }
+
+  .au-tile__title {
+    font-size: 1rem;
     font-weight: 500;
-    color: var(--text);
-    line-height: 1.4;
+    line-height: 1.35;
   }
 
-  .partenaires-box {
-    grid-column: 1 / -1;
+  .au-cta__text {
+    color: var(--bg);
+    opacity: 0.85;
+    max-width: 40rem;
+    line-height: 1.55;
   }
 
-  @media (min-width: 960px) {
-    .partenaires-box {
-      grid-column: 1 / 9;
+  @media (prefers-reduced-motion: reduce) {
+    .at {
+      height: auto;
     }
-  }
-
-  .partenaires-text {
-    margin-top: var(--space-24);
-    margin-bottom: var(--space-40);
-    font-size: var(--fs-body);
-    color: var(--text);
+    .at__stage {
+      position: relative;
+    }
+    .au-card__inner,
+    .au-tile {
+      transition: none;
+    }
   }
 </style>
