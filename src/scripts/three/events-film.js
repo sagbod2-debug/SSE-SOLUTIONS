@@ -1,7 +1,7 @@
 // CC Events — « Le montage » : une maquette d'architecte où une équipe installe un événement.
 // Une seule scène pour toute la page ; le défilement avance une ligne de temps (J-30 → Jour J),
 // puis déplace la caméra pour chaque offre et change l'ambiance lumineuse pour chaque règle.
-import { THREE, createStage, runLoop } from './common.js';
+import { THREE, createStage, runLoop, addOutlines } from './common.js';
 import { glassSet, buildEventsLogo } from './logos.js';
 
 const sm = (a, b, x) => {
@@ -58,7 +58,7 @@ function animateWalk(p, t, speed = 1) {
 }
 
 export function mountEventsFilm(canvas, { dark = false } = {}) {
-  const bgHex = dark ? '#0E0F11' : '#EDEBE6';
+  const bgHex = dark ? '#0E0F11' : '#FFFFFF';
   const stage = createStage(canvas, { background: bgHex, z: 30, fov: 34, exposure: dark ? 1.0 : 0.95 });
   if (!stage) return null;
   const { scene, camera, renderer, timeU } = stage;
@@ -67,18 +67,22 @@ export function mountEventsFilm(canvas, { dark = false } = {}) {
   scene.fog = new THREE.Fog(bgHex, 38, 90);
 
   const clay = new THREE.MeshStandardMaterial({ color: dark ? '#2B2D33' : '#FFFFFF', roughness: 0.92 });
-  const clay2 = new THREE.MeshStandardMaterial({ color: dark ? '#3A3D44' : '#DCD8D0', roughness: 0.9 });
+  const clay2 = new THREE.MeshStandardMaterial({ color: dark ? '#3A3D44' : '#E4E5E8', roughness: 0.9 });
   const violet = new THREE.MeshStandardMaterial({ color: dark ? '#8E80EE' : '#5B4BC4', roughness: 0.6 });
   const gold = new THREE.MeshStandardMaterial({ color: dark ? '#E9C46E' : '#C79A3E', roughness: 0.45, metalness: 0.3 });
-  const crewMat = new THREE.MeshStandardMaterial({ color: dark ? '#5A5E68' : '#BDB8AE', roughness: 0.85 });
-  const guestMat = new THREE.MeshStandardMaterial({ color: dark ? '#474A52' : '#F7F6F3', roughness: 0.9 });
+  const crewMat = new THREE.MeshStandardMaterial({ color: dark ? '#5A5E68' : '#5D626B', roughness: 0.85 });
+  const guestMat = new THREE.MeshStandardMaterial({ color: dark ? '#474A52' : '#A9ADB5', roughness: 0.9 });
 
   // ---------- Sol ----------
-  const ground = new THREE.Mesh(new THREE.PlaneGeometry(200, 200), new THREE.MeshStandardMaterial({ color: bgHex, roughness: 1 }));
+  // sol : en clair, seules les ombres s'impriment sur le blanc pur (aucune teinte de fond)
+  const ground = new THREE.Mesh(
+    new THREE.PlaneGeometry(200, 200),
+    dark ? new THREE.MeshStandardMaterial({ color: bgHex, roughness: 1 }) : new THREE.ShadowMaterial({ color: '#1d2026', opacity: 0.16 })
+  );
   ground.rotation.x = -Math.PI / 2;
   ground.receiveShadow = true;
   scene.add(ground);
-  const grid = new THREE.GridHelper(60, 60, dark ? '#24262B' : '#D9D5CD', dark ? '#1B1D21' : '#E3E0D9');
+  const grid = new THREE.GridHelper(60, 60, dark ? '#24262B' : '#D3D5DA', dark ? '#1B1D21' : '#E9EAED');
   grid.position.y = 0.01;
   scene.add(grid);
 
@@ -102,6 +106,7 @@ export function mountEventsFilm(canvas, { dark = false } = {}) {
     obj.userData.at = at;
     obj.userData.grow = grow;
     obj.userData.base = obj.scale.clone();
+    if (!dark) addOutlines(obj, { color: '#2a2c31', opacity: 0.45 });
     builds.push(obj);
     scene.add(obj);
     return obj;
@@ -238,10 +243,10 @@ export function mountEventsFilm(canvas, { dark = false } = {}) {
   scene.add(artist);
 
   // ---------- Logo en verre suspendu au-dessus de la scène ----------
-  const logo = buildEventsLogo(glassSet(timeU));
+  const logo = buildEventsLogo(glassSet(timeU, { light: !dark }));
   const logoPivot = new THREE.Group();
   logoPivot.add(logo);
-  logoPivot.position.set(0, 10.4, -7.5);
+  logoPivot.position.set(0, 9.7, -7.5);
   logoPivot.scale.setScalar(1.1);
   scene.add(logoPivot);
 
@@ -268,7 +273,7 @@ export function mountEventsFilm(canvas, { dark = false } = {}) {
     const cone = new THREE.Mesh(
       new THREE.ConeGeometry(Math.tan(0.42) * len, len, 32, 1, true).translate(0, -len / 2, 0),
       new THREE.ShaderMaterial({
-        transparent: true, depthWrite: false, side: THREE.DoubleSide, toneMapped: false, blending: THREE.AdditiveBlending,
+        transparent: true, depthWrite: false, side: THREE.DoubleSide, toneMapped: false, blending: dark ? THREE.AdditiveBlending : THREE.NormalBlending,
         uniforms: { uColor: { value: new THREE.Color(sp.color) }, uOpacity: { value: 0 } },
         vertexShader: 'varying float vY; void main(){ vY = uv.y; gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }',
         fragmentShader: 'uniform vec3 uColor; uniform float uOpacity; varying float vY; void main(){ gl_FragColor = vec4(uColor, pow(vY, 1.8) * uOpacity); }',
@@ -361,7 +366,7 @@ export function mountEventsFilm(canvas, { dark = false } = {}) {
       s.target.position.x = -3 + i * 1.2 + (reduce ? 0 : Math.sin(t * 0.5 + i) * 1.2);
     });
     beamMeshes.forEach((c, i) => {
-      c.material.uniforms.uOpacity.value = showI * (dark ? 0.22 : 0.1);
+      c.material.uniforms.uOpacity.value = showI * (dark ? 0.22 : 0.16);
       c.lookAt(spots[i].target.position);
       c.rotateX(-Math.PI / 2);
     });
@@ -369,7 +374,7 @@ export function mountEventsFilm(canvas, { dark = false } = {}) {
 
     // logo suspendu
     logoPivot.rotation.y = reduce ? 0 : Math.sin(t * 0.35) * 0.6;
-    logoPivot.position.y = 10.4 + Math.sin(t * 0.8) * 0.12;
+    logoPivot.position.y = 9.7 + Math.sin(t * 0.8) * 0.12;
 
     // caméra
     const [ca, cb, ct] = sample(CAM, prog);

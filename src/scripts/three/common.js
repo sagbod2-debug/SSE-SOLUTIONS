@@ -172,3 +172,21 @@ export function viewSize(camera) {
   const vh = 2 * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) * camera.position.z;
   return { vw: vh * camera.aspect, vh };
 }
+
+/**
+ * Contours fins (façon dessin d'architecte) sur les maillages opaques d'un objet.
+ * Utile sur fond blanc pur, où des volumes blancs se confondraient avec le fond.
+ */
+export function addOutlines(root, { color = '#2a2c31', opacity = 0.5, threshold = 25 } = {}) {
+  const mat = new THREE.LineBasicMaterial({ color, transparent: true, opacity, toneMapped: false });
+  const meshes = [];
+  root.traverse((o) => {
+    if (o.isMesh && !o.userData.noOutline && !(o.material && o.material.transmission > 0)) meshes.push(o);
+  });
+  meshes.forEach((m) => {
+    const edges = new THREE.LineSegments(new THREE.EdgesGeometry(m.geometry, threshold), mat);
+    edges.userData.noOutline = true;
+    m.add(edges);
+  });
+  return mat;
+}

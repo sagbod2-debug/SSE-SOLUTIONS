@@ -27,7 +27,7 @@ function backdrop(scene, dark) {
   }
   const g = new THREE.BufferGeometry();
   g.setAttribute('position', new THREE.Float32BufferAttribute(pts, 3));
-  const col = new THREE.Color(dark ? '#4FBF95' : '#0B7A5A').lerp(bg, dark ? 0.8 : 0.88);
+  const col = new THREE.Color(dark ? '#4FBF95' : '#0B7A5A').lerp(bg, dark ? 0.8 : 0.72);
   const obj = new THREE.LineSegments(g, new THREE.LineBasicMaterial({ color: col, toneMapped: false }));
   scene.add(obj);
   return obj;
@@ -39,13 +39,11 @@ export function mountCareHero(canvas, { dark = false } = {}) {
   const { scene, camera, timeU } = stage;
   const rings = backdrop(scene, dark);
 
-  const glass = glassSet(timeU);
-  const tints = [
-    liquidGlass(timeU, dark ? '#7fd3b1' : '#9fd6bf', 3),
-    liquidGlass(timeU, dark ? '#8fb3e6' : '#b5cbe9', 3),
-    liquidGlass(timeU, '#e7cf9f', 2.5),
-    glass.clear,
-  ];
+  const glass = glassSet(timeU, { light: !dark });
+  // sur fond blanc pur, des teintes plus denses pour que chaque forme se dessine
+  const tints = dark
+    ? [liquidGlass(timeU, '#7fd3b1', 3), liquidGlass(timeU, '#8fb3e6', 3), liquidGlass(timeU, '#e7cf9f', 2.5), glass.clear]
+    : [liquidGlass(timeU, '#2f8f6b', 0.9), liquidGlass(timeU, '#3d6ea8', 0.9), liquidGlass(timeU, '#a8762a', 0.7), glass.clear];
 
   // galets
   const R = rng(5);
@@ -69,7 +67,10 @@ export function mountCareHero(canvas, { dark = false } = {}) {
     pebbles.push(m);
   }
 
-  const logo = buildCareLogo(glass);
+  // sur fond blanc : le logo reprend ses couleurs (bleu, vert, or) dans un verre teinté
+  const logo = dark
+    ? buildCareLogo(glass)
+    : buildCareLogo(glass, { bleu: liquidGlass(timeU, '#2f5f9e', 0.8), vert: liquidGlass(timeU, '#3f8f3a', 0.8), or: glass.gold, default: glass.clear });
   const pivot = new THREE.Group();
   pivot.add(logo);
   scene.add(pivot);
@@ -136,7 +137,7 @@ export function mountCareShelter(canvas, { dark = false, count = 4 } = {}) {
   if (!stage) return null;
   const { scene, timeU } = stage;
   backdrop(scene, dark);
-  const glass = glassSet(timeU);
+  const glass = glassSet(timeU, { light: !dark });
 
   const person = new THREE.Group();
   const warm = new THREE.MeshPhysicalMaterial({ color: dark ? '#4FBF95' : '#0B7A5A', roughness: 0.35, clearcoat: 1 });
@@ -148,7 +149,7 @@ export function mountCareShelter(canvas, { dark = false, count = 4 } = {}) {
   person.add(head, body);
   scene.add(person);
 
-  const mats = [glass.clear, liquidGlass(timeU, dark ? '#7fd3b1' : '#9fd6bf', 3), glass.gold, liquidGlass(timeU, dark ? '#8fb3e6' : '#b5cbe9', 3)];
+  const mats = [glass.clear, liquidGlass(timeU, dark ? '#7fd3b1' : '#2f8f6b', dark ? 3 : 0.9), glass.gold, liquidGlass(timeU, dark ? '#8fb3e6' : '#3d6ea8', dark ? 3 : 0.9)];
   const arcs = [];
   for (let i = 0; i < count; i++) {
     const r = 1.35 + i * 0.42;

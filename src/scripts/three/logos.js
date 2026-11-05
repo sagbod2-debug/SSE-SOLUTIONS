@@ -27,7 +27,25 @@ export function liquidGlass(timeU, att = '#f2f4f7', attDist = 6) {
   return m;
 }
 
-export function glassSet(timeU) {
+/**
+ * Jeu de verres. Sur fond sombre, le verre clair ressort de lui-même.
+ * Sur fond blanc pur (`light`), un verre clair disparaît : on passe à un verre fumé,
+ * plus dense, qui garde la transparence et les reflets mais dessine nettement la forme.
+ */
+export function glassSet(timeU, { light = false } = {}) {
+  if (light) {
+    const tune = (m) => {
+      m.envMapIntensity = 1.8;
+      m.iridescence = 0.25;
+      m.thickness = 1.6;
+      return m;
+    };
+    return {
+      clear: tune(liquidGlass(timeU, '#8a929c', 1.6)),
+      smoke: tune(liquidGlass(timeU, '#59616b', 1.1)),
+      gold: tune(liquidGlass(timeU, '#c9a24b', 1.25)),
+    };
+  }
   return {
     clear: liquidGlass(timeU, '#f2f4f7', 6),
     smoke: liquidGlass(timeU, '#aab1b9', 3),
@@ -74,24 +92,6 @@ function flat(shape, mat, depth = 0.18) {
   const geo = new THREE.ExtrudeGeometry(shape, { depth, bevelEnabled: true, bevelThickness: 0.05, bevelSize: 0.03, bevelSegments: 6, curveSegments: 64 });
   geo.translate(0, 0, -depth / 2);
   return new THREE.Mesh(geo, mat);
-}
-
-/** SSE Solutions : S argent, S doré, E argent, trait doré et deux arcs. Largeur ≈ 6. */
-export function buildSSELogo(g) {
-  const grp = new THREE.Group();
-  const s1 = glyph('S', 3.4, g.clear, 0.55);
-  s1.position.set(-1.75, 0.35, 0);
-  const s2 = glyph('S', 2.9, g.gold, 0.5);
-  s2.position.set(-0.35, -0.45, 0.25);
-  const e = glyph('E', 3.4, g.clear, 0.55);
-  e.position.set(1.65, 0.1, -0.1);
-  const swoosh = flat(swooshShape(-2.9, -1.5, 3.4, 1.0, 0.25, 0.14), g.gold, 0.16);
-  swoosh.position.z = 0.55;
-  const arcTop = flat(taperedArc(2.85, Math.PI * 0.28, Math.PI * 0.78, 0.07), g.gold, 0.12);
-  const arcBot = flat(taperedArc(2.85, Math.PI * 1.25, Math.PI * 1.72, 0.07), g.gold, 0.12);
-  grp.add(s1, s2, e, swoosh, arcTop, arcBot);
-  grp.userData.parts = { s1, s2, e, swoosh, arcTop, arcBot };
-  return grp;
 }
 
 function star4(r, inner) {
@@ -142,7 +142,7 @@ export function buildEventsLogo(g) {
 }
 
 /** CC Care : tracé net du logo (adulte, enfant, main, feuilles, cercle) en verre. Largeur ≈ 5. */
-export function buildCareLogo(g) {
-  const grp = buildSvgLogo(logos.care, { bleu: g.smoke, vert: g.clear, or: g.gold, default: g.clear }, { width: 5, depth: 0.42, bevel: 0.08, layerGap: 0.14 });
+export function buildCareLogo(g, layers = null) {
+  const grp = buildSvgLogo(logos.care, layers || { bleu: g.smoke, vert: g.clear, or: g.gold, default: g.clear }, { width: 5, depth: 0.42, bevel: 0.08, layerGap: 0.14 });
   return grp;
 }

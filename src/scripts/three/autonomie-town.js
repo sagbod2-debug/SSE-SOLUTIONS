@@ -3,7 +3,7 @@
 // Un personnage la traverse ; chaque lieu s'éclaire à son passage.
 // setProgress(p) : 0 = vue d'ensemble (promenade libre), puis la caméra suit le personnage
 // d'étape en étape (4 étapes du parcours).
-import { THREE, createStage, runLoop } from './common.js';
+import { THREE, createStage, runLoop, addOutlines } from './common.js';
 import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeometry.js';
 
 const sm = (a, b, x) => {
@@ -35,12 +35,12 @@ export function mountAutonomieTown(canvas, { dark = false, labels = [] } = {}) {
   const accent = new THREE.Color(dark ? '#4FC3D1' : '#0A7A88');
   const M = (color, extra = {}) => new THREE.MeshStandardMaterial({ color, roughness: 0.85, ...extra });
   const wall = M(dark ? '#2C3034' : '#FBFAF7');
-  const wall2 = M(dark ? '#353A3F' : '#EFECE6');
-  const roof = M(dark ? '#2E5E66' : '#8CC5CC');
-  const ground = M(dark ? '#16191B' : '#EEF4F1');
-  const pathMat = M(dark ? '#23282B' : '#DCE7E2');
-  const tree = M(dark ? '#2F5546' : '#A9CDB6', { flatShading: true });
-  const trunk = M(dark ? '#4A4038' : '#CDBBA6');
+  const wall2 = M(dark ? '#353A3F' : '#E6ECEA');
+  const roof = M(dark ? '#2E5E66' : '#4FA3AE');
+  const ground = M(dark ? '#16191B' : '#E4EEEA');
+  const pathMat = M(dark ? '#23282B' : '#C7D7D0');
+  const tree = M(dark ? '#2F5546' : '#6FAE88', { flatShading: true });
+  const trunk = M(dark ? '#4A4038' : '#A88E73');
 
   const world = new THREE.Group();
   scene.add(world);
@@ -51,6 +51,7 @@ export function mountAutonomieTown(canvas, { dark = false, labels = [] } = {}) {
   base.position.y = -0.4;
   base.receiveShadow = true;
   world.add(base);
+  if (!dark) addOutlines(base, { color: '#24363a', opacity: 0.3, threshold: 40 });
 
   // chemin en boucle
   const curve = new THREE.CatmullRomCurve3(
@@ -164,6 +165,7 @@ export function mountAutonomieTown(canvas, { dark = false, labels = [] } = {}) {
     g.position.copy(p).add(out.multiplyScalar(2.1));
     g.position.y = 0;
     g.lookAt(p.x, 0, p.z);
+    if (!dark) addOutlines(g, { color: '#24363a', opacity: 0.4 });
     g.userData.u = pl.u;
     g.userData.glow = 0;
     world.add(g);
