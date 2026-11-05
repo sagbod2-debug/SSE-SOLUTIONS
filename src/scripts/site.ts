@@ -30,12 +30,38 @@ function cleanupAnimations() {
   }
 }
 
-function enforceLightTheme() {
+function currentTheme(): 'light' | 'dark' {
+  return document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+}
+
+function setTheme(theme: 'light' | 'dark') {
+  const root = document.documentElement;
+  root.setAttribute('data-theme', theme);
   try {
-    localStorage.removeItem('sse-theme');
+    localStorage.setItem('sse-theme', theme);
   } catch {}
-  document.documentElement.setAttribute('data-theme', 'light');
-  document.documentElement.removeAttribute('data-theme-pref');
+  const meta = document.getElementById('meta-theme-color');
+  if (meta) meta.setAttribute('content', theme === 'dark' ? '#0E0F11' : '#FFFFFF');
+  syncThemeToggles();
+}
+
+function syncThemeToggles() {
+  const dark = currentTheme() === 'dark';
+  document.querySelectorAll<HTMLButtonElement>('[data-theme-toggle]').forEach((btn) => {
+    btn.setAttribute('aria-pressed', dark ? 'true' : 'false');
+    btn.setAttribute('aria-label', dark ? 'Passer en mode clair' : 'Passer en mode sombre');
+    const label = btn.querySelector<HTMLElement>('[data-theme-toggle-label]');
+    if (label) label.textContent = dark ? 'Mode clair' : 'Mode sombre';
+  });
+}
+
+function initThemeToggle() {
+  syncThemeToggles();
+  document.querySelectorAll<HTMLButtonElement>('[data-theme-toggle]').forEach((btn) => {
+    if (btn.dataset.themeBound) return;
+    btn.dataset.themeBound = '1';
+    btn.addEventListener('click', () => setTheme(currentTheme() === 'dark' ? 'light' : 'dark'));
+  });
 }
 
 function detectSvgRefractionSupport() {
@@ -55,7 +81,7 @@ function detectSvgRefractionSupport() {
 
 function initHeader() {
   detectSvgRefractionSupport();
-  enforceLightTheme();
+  initThemeToggle();
   const header = document.getElementById('site-header');
   if (!header) return;
 

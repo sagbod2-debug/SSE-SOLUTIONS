@@ -1,18 +1,84 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Picture from '../components/Picture.astro';
+import { Image } from 'astro:assets';
 import BrandLogo from '../components/BrandLogo.astro';
-import Blueprint3D from '../components/Blueprint3D.astro';
+import logoLight from '../assets/logos/cc-consulting-sans-dore.png';
+import logoDark from '../assets/logos/cc-consulting-sans-dore-mode-sombre.png';
 import { SHOW_CONSULTING_FAQ, CONSULTING_FAQ_ITEMS, SHOW_REAL_PHOTOS } from '../config/flags';
 
 const checklistItems = [
-  'le registre de sécurité, à jour',
-  'les rapports des vérifications périodiques de vos installations',
-  'les contrats et attestations de maintenance de vos prestataires',
-  'la preuve que les observations des rapports ont été levées',
-  'les suites données aux prescriptions du dernier procès-verbal',
-  "la trace des exercices d'évacuation et de l'information ou de la formation de votre personnel",
+  'Le registre de sécurité, à jour.',
+  'Les rapports des vérifications périodiques de vos installations.',
+  'Les contrats et attestations de maintenance de vos prestataires.',
+  'La preuve que les observations des rapports ont été levées.',
+  'Les suites données aux prescriptions du dernier procès-verbal.',
+  "La trace des exercices d'évacuation et de l'information de votre personnel.",
 ];
+
+const services = [
+  { title: 'Audit de conformité', sub: 'État des lieux incendie' },
+  { title: 'Mise en conformité', sub: "Plan d'actions clair" },
+  { title: 'Commissions de sécurité', sub: 'Registres, documents, visites' },
+  { title: 'Suivi des prestataires', sub: 'Vérifications, contrats, rapports' },
+  { title: 'Assistance sécurité', sub: 'Appui au quotidien' },
+  { title: 'Sensibilisation des équipes', sub: 'Les bons réflexes' },
+];
+
+// ---------- Géométrie du schéma de nœuds (bureau et mobile) ----------
+type Box = { x: number; y: number; w: number; h: number };
+type Layout = { W: number; H: number; T: Box; Hub: Box; S: Box[]; F: Box; a: string; s: string[]; o: string[] };
+
+const cy = (b: Box) => b.y + b.h / 2;
+const curveH = (x1: number, y1: number, x2: number, y2: number) => {
+  const dx = Math.max(40, (x2 - x1) * 0.5);
+  return `M${x1} ${y1} C${x1 + dx} ${y1}, ${x2 - dx} ${y2}, ${x2} ${y2}`;
+};
+
+function desktopLayout(): Layout {
+  const W = 1280, H = 660;
+  const T = { x: 0, y: 290, w: 220, h: 84 };
+  const Hub = { x: 280, y: 255, w: 210, h: 150 };
+  const S = services.map((_, i) => ({ x: 570, y: 6 + i * 110, w: 370, h: 88 }));
+  const F = { x: 1020, y: 282, w: 260, h: 96 };
+  return {
+    W, H, T, Hub, S, F,
+    a: curveH(T.x + T.w, cy(T), Hub.x, cy(Hub)),
+    s: S.map((b) => curveH(Hub.x + Hub.w, cy(Hub), b.x, cy(b))),
+    o: S.map((b) => curveH(b.x + b.w, cy(b), F.x, cy(F))),
+  };
+}
+
+function mobileLayout(): Layout {
+  const W = 360, H = 1060;
+  const T = { x: 50, y: 0, w: 260, h: 76 };
+  const Hub = { x: 80, y: 140, w: 200, h: 130 };
+  const S = services.map((_, i) => ({ x: 30, y: 340 + i * 94, w: 300, h: 76 }));
+  const F = { x: 50, y: 950, w: 260, h: 90 };
+  return {
+    W, H, T, Hub, S, F,
+    a: `M180 ${T.y + T.h} C180 ${T.y + T.h + 30}, 180 ${Hub.y - 30}, 180 ${Hub.y}`,
+    s: S.map((b) => `M${Hub.x} ${cy(Hub)} C6 ${cy(Hub)}, 6 ${cy(b)}, ${b.x} ${cy(b)}`),
+    o: S.map((b) => `M${b.x + b.w} ${cy(b)} C354 ${cy(b)}, 354 ${cy(F)}, ${F.x + F.w} ${cy(F)}`),
+  };
+}
+
+// Calendrier d'apparition (identique à src/scripts/cc-consulting/page.js)
+const T_LINK0 = [0.02, 0.08];
+const T_HUB = [0.09, 0.04];
+const tService = (i: number) => [0.12 + i * 0.1, 0.08];
+const tServiceNode = (i: number) => [0.12 + i * 0.1 + 0.065, 0.04];
+const tOut = (i: number) => [0.76 + i * 0.012, 0.1];
+const T_FINAL = [0.88, 0.05];
+
+const pos = (L: Layout, b: Box, t: number[]) =>
+  `left:${(b.x / L.W) * 100}%;top:${(b.y / L.H) * 100}%;width:${(b.w / L.W) * 100}%;height:${(b.h / L.H) * 100}%;--s:${t[0]};--l:${t[1]};`;
+const timing = (t: number[]) => `--s:${t[0]};--l:${t[1]};`;
+
+const layouts = [
+  { key: 'desktop', L: desktopLayout() },
+  { key: 'mobile', L: mobileLayout() },
+];
+const dotOn = new Set(['a', 's0', 's2', 's4', 'o1', 'o4']);
 
 const activeFaqItems = CONSULTING_FAQ_ITEMS.filter((item) => item.answer.trim().length > 0);
 const faqJsonLd =
@@ -23,10 +89,7 @@ const faqJsonLd =
         mainEntity: activeFaqItems.map((item) => ({
           '@type': 'Question',
           name: item.question,
-          acceptedAnswer: {
-            '@type': 'Answer',
-            text: item.answer,
-          },
+          acceptedAnswer: { '@type': 'Answer', text: item.answer },
         })),
       }
     : undefined;
@@ -37,11 +100,20 @@ const faqJsonLd =
   description="CC Consulting accompagne les établissements recevant du public (ERP) et les entreprises, de l'audit de conformité incendie jusqu'à la levée des observations."
   theme="cc-consulting"
   jsonLd={faqJsonLd}
+  livingMesh={false}
 >
-  <section class="section hero-consulting" transition:name="solution-card-consulting">
-    <Blueprint3D />
-    <div class="container grid-12 hero-consulting-grid">
-      <div class="hero-consulting-content">
+  <canvas class="cc-field" data-cc3d-field aria-hidden="true"></canvas>
+
+  <section class="cc-hero" data-cc3d-hero data-cc3d-mode="logo" aria-labelledby="cc-hero-title">
+    <canvas class="cc-hero__canvas" data-cc3d-canvas aria-hidden="true"></canvas>
+    <div class="cc-hero__fallback" aria-hidden="true">
+      <BrandLogo brand="cc-consulting" size="xl" loading="eager" alt="" />
+    </div>
+    <div class="cc-hero__fade" aria-hidden="true"></div>
+
+    <div class="container cc-hero__inner">
+      <div class="cc-hero__spacer" aria-hidden="true"></div>
+      <div class="cc-hero__content">
         <nav class="activity-breadcrumb" aria-label="Fil d'Ariane" data-hero-fade>
           <a href="/" class="activity-breadcrumb-link">
             <span aria-hidden="true">←</span>
@@ -51,230 +123,147 @@ const faqJsonLd =
           <span class="activity-breadcrumb-current">CC Consulting</span>
         </nav>
 
-        <div class="hero-activity-brand" data-hero-fade>
-          <BrandLogo brand="cc-consulting" size="lg" loading="eager" alt="Logo officiel CC Consulting" />
-          <div class="hero-activity-brand-meta">
-            <p class="eyebrow">CC CONSULTING · SÉCURITÉ</p>
-            <p class="hero-activity-brand-name">CC Consulting</p>
-          </div>
-        </div>
-        <h1 class="hero-title" data-hero-fade>
+        <h1 class="cc-hero__title" id="cc-hero-title" data-hero-fade>
           Préparez votre commission de sécurité sans mauvaise surprise.
         </h1>
-        <p class="hero-verbs" aria-label="Conformer. Préparer. Sécuriser.">
-          <span class="reveal-mask">
-            <span class="reveal-line" data-hero-line>Conformer.</span>
-          </span>
-          <span class="reveal-mask">
-            <span class="reveal-line" data-hero-line>Préparer.</span>
-          </span>
-          <span class="reveal-mask">
-            <span class="reveal-line" data-hero-line>Sécuriser.</span>
-          </span>
-        </p>
-        <p class="prose-measure hero-consulting-lead" data-hero-fade>
+        <p class="cc-hero__verbs" data-hero-fade>Conformer. Préparer. Sécuriser.</p>
+        <p class="cc-hero__lead" data-hero-fade>
           CC Consulting accompagne les établissements recevant du public (ERP) et les entreprises, de l'audit de conformité incendie jusqu'à la levée des observations.
         </p>
 
-        <div class="btn-group hero-consulting-actions" data-hero-fade>
-          <a href="/contact?sujet=cc-consulting" class="btn-primary" data-magnetic data-glow>
-            <span>Faire le point sur mon établissement</span>
-            <span class="btn-arrow" aria-hidden="true">→</span>
-          </a>
+        <div class="cc-actions" data-hero-fade>
+          <a href="/contact?sujet=cc-consulting" class="cc-btn">Faire le point sur mon établissement</a>
+          <a href="#services" class="cc-btn cc-btn--ghost">Voir nos services</a>
         </div>
-      </div>
 
-      <div class="hero-consulting-media" data-hero-fade>
-        <div class="media-frame hero-consulting-frame">
-          <Picture
-            slug="10-cc-consulting-hero"
-            alt="Équipement de sécurité incendie vérifié et consignes réglementaires dans un établissement recevant du public"
-            sizes="(max-width: 960px) 92vw, 520px"
-            loading="eager"
-            fetchpriority="high"
-            transitionName="activity-hero-consulting"
-          />
-        </div>
+        <dl class="cc-stats" data-hero-fade>
+          <div><dt>types principaux</dt><dd>14</dd></div>
+          <div><dt>types spéciaux</dt><dd>8</dd></div>
+          <div><dt>catégories, jusqu'à la 5ème</dt><dd>1 à 5</dd></div>
+        </dl>
+        <p class="cc-types" data-hero-fade>
+          J · L · M · N · O · P · R · S · T · U · V · W · X · Y<br />
+          PA · CTS · SG · PS · GA · OA · EF · REF
+        </p>
       </div>
     </div>
   </section>
 
-  <section class="section section--spacious">
-    <div class="container">
-      <div class="grid-12 services-intro">
-        <div class="services-intro-left">
-          <p class="eyebrow" data-reveal>NOS SERVICES</p>
-          <h2 class="section-title" data-reveal-title>
-            <span class="reveal-mask">
-              <span class="reveal-line">De l'audit à la commission.</span>
-            </span>
-          </h2>
-        </div>
-        <div class="services-intro-right" data-reveal>
-          <div class="media-frame services-photo">
-            <Picture
-              slug="11-cc-consulting-services"
-              alt="Plans d’architecture et documents techniques posés sur une table de travail pour un audit de conformité"
-              sizes="(max-width: 960px) 92vw, 520px"
-            />
+  <section id="services" class="cc-flow" data-cc3d-flow aria-labelledby="cc-flow-title">
+    <div class="cc-flow__stage">
+      <div class="container cc-flow__inner">
+        <div class="cc-flow__head">
+          <h2 class="cc-section-title" id="cc-flow-title">De l'audit à la commission.</h2>
+          <div class="cc-flow__step" aria-live="polite">
+            <p class="cc-flow__step-num">Étape <span data-flow-step-num>00</span> sur 06</p>
+            <p class="cc-flow__step-title" data-flow-step-title>Votre établissement</p>
+            <p class="cc-flow__step-text" data-flow-step-text>Chaque service se relie à votre établissement, jusqu'à la commission.</p>
           </div>
         </div>
-      </div>
 
-      <ol class="consulting-services-grid grid-12">
-        <li class="consulting-card glass" data-glow data-reveal>
-          <span class="num-index">01</span>
-          <h3 class="card-title">Audit de conformité.</h3>
-          <p>
-            Un état des lieux précis de votre établissement face à la réglementation incendie.
-          </p>
-        </li>
-        <li class="consulting-card glass" data-glow data-reveal>
-          <span class="num-index">02</span>
-          <h3 class="card-title">Mise en conformité.</h3>
-          <p>
-            Un plan d'actions clair et l'accompagnement jusqu'à la levée des observations.
-          </p>
-        </li>
-        <li class="consulting-card glass" data-glow data-reveal>
-          <span class="num-index">03</span>
-          <h3 class="card-title">Commissions de sécurité.</h3>
-          <p>
-            La préparation des registres, des documents et des visites.
-          </p>
-        </li>
-        <li class="consulting-card glass" data-glow data-reveal>
-          <span class="num-index">04</span>
-          <h3 class="card-title">Suivi des prestataires.</h3>
-          <p>
-            Le suivi des vérifications, des contrats et des rapports de vos prestataires.
-          </p>
-        </li>
-        <li class="consulting-card glass" data-glow data-reveal>
-          <span class="num-index">05</span>
-          <h3 class="card-title">Assistance sécurité.</h3>
-          <p>
-            Un appui à la gestion de la sécurité de votre bâtiment au quotidien.
-          </p>
-        </li>
-        <li class="consulting-card glass" data-glow data-reveal>
-          <span class="num-index">06</span>
-          <h3 class="card-title">Sensibilisation des équipes.</h3>
-          <p>
-            Des sessions pour que vos équipes connaissent les bons réflexes.
-          </p>
-        </li>
-      </ol>
-    </div>
-  </section>
+        {layouts.map(({ key, L }) => (
+          <div class={`cc-graph cc-graph--${key}`} style={`aspect-ratio:${L.W} / ${L.H};`} aria-hidden={key === 'mobile' ? 'true' : undefined}>
+            <svg class="cc-graph__wires" viewBox={`0 0 ${L.W} ${L.H}`} aria-hidden="true">
+              <path class="cc-wire" d={L.a} pathLength="1" style={timing(T_LINK0)} />
+              {L.s.map((d, i) => <path class="cc-wire" d={d} pathLength="1" style={timing(tService(i))} />)}
+              {L.o.map((d, i) => <path class="cc-wire" d={d} pathLength="1" style={timing(tOut(i))} />)}
+              {dotOn.has('a') && (
+                <circle class="cc-pulse" r="3.5" style={timing(T_LINK0)}>
+                  <animateMotion dur="2.2s" repeatCount="indefinite" path={L.a} />
+                </circle>
+              )}
+              {L.s.map((d, i) => dotOn.has(`s${i}`) && (
+                <circle class="cc-pulse" r="3.5" style={timing(tService(i))}>
+                  <animateMotion dur={`${2.4 + i * 0.15}s`} repeatCount="indefinite" path={d} />
+                </circle>
+              ))}
+              {L.o.map((d, i) => dotOn.has(`o${i}`) && (
+                <circle class="cc-pulse" r="3.5" style={timing(tOut(i))}>
+                  <animateMotion dur={`${2.7 + i * 0.1}s`} repeatCount="indefinite" path={d} />
+                </circle>
+              ))}
+            </svg>
 
-  <section class="section section--secondary section--spacious commission-checklist-section">
-    <div class="container grid-12">
-      <div class="checklist-header">
-        <p class="eyebrow" data-reveal>POINTS DE CONTRÔLE</p>
-        <h2 class="section-title" data-reveal-title>
-          <span class="reveal-mask">
-            <span class="reveal-line">Ce que la commission regarde en premier</span>
-          </span>
-        </h2>
-      </div>
+            <div class="cc-node" style={pos(L, L.T, [0, 0.03])}>
+              <span class="cc-node__title">Votre établissement</span>
+              <span class="cc-node__sub">ERP, ERT, tous types</span>
+            </div>
 
-      <div class="checklist-content">
-        <ul class="commission-checklist" data-checklist-animated role="list">
-          {checklistItems.map((line) => (
-            <li
-              class="checklist-item glass is-checked"
-              data-checklist-item
-              data-glow
-              aria-checked="true"
-            >
-              <span class="checklist-box" aria-hidden="true">
-                <svg
-                  class="checklist-icon"
-                  data-check-icon
-                  viewBox="0 0 20 20"
-                  width="16"
-                  height="16"
-                  fill="none"
-                >
-                  <path
-                    d="M4.5 10.5L8.2 14.2L15.5 6.5"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-              </span>
-              <span class="checklist-label">{line}</span>
-            </li>
-          ))}
-        </ul>
+            <div class="cc-node cc-node--hub" style={pos(L, L.Hub, T_HUB)}>
+              <Image src={logoLight} alt="CC Consulting" widths={[240, 480]} sizes="200px" class="cc-hub-logo cc-hub-logo--light" loading="lazy" />
+              <Image src={logoDark} alt="" widths={[240, 480]} sizes="200px" class="cc-hub-logo cc-hub-logo--dark" loading="lazy" />
+            </div>
 
-        <p class="checklist-conclusion prose-measure" data-reveal>
-          Nous vous aidons à tout remettre en ordre, prestataire par prestataire.
-        </p>
+            {services.map((svc, i) => (
+              <div class="cc-node cc-node--service" style={pos(L, L.S[i], tServiceNode(i))}>
+                <span class="cc-node__num">{String(i + 1).padStart(2, '0')}</span>
+                <span class="cc-node__text">
+                  <span class="cc-node__title">{svc.title}</span>
+                  <span class="cc-node__sub">{svc.sub}</span>
+                </span>
+              </div>
+            ))}
+
+            <div class="cc-node cc-node--final" style={pos(L, L.F, T_FINAL)}>
+              <span class="cc-node__title">Commission de sécurité</span>
+              <span class="cc-node__sub">Dossier prêt, visite préparée</span>
+            </div>
+          </div>
+        ))}
+
+        <ol class="cc-sr-only">
+          {services.map((svc) => <li>{svc.title} : {svc.sub}.</li>)}
+        </ol>
       </div>
     </div>
   </section>
 
-  <section class="section section--spacious healthcare-safety-section">
-    <div class="container grid-12">
-      <div class="healthcare-safety-box glass" data-glow data-reveal>
-        <p class="eyebrow">TOUS TYPES D'ERP · 1ÈRE À 5ÈME CATÉGORIE</p>
-        <h2 class="section-title" data-reveal-title>
-          <span class="reveal-mask">
-            <span class="reveal-line">Une maîtrise réglementaire pour chaque type d'établissement</span>
-          </span>
-        </h2>
-        <p class="healthcare-safety-text prose-measure">
-          CC Consulting intervient sur l'ensemble des établissements recevant du public : <strong>types J, U, O, L, M, N, R, W, X, de la 1ère à la 5ème catégorie</strong>, ainsi que les établissements recevant des travailleurs (ERT).
-        </p>
-        <p class="healthcare-safety-text prose-measure" style="margin-top: 1rem;">
-          Pour les établissements de soins et médico-sociaux (types U et J), la sécurité incendie requiert une sensibilité humaine et technique accrue : on n'évacue pas vers l'extérieur sans préparation. Elle repose sur le transfert horizontal vers une zone protégée du même niveau, des portes coupe-feu asservies, un désenfumage éprouvé et un personnel aux réflexes automatisés.
-        </p>
-      </div>
+  <section class="cc-block" aria-labelledby="cc-check-title">
+    <div class="container cc-block__inner">
+      <h2 class="cc-section-title" id="cc-check-title" data-reveal>Ce que la commission regarde en premier</h2>
+      <ul class="cc-check" role="list" data-reveal>
+        {checklistItems.map((line) => <li>{line}</li>)}
+      </ul>
+      <p class="cc-check__conclusion" data-reveal>
+        Nous vous aidons à tout remettre en ordre, prestataire par prestataire.
+      </p>
     </div>
   </section>
 
-  <section class="section section--secondary section--spacious">
-    <div class="container">
-      <p class="eyebrow" data-reveal>POUR QUI</p>
-      <ul class="consulting-audiences grid-12" data-reveal>
-        <li class="consulting-audience-card glass" data-glow>
-          <span class="num-index">01</span>
-          <span class="consulting-audience-title">Santé & Médico-social (Types U & J)</span>
-          <p class="consulting-audience-desc">Hôpitaux, cliniques, EHPAD, foyers d'accueil médicalisés nécessitant un transfert horizontal compartimenté.</p>
+  <section class="cc-block" aria-labelledby="cc-who-title">
+    <div class="container cc-block__inner">
+      <div class="cc-who__head" data-reveal>
+        <h2 class="cc-section-title" id="cc-who-title">Tous les établissements recevant du public, sans exception.</h2>
+        <p class="cc-who__lead">
+          Les 14 types principaux, les types spéciaux et les petits établissements de 5ème catégorie, ainsi que les établissements recevant des travailleurs (ERT).
+        </p>
+      </div>
+      <ul class="cc-who" role="list" data-reveal>
+        <li class="cc-card">
+          <h3 class="cc-card__title">Les 14 types principaux</h3>
+          <p>J structures d'accueil pour personnes âgées ou handicapées, L salles, M commerces, N restaurants, O hôtels, P salles de danse et de jeux, R enseignement, S bibliothèques, T expositions, U soins, V cultes, W bureaux, X sport couvert, Y musées.</p>
         </li>
-        <li class="consulting-audience-card glass" data-glow>
-          <span class="num-index">02</span>
-          <span class="consulting-audience-title">Tous types d'ERP (1ère à 5ème catégorie)</span>
-          <p class="consulting-audience-desc">Hôtels (O), salles polyvalentes (L), commerces (M), restaurants (N), enseignement (R), bureaux (W), sport (X).</p>
+        <li class="cc-card">
+          <h3 class="cc-card__title">Les types spéciaux</h3>
+          <p>PA plein air, CTS chapiteaux, tentes et structures, SG structures gonflables, PS parcs de stationnement couverts, GA gares, OA hôtels-restaurants d'altitude, EF établissements flottants, REF refuges de montagne.</p>
         </li>
-        <li class="consulting-audience-card glass" data-glow>
-          <span class="num-index">03</span>
-          <span class="consulting-audience-title">Bâtiments tertiaires & Entreprises</span>
-          <p class="consulting-audience-desc">Établissements recevant des travailleurs (ERT), sièges sociaux, copropriétés et parcs d'activités tertiaires.</p>
+        <li class="cc-card">
+          <h3 class="cc-card__title">De la 1ère à la 5ème catégorie</h3>
+          <p>Des grands établissements aux petits ERP de 5ème catégorie. Pour les établissements de soins et médico-sociaux (types U et J), nous préparons le transfert horizontal vers une zone protégée du même niveau.</p>
         </li>
       </ul>
     </div>
   </section>
 
   {SHOW_CONSULTING_FAQ && (
-    <section class="section section--spacious faq-section">
-      <div class="container">
-        <p class="eyebrow" data-reveal>QUESTIONS FRÉQUENTES</p>
-        <h2 class="section-title" data-reveal-title>
-          <span class="reveal-mask">
-            <span class="reveal-line">Vos questions sur la commission de sécurité.</span>
-          </span>
-        </h2>
-
-        <dl class="faq-list">
+    <section class="cc-block" aria-labelledby="cc-faq-title">
+      <div class="container cc-block__inner">
+        <h2 class="cc-section-title" id="cc-faq-title" data-reveal>Vos questions sur la commission de sécurité.</h2>
+        <dl class="cc-faq">
           {CONSULTING_FAQ_ITEMS.map((item) => (
-            <div class="faq-item glass" data-glow data-reveal>
-              <dt class="faq-question">{item.question}</dt>
-              {item.answer && <dd class="faq-answer prose-measure">{item.answer}</dd>}
+            <div class="cc-faq__item" data-reveal>
+              <dt class="cc-faq__q">{item.question}</dt>
+              {item.answer && <dd class="cc-faq__a">{item.answer}</dd>}
             </div>
           ))}
         </dl>
@@ -290,41 +279,126 @@ const faqJsonLd =
     </section>
   )}
 
-  <section class="section section--spacious">
-    <div class="container grid-12">
-      <div class="consulting-contact-box glass">
-        <h2 class="section-title" data-reveal-title>
-          <span class="reveal-mask">
-            <span class="reveal-line">Une commission de sécurité approche ?</span>
-          </span>
-        </h2>
-        <div class="consulting-contact-actions" data-reveal>
-          <a href="mailto:ccconsulting@ssesolutions.fr" class="contact-email-pill glass" aria-label="Écrire à CC Consulting : ccconsulting@ssesolutions.fr">
-            <svg class="email-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <rect width="20" height="16" x="2" y="4" rx="2" />
-              <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-            </svg>
-            <span class="email-address">ccconsulting@ssesolutions.fr</span>
-          </a>
-          <a href="/contact?sujet=cc-consulting" class="btn-primary" data-magnetic data-glow>
-            <span>Faire le point sur mon établissement</span>
-            <span class="btn-arrow" aria-hidden="true">→</span>
-          </a>
+  <section class="cc-block cc-block--cta" aria-labelledby="cc-cta-title">
+    <div class="container">
+      <div class="cc-cta" data-reveal>
+        <div class="cc-cta__text">
+          <h2 class="cc-section-title" id="cc-cta-title">Une commission de sécurité approche ?</h2>
+          <a href="mailto:ccconsulting@ssesolutions.fr" class="cc-cta__mail">ccconsulting@ssesolutions.fr</a>
         </div>
+        <a href="/contact?sujet=cc-consulting" class="cc-btn cc-btn--invert">Faire le point sur mon établissement</a>
       </div>
     </div>
   </section>
 </BaseLayout>
 
+<script>
+  import { initConsultingPage } from '../scripts/cc-consulting/page.js';
+
+  let cleanup: (() => void) | null = null;
+  document.addEventListener('astro:page-load', () => {
+    cleanup?.();
+    cleanup = document.querySelector('[data-cc3d-hero]') ? initConsultingPage() : null;
+  });
+  document.addEventListener('astro:before-swap', () => {
+    cleanup?.();
+    cleanup = null;
+  });
+</script>
+
 <style>
+  /* ---------- Champ de traits (fixe, derrière le contenu) ---------- */
+  .cc-field {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+    display: block;
+  }
+
+  /* ---------- Hero ---------- */
+  .cc-hero {
+    position: relative;
+    min-height: max(46rem, 100vh);
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .cc-hero__canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    opacity: 0;
+    transition: opacity 900ms var(--ease-out);
+  }
+
+  .cc-hero.is-3d-ready .cc-hero__canvas {
+    opacity: 1;
+  }
+
+  .cc-hero__fallback {
+    display: none;
+    position: absolute;
+    right: 6%;
+    top: 50%;
+    transform: translateY(-50%);
+    width: min(38%, 30rem);
+  }
+
+  .cc-hero.is-3d-fallback .cc-hero__fallback {
+    display: block;
+  }
+
+  .cc-hero__fade {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      linear-gradient(90deg, color-mix(in srgb, var(--bg) 95%, transparent) 0%, color-mix(in srgb, var(--bg) 80%, transparent) 32%, transparent 58%),
+      linear-gradient(0deg, var(--bg) 0%, transparent 22%);
+  }
+
+  .cc-hero__inner {
+    position: relative;
+    z-index: 2;
+    padding-top: 8rem;
+    padding-bottom: 5rem;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .cc-hero__spacer {
+    height: 20rem;
+  }
+
+  @media (min-width: 960px) {
+    .cc-hero__inner {
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+    }
+    .cc-hero__spacer {
+      display: none;
+    }
+  }
+
+  .cc-hero__content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    max-width: 38rem;
+  }
+
   .activity-breadcrumb {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    font-size: 0.8125rem;
-    font-weight: 500;
+    font-size: 0.875rem;
     color: var(--text-muted);
-    margin-bottom: var(--space-20);
   }
 
   .activity-breadcrumb-link {
@@ -345,341 +419,495 @@ const faqJsonLd =
   }
 
   .activity-breadcrumb-current {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  .cc-hero__title {
+    font-size: clamp(2.6rem, 1.4rem + 4.4vw, 5rem);
+    line-height: 1.06;
+    letter-spacing: -0.025em;
+    font-weight: 450;
+    max-width: 16ch;
+  }
+
+  .cc-hero__verbs {
+    font-size: clamp(1.375rem, 1.1rem + 1vw, 1.75rem);
+    line-height: 1.25;
     color: var(--activity-tint);
-    font-weight: 600;
+    font-weight: 450;
   }
 
-  .hero-consulting {
-    position: relative;
-    padding-top: 8.5rem;
-    padding-bottom: var(--space-64);
-    border-top: 2px solid var(--activity-tint);
-    overflow: hidden;
+  .cc-hero__lead {
+    font-size: 1.125rem;
+    line-height: 1.55;
+    color: var(--text-muted);
+    max-width: 34rem;
   }
 
-  .hero-activity-brand {
+  .cc-actions {
     display: flex;
     flex-wrap: wrap;
-    align-items: center;
-    gap: var(--space-24);
-    margin-bottom: var(--space-24);
+    gap: 0.75rem;
+    margin-top: 0.25rem;
   }
 
-  .hero-activity-brand-meta {
+  .cc-btn {
+    display: inline-flex;
+    align-items: center;
+    min-height: 3rem;
+    padding: 0 1.5rem;
+    border-radius: 999px;
+    background: var(--text);
+    color: var(--bg);
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: background-color 200ms cubic-bezier(0.2, 0, 0, 1), color 200ms cubic-bezier(0.2, 0, 0, 1);
+  }
+
+  .cc-btn:hover {
+    background: color-mix(in srgb, var(--text) 85%, var(--bg));
+  }
+
+  .cc-btn:focus-visible {
+    outline: 2px solid var(--text);
+    outline-offset: 3px;
+  }
+
+  .cc-btn--ghost {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid color-mix(in srgb, var(--text) 18%, transparent);
+  }
+
+  .cc-btn--ghost:hover {
+    background: color-mix(in srgb, var(--text) 6%, transparent);
+  }
+
+  .cc-btn--invert {
+    background: var(--bg);
+    color: var(--text);
+  }
+
+  .cc-btn--invert:hover {
+    background: color-mix(in srgb, var(--bg) 88%, var(--text));
+  }
+
+  .cc-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2.5rem;
+    margin-top: 1.25rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--line);
+  }
+
+  .cc-stats div {
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
   }
 
-  .hero-activity-brand-meta .eyebrow {
-    margin-bottom: 0;
+  .cc-stats dt {
+    order: 2;
+    font-size: 0.875rem;
+    color: var(--text-muted);
   }
 
-  .hero-activity-brand-name {
-    font-family: var(--font-display);
-    font-weight: 500;
-    font-size: 1.5rem;
+  .cc-stats dd {
+    order: 1;
+    font-size: 2.5rem;
+    line-height: 1;
+    font-weight: 450;
     letter-spacing: -0.02em;
     color: var(--text);
   }
 
-  .hero-consulting-grid {
-    align-items: center;
-    row-gap: var(--space-40);
+  .cc-types {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    line-height: 1.7;
+    color: var(--text-muted);
   }
 
-  .hero-consulting-content {
-    grid-column: 1 / -1;
-  }
-
-  .hero-consulting-media {
-    grid-column: 1 / -1;
+  /* ---------- Nœuds ---------- */
+  .cc-flow {
+    --p: 0;
+    position: relative;
+    z-index: 2;
+    padding-block: 5rem 4rem;
+    border-bottom: 1px solid var(--line);
   }
 
   @media (min-width: 960px) {
-    .hero-consulting-content {
-      grid-column: 1 / 8;
+    .cc-flow {
+      height: 300vh;
+      padding-block: 0;
     }
-    .hero-consulting-media {
-      grid-column: 8 / 13;
+    .cc-flow__stage {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      min-height: 45rem;
+      display: flex;
+      align-items: center;
+      padding-top: 5.5rem;
+      padding-bottom: 1.5rem;
     }
   }
 
-  .hero-title {
-    font-size: clamp(2.1rem, 1.35rem + 3vw, 3.6rem);
-    max-width: 24ch;
+  .cc-flow__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
   }
 
-  .hero-verbs {
-    margin-top: var(--space-24);
-    font-family: var(--font-display);
-    font-size: clamp(1.35rem, 1rem + 1.5vw, 2.15rem);
+  .cc-flow__head {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  @media (min-width: 960px) {
+    .cc-flow__head {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 2rem;
+    }
+  }
+
+  .cc-section-title {
+    font-size: clamp(2rem, 1.3rem + 2.8vw, 3.5rem);
     line-height: 1.08;
     letter-spacing: -0.02em;
-    color: var(--activity-tint);
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.45em;
+    font-weight: 450;
   }
 
-  .hero-consulting-lead {
-    margin-top: var(--space-24);
-    font-size: clamp(1.125rem, 1.3vw, 1.3rem);
-    color: var(--text);
-  }
-
-  .checklist-header {
-    grid-column: 1 / -1;
-    margin-bottom: var(--space-24);
-  }
-
-  .checklist-content {
-    grid-column: 1 / -1;
-  }
-
-  @media (min-width: 960px) {
-    .checklist-header {
-      grid-column: 1 / 5;
-      margin-bottom: 0;
-    }
-    .checklist-content {
-      grid-column: 5 / 13;
-    }
-  }
-
-  .commission-checklist {
+  .cc-flow__step {
+    max-width: 28rem;
+    min-height: 5.5rem;
     display: flex;
     flex-direction: column;
-    gap: var(--space-16);
+    gap: 0.35rem;
   }
 
-  .checklist-item {
-    --pointer-glow: color-mix(in srgb, var(--tint-consulting) 16%, transparent);
-    display: flex;
-    align-items: center;
-    gap: var(--space-16);
-    padding: var(--space-24);
-    border-radius: var(--radius-sharp);
-    border-left: 2px solid var(--activity-tint);
-  }
-
-  .checklist-box {
-    width: 1.75rem;
-    height: 1.75rem;
-    border-radius: var(--radius-sharp);
-    border: 1px solid var(--activity-tint);
-    background-color: color-mix(in srgb, var(--activity-tint) 14%, transparent);
-    color: var(--activity-tint);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-  }
-
-  .checklist-label {
-    font-size: var(--fs-body);
-    color: var(--text);
-  }
-
-  .checklist-conclusion {
-    margin-top: var(--space-40);
-    font-family: var(--font-display);
-    font-size: var(--fs-h3);
-    color: var(--text);
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .checklist-icon {
-      opacity: 1 !important;
-      transform: scale(1) !important;
-    }
-  }
-
-  .healthcare-safety-box {
-    --pointer-glow: color-mix(in srgb, var(--tint-consulting) 16%, transparent);
-    grid-column: 1 / -1;
-    padding: var(--space-64) var(--space-40);
-    border-top: 2px solid var(--activity-tint);
-    border-radius: var(--radius-sharp);
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-24);
-  }
-
-  .healthcare-safety-text {
-    font-size: clamp(1.0625rem, 1.25vw, 1.25rem);
-    color: var(--text);
-  }
-
-  .faq-list {
-    margin-top: var(--space-64);
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-24);
-  }
-
-  .faq-item {
-    padding: var(--space-40);
-    border-radius: var(--radius-sharp);
-    border-left: 2px solid var(--activity-tint);
-  }
-
-  .faq-question {
-    font-family: var(--font-display);
-    font-size: var(--fs-h3);
-    color: var(--text);
-  }
-
-  .faq-answer {
-    margin-top: var(--space-16);
+  .cc-flow__step-num {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
     color: var(--text-muted);
   }
 
-  .hero-consulting-actions {
-    margin-top: var(--space-40);
-  }
-
-  .hero-consulting-frame {
-    aspect-ratio: 4 / 3;
-    border-color: var(--activity-tint);
-  }
-
-  .services-intro {
-    align-items: end;
-    row-gap: var(--space-40);
-    margin-bottom: var(--space-64);
-  }
-
-  .services-intro-left {
-    grid-column: 1 / -1;
-  }
-
-  .services-intro-right {
-    grid-column: 1 / -1;
-  }
-
-  @media (min-width: 960px) {
-    .services-intro-left {
-      grid-column: 1 / 7;
-    }
-    .services-intro-right {
-      grid-column: 8 / 13;
-    }
-  }
-
-  .services-photo {
-    aspect-ratio: 16 / 10;
-  }
-
-  .consulting-services-grid {
-    row-gap: var(--space-24);
-  }
-
-  .consulting-card {
-    --pointer-glow: color-mix(in srgb, var(--tint-consulting) 16%, transparent);
-    grid-column: 1 / -1;
-    border-top: 2px solid var(--activity-tint);
-    border-radius: var(--radius-sharp);
-    padding: var(--space-40);
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-16);
-    transition: border-color 250ms var(--ease-out);
-  }
-
-  @media (min-width: 640px) {
-    .consulting-card {
-      grid-column: span 6;
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .consulting-card {
-      grid-column: span 4;
-    }
-  }
-
-  .consulting-card p {
-    color: var(--text-muted);
-  }
-
-  .consulting-audiences {
-    margin-top: var(--space-40);
-    row-gap: var(--space-24);
-  }
-
-  .consulting-audience-card {
-    --pointer-glow: color-mix(in srgb, var(--tint-consulting) 16%, transparent);
-    grid-column: 1 / -1;
-    border-left: 2px solid var(--activity-tint);
-    padding: var(--space-40);
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-16);
-  }
-
-  @media (min-width: 768px) {
-    .consulting-audience-card {
-      grid-column: span 4;
-    }
-  }
-
-  .consulting-audience-title {
-    font-family: var(--font-display);
-    font-size: var(--fs-h3);
+  .cc-flow__step-title {
+    font-size: 1.25rem;
+    font-weight: 500;
     color: var(--text);
   }
 
-  .consulting-audience-desc {
-    font-size: 0.9375rem;
+  .cc-flow__step-text {
+    font-size: 1rem;
     line-height: 1.5;
     color: var(--text-muted);
   }
 
-  .consulting-contact-box {
-    grid-column: 1 / -1;
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-40);
+  .cc-graph {
+    position: relative;
+    width: 100%;
+    margin-inline: auto;
+    container-type: inline-size;
   }
 
-  .consulting-contact-actions {
+  .cc-graph--desktop {
+    display: none;
+  }
+
+  @media (min-width: 960px) {
+    .cc-graph--desktop {
+      display: block;
+      width: min(100%, calc((100vh - 15rem) * 1280 / 660));
+    }
+    .cc-graph--mobile {
+      display: none;
+    }
+  }
+
+  .cc-graph__wires {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+
+  .cc-wire {
+    --o: clamp(0, (var(--p) - var(--s)) / var(--l), 1);
+    fill: none;
+    stroke: color-mix(in srgb, var(--text) 26%, transparent);
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-dasharray: 1;
+    stroke-dashoffset: calc(1 - var(--o));
+  }
+
+  .cc-pulse {
+    fill: var(--activity-tint);
+    opacity: clamp(0, (var(--p) - var(--s) - var(--l)) * 1000, 1);
+  }
+
+  .cc-node {
+    --o: clamp(0, (var(--p) - var(--s)) / var(--l), 1);
+    position: absolute;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.125rem;
+    padding: 0 1.125rem;
+    border-radius: 14px;
+    background: var(--surface);
+    border: 1px solid color-mix(in srgb, var(--text) 14%, transparent);
+    opacity: var(--o);
+    transform: translateY(calc((1 - var(--o)) * 14px));
+    transition: opacity 400ms var(--ease-out), transform 500ms var(--ease-out);
+  }
+
+  .cc-node--service {
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.875rem;
+  }
+
+  .cc-node--hub {
+    align-items: center;
+    padding: 1rem;
+    border-radius: 18px;
+  }
+
+  .cc-hub-logo {
+    width: 84%;
+    height: auto;
+    max-height: 100%;
+    object-fit: contain;
+  }
+
+  .cc-hub-logo--dark {
+    display: none;
+  }
+
+  :global(html[data-theme='dark']) .cc-hub-logo--light {
+    display: none;
+  }
+
+  :global(html[data-theme='dark']) .cc-hub-logo--dark {
+    display: block;
+  }
+
+  .cc-node--final {
+    background: var(--text);
+    color: var(--bg);
+    border-color: transparent;
+    border-radius: 16px;
+  }
+
+  .cc-node--final .cc-node__title {
+    color: var(--bg);
+  }
+
+  .cc-node--final .cc-node__sub {
+    color: color-mix(in srgb, var(--bg) 75%, transparent);
+  }
+
+  .cc-node__num {
+    font-family: var(--font-mono);
+    font-size: clamp(0.6875rem, 1.1cqi, 0.8125rem);
+    color: var(--activity-tint);
+  }
+
+  .cc-node__text {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .cc-node__title {
+    font-size: clamp(0.8125rem, 1.35cqi, 1rem);
+    font-weight: 500;
+    color: var(--text);
+    line-height: 1.3;
+  }
+
+  .cc-node__sub {
+    font-size: clamp(0.6875rem, 1.1cqi, 0.8125rem);
+    color: var(--text-muted);
+    line-height: 1.35;
+  }
+
+  .cc-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  /* ---------- Blocs de contenu ---------- */
+  .cc-block {
+    position: relative;
+    z-index: 2;
+    padding-block: 6rem;
+  }
+
+  @media (min-width: 960px) {
+    .cc-block {
+      padding-block: 7.5rem;
+    }
+  }
+
+  .cc-block__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+  }
+
+  .cc-check {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    column-gap: 3rem;
+    border-top: 1px solid var(--line);
+    list-style: none;
+  }
+
+  @media (min-width: 768px) {
+    .cc-check {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  .cc-check li {
+    padding-block: 1.25rem;
+    border-bottom: 1px solid var(--line);
+    font-size: 1.0625rem;
+    line-height: 1.5;
+    color: var(--text);
+  }
+
+  .cc-check__conclusion {
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  .cc-who__head {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-width: 54rem;
+  }
+
+  .cc-who__lead {
+    font-size: 1.125rem;
+    line-height: 1.55;
+    color: var(--text-muted);
+  }
+
+  .cc-who {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.25rem;
+    list-style: none;
+  }
+
+  @media (min-width: 900px) {
+    .cc-who {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  .cc-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 2rem;
+    border-radius: 20px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+  }
+
+  .cc-card__title {
+    font-size: 1.375rem;
+    font-weight: 500;
+    line-height: 1.25;
+  }
+
+  .cc-card p {
+    font-size: 1rem;
+    line-height: 1.55;
+    color: var(--text-muted);
+  }
+
+  .cc-faq {
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid var(--line);
+  }
+
+  .cc-faq__item {
+    padding-block: 1.75rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .cc-faq__q {
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  .cc-faq__a {
+    margin-top: 0.75rem;
+    color: var(--text-muted);
+    max-width: 68ch;
+    line-height: 1.6;
+  }
+
+  .cc-block--cta {
+    padding-top: 0;
+  }
+
+  .cc-cta {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: var(--space-24);
+    justify-content: space-between;
+    gap: 1.75rem;
+    padding: clamp(2rem, 5vw, 4rem);
+    border-radius: 28px;
+    background: var(--text);
+    color: var(--bg);
   }
 
-  .contact-email-pill {
-    display: inline-flex;
-    align-items: center;
+  .cc-cta .cc-section-title {
+    color: var(--bg);
+  }
+
+  .cc-cta__text {
+    display: flex;
+    flex-direction: column;
     gap: 0.75rem;
-    padding: 0.9rem 1.6rem;
-    border-radius: 999px;
-    font-family: var(--font-sans);
-    font-size: clamp(0.9375rem, 1vw, 1.0625rem);
-    font-weight: 500;
-    color: var(--text);
-    text-decoration: none;
-    border: 1px solid var(--glass-border);
-    background: var(--glass-bg);
-    box-shadow: var(--glass-shadow);
-    white-space: nowrap;
-    transition: transform 250ms var(--ease-out), border-color 250ms var(--ease-out), box-shadow 250ms var(--ease-out);
   }
 
-  .contact-email-pill:hover {
-    transform: translateY(-2px);
-    border-color: color-mix(in srgb, var(--tint-consulting) 55%, var(--glass-border));
-    box-shadow: var(--glass-shadow), 0 8px 24px -4px color-mix(in srgb, var(--tint-consulting) 28%, transparent);
+  .cc-cta__mail {
+    color: var(--bg);
+    font-size: 1.125rem;
+    text-underline-offset: 4px;
   }
 
-  .contact-email-pill .email-icon {
-    flex-shrink: 0;
-    color: var(--tint-consulting);
-  }
-
-  .contact-email-pill .email-address {
-    white-space: nowrap;
+  @media (prefers-reduced-motion: reduce) {
+    .cc-hero__canvas,
+    .cc-node {
+      transition: none;
+    }
   }
 </style>

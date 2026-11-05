@@ -12,6 +12,8 @@ interface Props {
   canonicalPath?: string;
   ogImage?: string;
   jsonLd?: Record<string, unknown>;
+  /** Fond de particules commun ; une page peut le remplacer par son propre fond animé. */
+  livingMesh?: boolean;
 }
 
 const {
@@ -21,6 +23,7 @@ const {
   canonicalPath = Astro.url.pathname,
   ogImage,
   jsonLd,
+  livingMesh = true,
 } = Astro.props;
 
 const siteOrigin = Astro.site ? Astro.site.toString().replace(/\/$/, '') : 'https://ssesolutions.fr';
@@ -55,24 +58,10 @@ const ogImageUrl = ogImage || `${siteOrigin}/og/${slugForOg}.png`;
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
     <link rel="manifest" href="/site.webmanifest" />
 
-    <!-- Préchargement des polices auto-hébergées (7.2 : Hanken Grotesk unique) -->
+    <!-- Préchargement de la police auto-hébergée (Google Sans Flex, variable) -->
     <link
       rel="preload"
-      href="/fonts/hanken-grotesk-500-latin.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin
-    />
-    <link
-      rel="preload"
-      href="/fonts/hanken-grotesk-400-latin.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin
-    />
-    <link
-      rel="preload"
-      href="/fonts/hanken-grotesk-600-latin.woff2"
+      href="/fonts/google-sans-flex-latin.woff2"
       as="font"
       type="font/woff2"
       crossorigin
@@ -95,19 +84,26 @@ const ogImageUrl = ogImage || `${siteOrigin}/og/${slugForOg}.png`;
 
     <meta name="theme-color" id="meta-theme-color" content="#FFFFFF" />
 
-    <!-- Verrouillage strict du thème clair -->
+    <!-- Thème clair / sombre : choix mémorisé, sinon préférence du système -->
     <script is:inline>
       (function () {
-        try {
-          localStorage.removeItem('sse-theme');
-        } catch (e) {}
-        document.documentElement.setAttribute('data-theme', 'light');
-        document.documentElement.removeAttribute('data-theme-pref');
-        document.addEventListener('astro:before-swap', function (ev) {
-          if (ev && ev.newDocument) {
-            ev.newDocument.documentElement.setAttribute('data-theme', 'light');
-            ev.newDocument.documentElement.removeAttribute('data-theme-pref');
+        function pick() {
+          var t = null;
+          try { t = localStorage.getItem('sse-theme'); } catch (e) {}
+          if (t !== 'light' && t !== 'dark') {
+            t = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
           }
+          return t;
+        }
+        function apply(root) {
+          var t = pick();
+          root.setAttribute('data-theme', t);
+          var m = (root.ownerDocument || document).getElementById('meta-theme-color');
+          if (m) m.setAttribute('content', t === 'dark' ? '#0E0F11' : '#FFFFFF');
+        }
+        apply(document.documentElement);
+        document.addEventListener('astro:before-swap', function (ev) {
+          if (ev && ev.newDocument) apply(ev.newDocument.documentElement);
         });
       })();
     </script>
@@ -136,7 +132,7 @@ const ogImageUrl = ogImage || `${siteOrigin}/og/${slugForOg}.png`;
     <a href="#main-content" class="skip-link">Aller au contenu</a>
 
     <!-- Arrière-plan vivant de particules WebGL sur l'ensemble du site -->
-    <LivingMesh fixed={true} />
+    {livingMesh && <LivingMesh fixed={true} />}
 
     <Header />
 
